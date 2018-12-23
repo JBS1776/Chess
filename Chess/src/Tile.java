@@ -11,9 +11,10 @@ import java.util.Arrays;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-public class Tile {
+public class Tile implements java.io.Serializable{
  
- private int size;
+ private int width;
+ private int height;
  private int num;
  private Color color;
  private int x;
@@ -22,10 +23,14 @@ public class Tile {
  boolean isSelected;
  ImageIcon image;
  Piece piece;
- TileButton[][] tiles = Board.tiles;
- static int n = Constants.TILESIZE;
+ Board board = new Board();
+ TileButton[][] tiles = board.tiles;
+ static int n = Constants.TILEWIDTH;
+ static int m = Constants.TILEHEIGHT;
+ Position pos = new Position(x, y);
  public Tile() {
-  this.size = size;
+  this.width = width;
+  this.height = height;
   this.num = num;
   this.color = color;
   this.x = x;
@@ -37,10 +42,12 @@ public class Tile {
    this.piece = piece;
    this.hasPiece = true;
   }
+  this.pos = pos;
  }
  
- public Tile(int size) {
-  this.size = size;
+ public Tile(int width, int height) {
+  this.width = width;
+  this.height = height;
   this.num = num;
   this.color = color;
   this.x = x;
@@ -53,9 +60,11 @@ public class Tile {
    this.piece = piece;
    this.hasPiece = true;
   }
+  this.pos = pos;
  }
  public Tile(Color color) {
-  this.size = size;
+  this.width = width;
+  this.height = height;
   this.num = num;
   this.color = color;
   this.x = x;
@@ -71,9 +80,11 @@ public class Tile {
   else {
    this.hasPiece = false;
   }
+  this.pos = pos;
  }
- public Tile(int size, int num, int x, int y, Color color) {
-  this.size = size;
+ public Tile(int width, int height, int num, int x, int y, Color color) {
+  this.width = width;
+  this.height = height;
   this.num = num;
   this.x = x;
   this.y = y;
@@ -89,9 +100,11 @@ public class Tile {
   else {
    this.hasPiece = false;
   }
+  this.pos = pos;
  }
- public Tile(int size, int num, int x, int y, Color color, Piece piece) {
-  this.size = size;
+ public Tile(int width, int height, int num, int x, int y, Color color, Piece piece) {
+  this.width = width;
+  this.height = height;
   this.num = num;
   this.x = x;
   this.y = y;
@@ -107,9 +120,13 @@ public class Tile {
   else {
    this.hasPiece = false;
   }
+  this.pos = pos;
  }
- public int getSize() {
-  return this.size;
+ public int getWidth() {
+  return this.width;
+ }
+ public int getHeight() {
+   return this.height;
  }
  public int getNum() {
   return this.num;
@@ -142,7 +159,7 @@ public class Tile {
    this.hasPiece = true;
  }
  public boolean onBoard(int x, int y) {
-  if (x >= 0 && x < Constants.BOARDWIDTH && y >= 0 && y < Constants.BOARDHEIGHT)
+  if (x >= 0 && x < (Constants.BOARDWIDTH + Constants.SCREENPOSX) && y >= 0 && y < (Constants.BOARDHEIGHT + Constants.SCREENPOSY))
    return true;
   else
   return false;
@@ -206,13 +223,11 @@ public class Tile {
   }
   return neighbors;
  }
- public Position toPosition(int x, int y) {
-  if (onBoard(x, y)) {
-  int divx = x / n;
-  int divy = y / n;
-  return new Position(Constants.xs[divx], Constants.ys[divy]);
-  }
-  return null;
+ public void setPosition(int x, int y) {
+   this.pos = new Position(x, y);
+ }
+ public Position getPosition() {
+  return this.pos;
  }
  public void setImage(ImageIcon image) {
   this.image = image;
@@ -230,19 +245,17 @@ public class Tile {
    }
   }
  }
- public void draw(Graphics g, int x, int y, int size, Color color) {
-  g.drawRect(x, y, size, size);
+ public void draw(Graphics g, int x, int y, int width, int height, Color color) {
+  g.drawRect(x, y, width, height);
   g.setColor(color);
-  g.fillRect(x, y, size, size);
+  g.fillRect(x, y, width, height);
  }
  public String toString() {
-  return "" + this.num + ", " + x + ", " + y + ", " + this.color + this.hasPiece + ", (" + this.piece + ")";
+  return "" + this.num + ", " + x + ", " + y + ", " + "Pos: " + this.pos + ", " + this.color + ", " + this.hasPiece + ", (" + this.piece + ")";
  }
 
  public static void main(String[] args) {
 
-  Tile t = new Tile(Constants.TILESIZE, 0, Constants.TILESIZE, Constants.TILESIZE, Color.WHITE, null);
-  System.out.println(t.getPiece() == null);
-  //System.out.println(t.upLeft());
+  Tile t = new Tile(Constants.TILEWIDTH, Constants.TILEWIDTH, 0, Constants.TILEWIDTH, Constants.TILEWIDTH, Color.WHITE, null);
  }
  }

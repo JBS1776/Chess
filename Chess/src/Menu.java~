@@ -1,0 +1,57 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+public class Menu extends JMenuBar{
+ public Menu() {
+ JMenu menu1 = new JMenu("File");
+ JMenu menu2 = new JMenu("Settings");
+ JMenu menu3 = new JMenu("Instructions");
+ JMenuItem stuff = new JMenuItem("Who reads them these days?");
+ //JMenuItem hint = new JMenuItem("Suggest a move: Only works when your King is in check");
+ JMenuItem reset = new JMenuItem("surrender ONLY LOSERS SURRENDER!!");
+ JMenuItem save = new JMenuItem("save: It's always good to save");
+ JMenuItem open = new JMenuItem("open: Load a saved game");
+ JMenuItem setTime = new JMenuItem("other options: set time limit per move, etc.");
+ menu1.add(open);
+ menu1.add(save);
+ menu1.add(reset);
+ menu2.add(setTime);
+ menu3.add(stuff);
+ this.add(menu1);
+ this.add(menu2);
+ this.add(menu3);
+ setTime.addActionListener(new ActionListener() {
+  @Override
+  public void actionPerformed(ActionEvent e) {
+   Options o = new Options() {
+    @Override
+    public void paint(Graphics g) {
+     super.paint(g);
+     g.drawString("Input a positive integer with less than five digits.", 60, 67);
+     g.drawString("Time will be set to unlimited otherwise.", 5, 85);
+     g.drawString("Hello!  Hope these are the settings you want!", 5, 230);
+     g.drawString("Remember: the game doesn't tell you when your king is in check", 5, 250);
+     g.drawString("This means that the game ends when the King is captured like any other piece", 5, 270);
+     g.drawString("^ resulting in checkmate of course.", 5, 290);
+     g.drawString("We Americans hate stalemates.  GET USED TO IT!!", 5, 310);
+    }
+   };
+  }
+ });
+ reset.addActionListener(new ActionListener() {
+   @Override
+   public void actionPerformed(ActionEvent e) {
+     //Gamewindow.closeFrame();
+     try {
+   //System.setProperty("apple.laf.useScreenMenuBar", "true");
+   //System.setProperty("com.apple.mrj.application.apple.menu.about.name", "WikiTeX");
+   UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+      //UIManager.setLookAndFeel(new javax.swing.plaf.metal.MetalLookAndFeel());
+  } catch (Exception ex) {
+      System.err.println("Cannot set LookAndFeel");
+  }
+  SwingUtilities.invokeLater(new Gamewindow());
+   }
+ });
+  }
+}

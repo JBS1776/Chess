@@ -19,27 +19,32 @@ import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.*;
-public class Promotion extends JFrame{
+public class Promotion extends JDialog implements java.io.Serializable{
 ImageIcon[] whiteimages = Constants.whiteimages;
 ImageIcon[] blackimages = Constants.blackimages;
-TileButton[][] tiles = Board.tiles;
+Board board = new Board();
+TileButton[][] tiles = board.tiles;
 private Color c;
 private TileButton t;
+static boolean isEnabled = false;
  public Promotion(Color c, TileButton t) {
   this.c = c;
   this.t = t;
   Tile tile = t.getTile();
-  Position pos = tile.toPosition(tile.getX(), tile.getY());
+  Position pos = tile.getPosition();
   PieceButton button1 = null;
   PieceButton button2 = null;
   PieceButton button3 = null;
   PieceButton button4 = null;
+  PieceButton button5 = null;
+  isEnabled = true;
   if (c.equals(Constants.colors[0])) {
   setLayout(null);
-  Rook newWhiteRook = new Rook(3, c, pos, whiteimages[0], whiteimages[0].getDescription());
+  Rook newWhiteRook = new Rook(3, c, pos, whiteimages[0], whiteimages[0].getDescription(), false);
   Knight newWhiteKnight = new Knight(3, c, pos, whiteimages[1], whiteimages[1].getDescription());
   Bishop newWhiteBishop = new Bishop(3, c, pos, whiteimages[2], whiteimages[2].getDescription());
   Queen newWhiteQueen = new Queen(3, c, pos, whiteimages[3], whiteimages[3].getDescription());
+  King newWhiteKing = new King(2, c, pos, whiteimages[4], whiteimages[4].getDescription(), false);
   button1 = new PieceButton(newWhiteRook);
   button1.setOpaque(true);
   button1.setBounds(25, 10, 150, 150);
@@ -64,13 +69,22 @@ private TileButton t;
   button4.setIcon(whiteimages[3]);
   button4.setFocusable(false);
   add(button4);
+  if (Gamewindow.takeMeChess) {
+    button5 = new PieceButton(newWhiteKing);
+    button5.setOpaque(true);
+    button5.setBounds(825, 10, 150, 150);
+    button5.setIcon(whiteimages[4]);
+    button5.setFocusable(false);
+    add(button5);
+  }
   }
   if (c.equals(Constants.colors[1])) {
    setLayout(null);
-   Rook newBlackRook = new Rook(3, c, pos, blackimages[0], blackimages[0].getDescription());
+   Rook newBlackRook = new Rook(3, c, pos, blackimages[0], blackimages[0].getDescription(), false);
    Knight newBlackKnight = new Knight(3, c, pos, blackimages[1], blackimages[1].getDescription());
    Bishop newBlackBishop = new Bishop(3, c, pos, blackimages[2], blackimages[2].getDescription());
    Queen newBlackQueen = new Queen(3, c, pos, blackimages[3], blackimages[3].getDescription());
+   King newBlackKing = new King(2, c, pos, blackimages[4], blackimages[4].getDescription(), false);
    button1 = new PieceButton(newBlackRook);
    add(button1);
    button1.setBounds(25, 10, 150, 150);
@@ -95,6 +109,14 @@ private TileButton t;
    button4.setOpaque(true);
    button4.setIcon(blackimages[3]);
    button4.setFocusable(false);
+   if (Gamewindow.takeMeChess) {
+    button5 = new PieceButton(newBlackKing);
+    button5.setOpaque(true);
+    button5.setBounds(825, 10, 150, 150);
+    button5.setIcon(blackimages[4]);
+    button5.setFocusable(false);
+    add(button5);
+   }
   }
    ActionListener listener = new ActionListener() {
     @Override
@@ -143,22 +165,42 @@ private TileButton t;
         piece.setId(Queen.blacknewId);
        }
       }
+      if (piece instanceof King) {
+       if (col.equals(Constants.colors[0])) {
+        King.whitenewId += 1;
+        piece.setId(King.whitenewId);
+       }
+       if (col.equals(Constants.colors[1])) {
+        King.blacknewId += 1;
+        piece.setId(King.blacknewId);
+       }
+      }
       String promMove = "" + (Game.turnCount + 1) + ". " + tile.getPiece().getName() + " promoted to " + piece.getName() + ".";
-      //turn += promMove;
-      int lastIndex = Game.moveLog.size() - 1;
-      String turn = Game.moveLog.get(lastIndex) + "\n";
-      Game.moveLog.set(lastIndex, turn + promMove);
-      System.out.println(Game.moveLog.get(Game.moveLog.size() - 1));
+      Game.board.pieces[(Game.turnCount + 1) % 2].remove(tile.getPiece());
       tile.setPiece(null);
       tile.setImage(null);
       t.setIcon(null);
       tile.setPiece(((PieceButton)source).getPiece());
       tile.setImage(((PieceButton)source).getPiece().getImage());
       t.setIcon(tile.getImage());
+      Game.board.pieces[(Game.turnCount + 1) % 2].add(((PieceButton)source).getPiece());
+        for (Piece p : Game.board.pieces[(Game.turnCount + 1) % 2])
+       System.out.println(p);
+      Game.board.setPieces();
+      if (!Gamewindow.takeMeChess) {
+        Game.board.kingsButton[Game.turnCount % 2].setBackground(Constants.TURNHIGHLIGHT);
+               if (Game.board.isKingInCheck(Game.turnColor)) {
+                 Game.board.kingsButton[Game.turnCount % 2].setBackground(Constants.CHECKHIGHLIGHT);
+               }
+      Game.board.reducePath(Game.turnColor);
+      Game.board.pinnedPieces(Game.turnColor);
+      System.out.println("Choosing promotion!");
+      }
+      else
+        Game.board.takeMePath(Game.turnColor);
+      Game.board.checkMate(Game.turnColor);
       dispose();
-      Game.enableFrame = !Game.enableFrame;
-      new Game().enableTheFrame(Game.enableFrame);
-      //Game.setEnabled(true);
+      isEnabled = false;
     }
     }
     
@@ -167,9 +209,14 @@ private TileButton t;
    button2.addActionListener(listener);
    button3.addActionListener(listener);
    button4.addActionListener(listener);
+   if (Gamewindow.takeMeChess)
+     button5.addActionListener(listener);
   
   this.setTitle("Choose a piece.  You can't close this window without selecting a piece.");
-  setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);  
+  setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+     if (Gamewindow.takeMeChess)
+       this.setSize(1025, 200);
+     else
      this.setSize(825, 200);
      setVisible(true);
  }
@@ -186,7 +233,9 @@ private TileButton t;
   }
  }
  public static void main(String[] args) {
-  //Promotion p = new Promotion(Color.WHITE, new Rook(3, c, pos, blackimages[0], blackimages[0].getDescription()));
+   Board board = new Board();
+   board.fillTiles(Constants.SCREENPOSX, Constants.SCREENPOSY);
+  Promotion p = new Promotion(Color.WHITE, board.tiles[0][0]);
  }
 
 }

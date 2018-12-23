@@ -25,14 +25,16 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.util.Date;
-public class Options extends JFrame{
+public class Options extends JFrame implements java.io.Serializable{
  boolean isEnabled = false;
+ boolean toClose = false;
  int seconds = new Date().getSeconds();
  int multiplyer = 10;
  JRadioButton prev = null;
  int index = 0;
  public Options() {
   setLayout(null);
+  this.setResizable(false);
   JCheckBox enableTime = new JCheckBox("EnableTime in seconds (Time will be set to unlimited if this is disabled)", false);
   enableTime.setBounds(0, 10, 500, 20);
   add(enableTime);
@@ -48,7 +50,6 @@ public class Options extends JFrame{
     if (o instanceof JCheckBox) {
      isEnabled = !isEnabled;
      setTime.setEnabled(isEnabled);
-     //System.out.println(Math.abs((curSecs - seconds) % 60));
     }
    }
   });
@@ -140,9 +141,21 @@ public class Options extends JFrame{
     else {
      Game.maxTurns = num * 10;
     }
-    System.out.println(Game.maxTurns);
-    System.out.println(Game.maxSeconds);
-    //dispose();
+ Game.turnCount = 0;
+ Game.turnColor = Constants.colors[Game.turnCount % 2];
+ Game.previouslySelected = null;
+ Game.enPassant = null;
+ Game.moveLog.clear();
+ Game.currKingCheck = false;
+ Game.castleProcessing = false;
+ Game.board.clearBoard();
+ Game.board.fillTiles2(Constants.SCREENPOSX, Constants.SCREENPOSY);
+ Game.board.setPieces();
+ Game.board.reducePath(Game.turnColor);
+ Game.board.pinnedPieces(Game.turnColor);
+ Game.board.checkMate(Game.turnColor);
+ 
+    dispose();
    }
   });
   this.setSize(500, 400);
@@ -151,19 +164,6 @@ public class Options extends JFrame{
  }
 
  public static void main(String[] args) {
-  Options o = new Options() {
-   @Override
-   public void paint(Graphics g) {
-    super.paint(g);
-    g.drawString("Input a positive integer with less than five digits.", 60, 67);
-    g.drawString("Time will be set to unlimited otherwise.", 5, 85);
-    g.drawString("Hello!  Hope these are the settings you want!", 5, 230);
-    g.drawString("Remember: the game doesn't tell you when your king is in check", 5, 250);
-    g.drawString("This means that the game ends when the King is captured like any other piece", 5, 270);
-    g.drawString("^ resulting in checkmate of course.", 5, 290);
-    g.drawString("We Americans hate stalemates.  GET USED TO IT!!", 5, 310);
-   }
-  };
 
  }
 

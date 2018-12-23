@@ -1,0 +1,47 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+public class TestBoards implements java.io.Serializable{
+  public static ArrayList<Piece>[] test1() {
+ //Board board = new Board();
+ ArrayList<Piece>[] pieces = new ArrayList[2];
+ ArrayList<Piece> whitePieces = new ArrayList<Piece>();
+ Piece whiteKing = new King(1, Color.WHITE, new Position(6, 2), Constants.whiteimages[4], "King", true);
+ Piece blackKing = new King(1, Color.BLACK, new Position(6, 0), Constants.blackimages[4], "King", true);
+ whitePieces.add(whiteKing);
+ whitePieces.add(new Queen(1, Color.WHITE, new Position(4, 1), Constants.whiteimages[3], "Queen"));
+ ArrayList<Piece> blackPieces = new ArrayList<Piece>();
+  blackPieces.add(blackKing);
+  blackPieces.add(new Bishop(1, Color.BLACK, new Position(1, 1), Constants.blackimages[2], "Bishop"));
+  pieces[0] = whitePieces;
+  pieces[1] = blackPieces;
+  return pieces;
+  }
+  public static ArrayList<Piece>[] test2() {
+ ArrayList<Piece>[] pieces = new ArrayList[2];
+ ArrayList<Piece> whitePieces = new ArrayList<Piece>();
+ Piece whiteKing = new King(1, Color.WHITE, new Position(5, 0), Constants.whiteimages[4], "whiteKing", true);
+ Piece blackKing = new King(1, Color.BLACK, new Position(3, 1), Constants.blackimages[4], "blackKing", true);
+ whitePieces.add(whiteKing);
+ whitePieces.add(new Rook(1, Color.WHITE, new Position(0, 7), Constants.whiteimages[0], "whiteRook", false));
+ whitePieces.add(new Pawn(1, Color.WHITE, new Position(1, 1), Constants.whiteimages[8], "whitePawn", true));
+ whitePieces.add(new Knight(1, Color.WHITE, new Position(1, 7), Constants.whiteimages[1], "whiteKnight"));
+ whitePieces.add(new Pawn(2, Color.WHITE, new Position(3, 6), Constants.whiteimages[8], "whitePawn", false));
+ ArrayList<Piece> blackPieces = new ArrayList<Piece>();
+  blackPieces.add(blackKing);
+  blackPieces.add(new Pawn(1, Color.BLACK, new Position(2, 4), Constants.blackimages[8], "blackPawn", true));
+  pieces[0] = whitePieces;
+  pieces[1] = blackPieces;
+  return pieces;
+  }
+  public static ArrayList<Piece>[] test3() { // For TakeMe Chess only
+    ArrayList<Piece>[] pieces = new ArrayList[2];
+    for (int i = 0; i < 2; i++)
+      pieces[i] = new ArrayList<Piece>();
+    pieces[0].add(new Rook(1, Color.WHITE, new Position(0, 7), Constants.whiteimages[0], "Rook", false));
+    pieces[0].add(new Knight(1, Color.WHITE, new Position(1, 7), Constants.whiteimages[1], "Knight"));
+    pieces[1].add(new King(1, Color.BLACK, new Position(2, 0), Constants.blackimages[4], "King", true));
+    return pieces;
+  }
+}
