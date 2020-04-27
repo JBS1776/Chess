@@ -1,13 +1,10 @@
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 
 public class Bishop extends Piece implements java.io.Serializable{
- static int whitenewId = 2;
- static int blacknewId = 2;
+ private int whitenewId = 2;
+ private int blacknewId = 2;
  int kingDirection = -1;
  public Bishop(int id, Color color, Position pos, ImageIcon image, String name) {
   setId(id);
@@ -16,7 +13,8 @@ public class Bishop extends Piece implements java.io.Serializable{
   setImage(image);
   setName(name);
  }
- public void setPath(Board board, TileButton t) {
+ public void setPath(Game g, TileButton t) {
+  Board board = g.getBoard();
   Color c = this.getColor();
   this.path.clear();
   int x = t.getTile().getPosition().getX();
@@ -201,47 +199,61 @@ public class Bishop extends Piece implements java.io.Serializable{
   if (!foundKing) {
     this.checkPath.clear();
   }
-  Board.checkPaths.put(this, this.checkPath);
+  board.checkPaths.put(this, this.checkPath);
  }
- public void furtherReducePath() {
+ public void furtherReducePath(Game g) {
+   int currTurn = g.getTurnCount() % 2;
+   Board currBoard = g.getBoard();
    System.out.println("RECHECK: " + this.kingDirection);
   if (kingDirection >= 0) {
-    int x = Game.board.kingsButton[Game.turnCount % 2].getTile().getPosition().getX();
-    int y = Game.board.kingsButton[Game.turnCount % 2].getTile().getPosition().getY();
+    int x = currBoard.kingsButton[currTurn].getTile().getPosition().getX();
+    int y = currBoard.kingsButton[currTurn].getTile().getPosition().getY();
     switch(kingDirection) {
       case 0 : {
         if (x + 1 < 8 && y - 1 >= 0) {
-          if (Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().contains(Game.board.tiles[y - 1][x + 1])) {
-            Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().remove(Game.board.tiles[y - 1][x + 1]);
+          if (currBoard.kingsButton[currTurn].getTile().getPiece().getPath().contains(currBoard.tiles[y - 1][x + 1])) {
+            currBoard.kingsButton[currTurn].getTile().getPiece().getPath().remove(currBoard.tiles[y - 1][x + 1]);
           }
         }
         break;
       }
       case 1 : {
         if (x + 1 < 8 && y + 1 < 8) {
-          if (Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().contains(Game.board.tiles[y + 1][x + 1])) {
-            Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().remove(Game.board.tiles[y + 1][x + 1]);
+          if (currBoard.kingsButton[currTurn].getTile().getPiece().getPath().contains(currBoard.tiles[y + 1][x + 1])) {
+            currBoard.kingsButton[currTurn].getTile().getPiece().getPath().remove(currBoard.tiles[y + 1][x + 1]);
           }
         }
         break;
       }
       case 2 : {
         if (x - 1 >= 0 && y + 1 < 8)
-          if (Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().contains(Game.board.tiles[y + 1][x - 1])) {
-            Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().remove(Game.board.tiles[y + 1][x - 1]);
+          if (currBoard.kingsButton[currTurn].getTile().getPiece().getPath().contains(currBoard.tiles[y + 1][x - 1])) {
+            currBoard.kingsButton[currTurn].getTile().getPiece().getPath().remove(currBoard.tiles[y + 1][x - 1]);
           }
         break;
       }
       case 3 : {
         if (x - 1 >= 0 && y - 1 >= 0) {
-          if (Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().contains(Game.board.tiles[y - 1][x - 1])) {
-            Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().remove(Game.board.tiles[y - 1][x - 1]);
+          if (currBoard.kingsButton[currTurn].getTile().getPiece().getPath().contains(currBoard.tiles[y - 1][x - 1])) {
+            currBoard.kingsButton[currTurn].getTile().getPiece().getPath().remove(currBoard.tiles[y - 1][x - 1]);
           }
         }
         break;
       }
     }
   }
+ }
+ public int getWhiteNewId() {
+   return this.whitenewId;
+ }
+ public int getBlackNewId() {
+   return this.blacknewId;
+ }
+ public void setWhiteNewId(int val) {
+   this.whitenewId = val;
+ }
+ public void setBlackNewId(int val) {
+   this.blacknewId = val;
  }
  public static void main(String[] args) {
   Board board = new Board();
@@ -250,7 +262,7 @@ public class Bishop extends Piece implements java.io.Serializable{
   Piece p = t.getTile().getPiece();
   //System.out.println(p);
   Bishop q = (Bishop) p;
-  q.setPath(board, t);
+  //q.setPath(board, t);
   for (TileButton til : p.path)
   System.out.println(til.getTile().getX() / n + ", " + til.getTile().getY() / n);
  }

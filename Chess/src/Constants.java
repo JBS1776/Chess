@@ -1,10 +1,14 @@
 
 import java.awt.*;
+import java.util.Arrays;
+
 import javax.swing.*;
 public class Constants implements java.io.Serializable{
   
- public static int TIME = 900;
-  
+ //public static int TIME = 900;
+	
+ public static int TIME = 10;
+
  public static int FULLSCREENWIDTH = 1280;
  
  public static int FULLSCREENHEIGHT = 800;
@@ -23,6 +27,8 @@ public class Constants implements java.io.Serializable{
  
  public static final Color[] colors = {Color.WHITE, Color.BLACK};
  
+ public static final Color GRAY = new Color(60, 60, 60);
+ 
  public static final Color HIGHLIGHTER = Color.PINK;
  
  public static final Color CHECKHIGHLIGHT = Color.RED;
@@ -33,7 +39,31 @@ public class Constants implements java.io.Serializable{
  
  public static final Color BACKGROUNDCOL = new Color(127, 127, 127);
  
- public static final int SETTING = 0;
+ public static final int MAXKINGCOUNT = 1;
+ 
+ public static final int MAXQUEENCOUNT = 1;
+ 
+ public static final int MAXBISHOPCOUNT = 2;
+ 
+ public static final int MAXKNIGHTCOUNT = 2;
+ 
+ public static final int MAXROOKCOUNT = 2;
+ 
+ public static final int MAXPAWNCOUNT = 8;
+ 
+ public static final int[] maxFreqs = {MAXROOKCOUNT, MAXKNIGHTCOUNT, MAXBISHOPCOUNT, MAXQUEENCOUNT, MAXKINGCOUNT, MAXPAWNCOUNT};
+ 
+ public static int SETTING = 0;
+ 
+ public static boolean isEnabled = false;
+ 
+ public static boolean takeMeChess = false;
+ 
+ public static boolean isPromotionEnabled = false;
+ 
+ public static int aiLevel = 0;
+ 
+ public static int aiColor = 1;
  
  public static final String[][] names = {{"sprites/BlackRook.png", "sprites/BlackKnight.png", 
    "sprites/BlackBishop.png", "sprites/BlackQueen.png", "sprites/BlackKing.png", 
@@ -49,7 +79,7 @@ public class Constants implements java.io.Serializable{
    "sprites3/WhiteBishop.png", "sprites3/WhiteQueen.png", "sprites3/WhiteKing.png", 
    "sprites3/WhitePawn.png"}};
  
- public static ImageIcon[] blackimages = {new ImageIcon(names[SETTING][0], "BlackRook"),
+ /*public static ImageIcon[] blackimages = {new ImageIcon(names[SETTING][0], "BlackRook"),
     new ImageIcon(names[SETTING][1], "BlackKnight"), 
     new ImageIcon(names[SETTING][2], "BlackBishop"),
     new ImageIcon(names[SETTING][3], "BlackQueen"),
@@ -66,8 +96,42 @@ public class Constants implements java.io.Serializable{
     new ImageIcon(names[SETTING][8], "WhiteBishop"),
     new ImageIcon(names[SETTING][7], "WhiteKnight"),
     new ImageIcon(names[SETTING][6], "WhiteRook"),
-    new ImageIcon(names[SETTING][11], "WhitePawn")};
+    new ImageIcon(names[SETTING][11], "WhitePawn")};*/
+ 
+ public static ImageIcon[][] images = {{new ImageIcon(names[SETTING][6], "WhiteRook"),
+	        new ImageIcon(names[SETTING][7], "WhiteKnight"), 
+	        new ImageIcon(names[SETTING][8], "WhiteBishop"),
+	        new ImageIcon(names[SETTING][9], "WhiteQueen"),
+	        new ImageIcon(names[SETTING][10], "WhiteKing"),
+	        new ImageIcon(names[SETTING][8], "WhiteBishop"),
+	        new ImageIcon(names[SETTING][7], "WhiteKnight"),
+	        new ImageIcon(names[SETTING][6], "WhiteRook"),
+	        new ImageIcon(names[SETTING][11], "WhitePawn")}, {new ImageIcon(names[SETTING][0], "BlackRook"),
+	    	    new ImageIcon(names[SETTING][1], "BlackKnight"), 
+	    	    new ImageIcon(names[SETTING][2], "BlackBishop"),
+	    	    new ImageIcon(names[SETTING][3], "BlackQueen"),
+	    	    new ImageIcon(names[SETTING][4], "BlackKing"),
+	    	    new ImageIcon(names[SETTING][2], "BlackBishop"),
+	    	    new ImageIcon(names[SETTING][1], "BlackKnight"),
+	    	    new ImageIcon(names[SETTING][0], "BlackRook"),
+	    	    new ImageIcon(names[SETTING][5], "BlackPawn")}};
+ 
+ public static boolean isColorBright(Color c) {
+	 // https://tech.chitgoks.com/2010/07/27/check-if-color-is-dark-or-light-using-java/
+	 double red = c.getRed() * c.getRed() * 0.241;
+	 double green = c.getGreen() * c.getGreen() * 0.691;
+	 double blue = c.getBlue() * c.getBlue() * 0.068;
+	 double sum = red + green + blue;
+	 int result = (int) Math.sqrt(sum);
+	 return result < 128;
+ }
+ 
+ public static long delay(long time) {
+	 return time * 1000;
+ }
+ 
  public static void main(String[] args) {
-   System.out.println(BOARDHEIGHT + ", " + BOARDWIDTH);
+   //System.out.println(BOARDHEIGHT + ", " + BOARDWIDTH);
+	 //setImages(0);
  }
 }

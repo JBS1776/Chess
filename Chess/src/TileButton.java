@@ -1,10 +1,5 @@
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 class TileButton extends JButton implements java.io.Serializable{  
@@ -18,19 +13,34 @@ class TileButton extends JButton implements java.io.Serializable{
         t.setBackground(Constants.HIGHLIGHTER);
       }
     }
-    public void deSelect(ArrayList<TileButton> tiles) {
+    public void deSelect(ArrayList<TileButton> tiles, Game g) {
+      if (g.getTakeMeEnabled()) {
+        Color turnColor = g.getTurnColor();
+        Color oppColor = turnColor.equals(Constants.colors[0]) ? Constants.colors[1] : Constants.colors[0];
+        System.out.println(g.takeCyan);
+        for (TileButton t : tiles) {
+            t.setBackground(t.getTile().getColor());
+        }
+        for (TileButton t : g.takeRed) {
+          t.setBackground(Color.RED);
+        }
+        if (g.takeCyan != null)
+          g.takeCyan.setBackground(Color.CYAN);
+      }
+      else {
       for (TileButton t : tiles) {
         t.setBackground(t.getTile().getColor());
       }
-      if (!Gamewindow.takeMeChess) {
-      if (Game.currKingCheck)
-      Game.board.kingsButton[Game.turnCount % 2].setBackground(Constants.CHECKHIGHLIGHT);
+      if (!Constants.takeMeChess) {
+      if (g.getcurrKingCheck())
+      g.getBoard().kingsButton[g.getTurnCount() % 2].setBackground(Constants.CHECKHIGHLIGHT);
       else
-        Game.board.kingsButton[Game.turnCount % 2].setBackground(Color.GREEN);
+        g.getBoard().kingsButton[g.getTurnCount() % 2].setBackground(Color.GREEN);
     }
+      }
     }
-    public static void clearPaint() {
-      for (TileButton[] tis : Game.board.tiles)
+    public static void clearPaint(Game g) {
+      for (TileButton[] tis : g.getBoard().tiles)
         for (TileButton but : tis)
         but.setBackground(but.getTile().getColor());
     }

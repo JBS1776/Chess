@@ -1,38 +1,16 @@
 import javax.swing.JFrame;
-
-import javax.swing.JOptionPane;
-
-
-import javax.swing.JPanel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JButton;
-import javax.swing.UIManager;
-import javax.swing.JOptionPane;
-import javax.swing.event.MouseInputAdapter;
-import java.awt.*;
 import java.awt.event.*;
-import javax.swing.SwingUtilities;
-
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.util.*;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.ZoneId;
 import java.util.Date;
 public class Options extends JFrame implements java.io.Serializable{
  boolean isEnabled = false;
  boolean toClose = false;
- int seconds = new Date().getSeconds();
+ //int seconds = new Date().getSeconds();
  int multiplyer = 10;
  JRadioButton prev = null;
  int index = 0;
- public Options() {
+ public Options(Game g) {
   setLayout(null);
   this.setResizable(false);
   JCheckBox enableTime = new JCheckBox("EnableTime in seconds (Time will be set to unlimited if this is disabled)", false);
@@ -113,48 +91,34 @@ public class Options extends JFrame implements java.io.Serializable{
      for (int i = 0; i < s.length(); i++) {
       boolean isNumber = Character.isDigit(s.charAt(i));
       if (!isNumber) {
-       Game.maxSeconds = Integer.MAX_VALUE;
+       g.setMaxSeconds(Integer.MAX_VALUE);
        tracker = 0;
        break;
       }
       tracker += 1;
      }
      if (tracker != 0) {
-     Game.maxSeconds = Integer.parseInt(s);
+     g.setMaxSeconds(Integer.parseInt(s));
      }
      else {
-      Game.maxSeconds = Integer.MAX_VALUE;
+      g.setMaxSeconds(Integer.MAX_VALUE);
      }
      }
      else {
-      Game.maxSeconds = Integer.MAX_VALUE;
+      g.setMaxSeconds(Integer.MAX_VALUE);
      }
     }
     else {
-     Game.maxSeconds = Integer.MAX_VALUE;
+     g.setMaxSeconds(Integer.MAX_VALUE);
     }
     char c = prev.getText().charAt(0);
     int num = c - '0';
     if (num < 0 || num > 9) {
-     Game.maxTurns = Integer.MAX_VALUE;
+     g.setMaxTurns(Integer.MAX_VALUE);
     }
     else {
-     Game.maxTurns = num * 10;
+     g.setMaxTurns(num * 10);
     }
- /*Game.turnCount = 0;
- Game.turnColor = Constants.colors[Game.turnCount % 2];
- Game.previouslySelected = null;
- Game.enPassant = null;
- Game.moveLog.clear();
- Game.currKingCheck = false;
- Game.castleProcessing = false;
- Game.board.clearBoard();
- Game.board.fillTiles2(Constants.SCREENPOSX, Constants.SCREENPOSY);
- Game.board.setPieces();
- Game.board.reducePath(Game.turnColor);
- Game.board.pinnedPieces(Game.turnColor);
- Game.board.checkMate(Game.turnColor);*/
- 
     dispose();
    }
   });

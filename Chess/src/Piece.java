@@ -1,11 +1,6 @@
 import java.awt.*;
-
-import java.awt.image.BufferedImage;
-import java.io.*;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.*;
-import java.util.List;
 public abstract class Piece implements java.io.Serializable{
  
  private int id;
@@ -14,17 +9,17 @@ public abstract class Piece implements java.io.Serializable{
  private Tile tile;
  private ImageIcon image;
  private String name;
- protected ArrayList<TileButton> path = new ArrayList<TileButton>();
- protected ArrayList<TileButton> checkPath = new ArrayList<TileButton>();
- protected ArrayList<TileButton> allies = new ArrayList<TileButton>();
- protected Board board = new Board();
- protected Color highlight = Constants.HIGHLIGHTER;
- protected Color special = Constants.TURNHIGHLIGHT;
- protected Color[] colors = Constants.colors;
- protected boolean hasMovedYet;
- protected boolean isPinned = false;
- protected boolean causedCheck = false;
- protected static int n = Constants.TILEWIDTH;
+ ArrayList<TileButton> path = new ArrayList<TileButton>();
+ ArrayList<TileButton> checkPath = new ArrayList<TileButton>();
+ ArrayList<TileButton> allies = new ArrayList<TileButton>();
+ Board board = new Board();
+ Color highlight = Constants.HIGHLIGHTER;
+ Color special = Constants.TURNHIGHLIGHT;
+ Color[] colors = Constants.colors;
+ boolean hasMovedYet;
+ boolean isPinned = false;
+ boolean causedCheck = false;
+ Random random = new Random();
  public Piece() {
   this.id = id;
   this.color = color;
@@ -58,10 +53,6 @@ public abstract class Piece implements java.io.Serializable{
  public Color getColor() {
   return this.color;
  }
- 
- public Position getPos() {
-  return this.pos;
- }
  public ImageIcon getImage() {
   return this.image;
  }
@@ -74,35 +65,47 @@ public abstract class Piece implements java.io.Serializable{
  public ArrayList<TileButton> getPath() {
   return this.path;
  }
- public void setPath(Board board, TileButton b) {
-   Piece p = this;
-   if (p instanceof Pawn) {
-     Pawn pawn = (Pawn) p;
-     pawn.setPath(board, b);
+ public void setPath(Game g, TileButton b) {
+   if (b.getTile().getPiece() instanceof Pawn) {
+     Pawn pawn = (Pawn) b.getTile().getPiece();
+     pawn.setPath(g, b);
    }
-   if (p instanceof Rook) {
-     Rook rook = (Rook) p;
-     rook.setPath(board, b);
+   if (b.getTile().getPiece() instanceof Rook) {
+     Rook rook = (Rook) b.getTile().getPiece();
+     rook.setPath(g, b);
    }
-   if (p instanceof Knight) {
-     Knight knight = (Knight) p;
-     knight.setPath(board, b);
+   if (b.getTile().getPiece() instanceof Knight) {
+     Knight knight = (Knight) b.getTile().getPiece();
+     knight.setPath(g, b);
    }
-   if (p instanceof Bishop) {
-     Bishop bishop = (Bishop) p;
-     bishop.setPath(board, b);
+   if (b.getTile().getPiece() instanceof Bishop) {
+     Bishop bishop = (Bishop) b.getTile().getPiece();
+     bishop.setPath(g, b);
    }
-   if (p instanceof Queen) {
-     Queen queen = (Queen) p;
-     queen.setPath(board, b);
+   if (b.getTile().getPiece() instanceof Queen) {
+     Queen queen = (Queen) b.getTile().getPiece();
+     queen.setPath(g, b);
    }
-   if (p instanceof King) {
-     King king = (King) p;
-     king.setPath(board, b);
+   if (b.getTile().getPiece() instanceof King) {
+     King king = (King) b.getTile().getPiece();
+     king.setPath(g, b);
    }
  }
  public void setPath(ArrayList<TileButton> lis) {
+   System.out.println(lis.get(0));
    this.path = lis;
+ }
+ public TileButton getRandTile() {
+	 int rand = random.nextInt(this.path.size());
+	 if (this.path.get(rand) != null) {
+	 while (this.path.get(rand).getTile().getPiece() == this) {
+		 rand = random.nextInt(this.path.size());
+		 if (this.path.get(rand) == null) {
+			 break;
+		 }
+	 }
+	 }
+	 return this.path.get(rand);
  }
  public void furtherReducePath() {
    Piece p = this;
@@ -145,6 +148,11 @@ public abstract class Piece implements java.io.Serializable{
  }
  public static void main(String[] args) {
   Board board = new Board();
+  board.fillTiles(0, 0);
+  System.out.println(board.tiles[0][0]);
+  Pawn p = new Pawn(0, Color.BLACK, new Position(0, 1), Constants.images[1][0], "Test", false);
+  //p.setPath(board, board.tiles[0][0]);
+  System.out.println(p.getPath().size());
  }
 
 }

@@ -10,8 +10,8 @@ public class King extends Piece implements java.io.Serializable{
  boolean inCheck = false;
  boolean canCastle = true;
  Color check = Constants.CHECKHIGHLIGHT;
- static int whitenewId = 1;
- static int blacknewId = 1;
+ private int whitenewId = 1;
+ private int blacknewId = 1;
  public King(int id, Color color, Position pos, ImageIcon image, String name, boolean hasMovedYet) {
   setId(id);
   setColor(color);
@@ -21,7 +21,8 @@ public class King extends Piece implements java.io.Serializable{
   this.canCastle = (this.hasMovedYet) ? false : true;
   this.hasMovedYet = hasMovedYet;
  }
- public void setPath(Board board, TileButton t) {
+ public void setPath(Game g, TileButton t) {
+  Board board = g.getBoard();
   Color c = this.getColor();
   this.path.clear();
   int x = t.getTile().getPosition().getX();
@@ -155,7 +156,7 @@ public class King extends Piece implements java.io.Serializable{
      board.tiles[y][x + 3].getTile().getPiece() != null) {
     Piece p = board.tiles[y][x + 3].getTile().getPiece();
     if (p.getId() == 2 && !p.hasMovedYet) {
-     Game.extraString = "(King-side castling!)";
+     //Game.extraString = "(King-side castling!)";
      this.path.add(board.tiles[y][x + 2]);
     }
    }
@@ -167,12 +168,24 @@ public class King extends Piece implements java.io.Serializable{
      board.tiles[y][x - 4].getTile().getPiece() != null) {
     Piece p = board.tiles[y][x - 4].getTile().getPiece();
     if (p.getId() == 1 && !p.hasMovedYet) {
-     Game.extraString = "(Queen-side castling!)";
+     //Game.extraString = "(Queen-side castling!)";
      this.path.add(board.tiles[y][x - 2]);
     }
    }    
   }
   }
+ }
+ public int getWhiteNewId() {
+   return this.whitenewId;
+ }
+ public int getBlackNewId() {
+   return this.blacknewId;
+ }
+ public void setWhiteNewId(int val) {
+   this.whitenewId = val;
+ }
+ public void setBlackNewId(int val) {
+   this.blacknewId = val;
  }
  public static void main(String[] args) {
    Board board = new Board();
@@ -182,7 +195,7 @@ public class King extends Piece implements java.io.Serializable{
   Piece p = t.getTile().getPiece();
   System.out.println(p);
   King q = (King) p;
-  q.setPath(board, t);
+  //q.setPath(board, t);
   for (TileButton til : p.path)
   System.out.println(til.getTile().getX() / n + ", " + til.getTile().getY() / n);
  }

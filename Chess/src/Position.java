@@ -1,11 +1,9 @@
 import java.util.List;
 import java.util.*;
-import java.awt.Color;
-import java.util.ArrayList;
 public class Position implements java.io.Serializable{
  private int x;
  private int y;
- private Board b = new Board();
+ //private Board b = new Board();
  private HashMap<Position, Tile> tiles;
  public Position(int x, int y) {
   this.x = x;

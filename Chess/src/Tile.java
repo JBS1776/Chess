@@ -1,15 +1,4 @@
 import java.awt.*;
-
-
-
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
-import java.util.*;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 public class Tile implements java.io.Serializable{
  
@@ -23,8 +12,6 @@ public class Tile implements java.io.Serializable{
  boolean isSelected;
  ImageIcon image;
  Piece piece;
- Board board = new Board();
- TileButton[][] tiles = board.tiles;
  static int n = Constants.TILEWIDTH;
  static int m = Constants.TILEHEIGHT;
  Position pos = new Position(x, y);
@@ -140,12 +127,6 @@ public class Tile implements java.io.Serializable{
  public Color getColor() {
   return this.color;
  }
- public boolean onBoard() {
-  if (this.getX() >= 0 && this.getX() < Constants.BOARDWIDTH && this.getY() >= 0 && this.getY() < Constants.BOARDHEIGHT)
-   return true;
-  else
-  return false;
- }
  public void setColor(Color c) {
   this.color = c;
  }
@@ -157,71 +138,6 @@ public class Tile implements java.io.Serializable{
   this.hasPiece = false;
   else
    this.hasPiece = true;
- }
- public boolean onBoard(int x, int y) {
-  if (x >= 0 && x < (Constants.BOARDWIDTH + Constants.SCREENPOSX) && y >= 0 && y < (Constants.BOARDHEIGHT + Constants.SCREENPOSY))
-   return true;
-  else
-  return false;
- }
- public Tile upLeft() {
-  if(this.getX() / n >= 1 && this.getY() / n >= 1) {
-   return this.tiles[(this.getY() / n) - 1][(this.getX() / n) - 1].getTile();
-  }
-   return null;
- }
- public Tile up() {
-  if(this.getX() / n >= 0 && this.getY() / n >= 1) {
-   return this.tiles[(this.getY() / n) - 1][(this.getX() / n)].getTile();
-  }
-   return null;
-  }
- public Tile upRight() {
-  if(this.getX() / n <= 7 && this.getY() / n <= 7) {
-   return this.tiles[(this.getY() / n) - 1][(this.getX() / n) + 1].getTile();
-  }
-   return null;
-  }
- public Tile left() {
-  if(this.getX() / n >= 1) {
-   return this.tiles[(this.getY() / n)][(this.getX() / n) - 1].getTile();
-  }
-    return null;
- }
- public Tile right() {
-  if(this.getX() / n <= 7) {
-   return this.tiles[(this.getY() / n)][(this.getX() / n) + 1].getTile();
-  }
-  return null;  
- }
- public Tile downLeft() {
-  if(this.getX() / n >= 1 && this.getY() / n <= 7) {
-   return this.tiles[(this.getY() / n) + 1][(this.getX() / n) - 1].getTile();
-  }
- return null;
- }
- public Tile down() {
-  if(this.getY() / n <= 7) {
-   return this.tiles[(this.getY() / n) + 1][(this.getX() / n)].getTile();
-  }
- return null;
- }
- public Tile downRight() {
-  if(this.getX() / n <= 7 && this.getY() / n <= 7) {
-   return this.tiles[(this.getY() / n) + 1][(this.getX() / n) + 1].getTile();
-  }
- return null;
- }
- 
- public List<Tile> neighbors() {
-  Tile[] nbors = {this.upLeft(), this.up(), this.upRight(), this.left(), this.right(), this.downLeft(), this.down(), this.downRight()};
-  List<Tile> neighbors = new ArrayList<Tile>();
-  for (Tile t : nbors) {
-   if (t.onBoard()) {
-    neighbors.add(t);
-   }
-  }
-  return neighbors;
  }
  public void setPosition(int x, int y) {
    this.pos = new Position(x, y);
@@ -255,7 +171,8 @@ public class Tile implements java.io.Serializable{
  }
 
  public static void main(String[] args) {
-
-  Tile t = new Tile(Constants.TILEWIDTH, Constants.TILEWIDTH, 0, Constants.TILEWIDTH, Constants.TILEWIDTH, Color.WHITE, null);
+  Pawn p = new Pawn(0, Color.BLACK, new Position(0, 0), Constants.images[1][8], "test", false);
+  Tile t = new Tile(Constants.TILEWIDTH, Constants.TILEWIDTH, 0, Constants.TILEWIDTH, Constants.TILEWIDTH, Color.WHITE, p);
+  System.out.println(t);
  }
  }

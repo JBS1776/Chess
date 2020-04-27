@@ -1,14 +1,7 @@
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
-import java.awt.*;
-
-import java.awt.image.BufferedImage;
-import java.io.*;
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.util.*;
-import java.util.List;
 public class Pawn extends Piece implements java.io.Serializable{
  TileButton[][] buttons = board.tiles;
  boolean enPassent_elegible = false;
@@ -20,7 +13,8 @@ public class Pawn extends Piece implements java.io.Serializable{
   setName(name);
   this.hasMovedYet = hasMovedYet;
  }
- public void setPath(Board board, TileButton t) {
+ public void setPath(Game g, TileButton t) {
+  Board board = g.getBoard();
   Color c = this.getColor();
   Position p = t.getTile().getPosition();
   this.path.clear();
@@ -110,8 +104,8 @@ public class Pawn extends Piece implements java.io.Serializable{
         Piece piece = t2.getPiece();
         if (piece instanceof Pawn) {
         Pawn piece2 = (Pawn) piece;
-        if (Game.enPassant != null) {
-        if (Game.enPassant.equals(piece2)) {
+        if (g.getEnPass() != null) {
+        if (g.getEnPass().equals(piece2)) {
          this.path.add(tb1);
         }
         }
@@ -141,9 +135,9 @@ public class Pawn extends Piece implements java.io.Serializable{
         if (piece instanceof Pawn) {
          Color color = piece.getColor();
          Pawn piece2 = (Pawn) piece;
-         if (Game.enPassant != null) {
-         if (Game.enPassant.equals(piece2)) {
-          Game.extraString = "(En-passent Capture!)";
+         if (g.getEnPass() != null) {
+         if (g.getEnPass().equals(piece2)) {
+          //Game.extraString = "(En-passent Capture!)";
           this.path.add(tb1);
          }
         }
@@ -231,8 +225,8 @@ public class Pawn extends Piece implements java.io.Serializable{
         Piece piece = t2.getPiece();
         if ((Object) piece instanceof Pawn) {
          Pawn piece2 = (Pawn) piece;
-         if (Game.enPassant != null) {
-         if (Game.enPassant.equals(piece2)) {
+         if (g.getEnPass() != null) {
+         if (g.getEnPass().equals(piece2)) {
           this.path.add(tb1);
          }
         }
@@ -261,8 +255,8 @@ public class Pawn extends Piece implements java.io.Serializable{
         if ((Object) piece instanceof Pawn) {
          Piece curr = board.tiles[y][x].getTile().getPiece();
          Pawn piece2 = (Pawn) piece;
-         if (Game.enPassant != null) {
-         if (Game.enPassant.equals(piece2)) {
+         if (g.getEnPass() != null) {
+         if (g.getEnPass().equals(piece2)) {
           this.path.add(tb1);
          }
         }
@@ -272,12 +266,14 @@ public class Pawn extends Piece implements java.io.Serializable{
     }
    }
   }
-  Board.checkPaths.put(this, this.checkPath);
+  board.checkPaths.put(this, this.checkPath);
  }
  public static void main(String[] args) {
    Board board = new Board();
    board.fillTiles(0, 0);
   TileButton[][] tiles = board.tiles;
-  System.out.println(tiles[0][0] == null); 
+  //Piece p = new Piece();
+  Pawn pawn = new Pawn(0, Color.BLACK, new Position(0, 0), Constants.images[1][8], "test", false);
+  System.out.println(pawn); 
  }
 }

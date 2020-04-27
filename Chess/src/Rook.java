@@ -1,13 +1,9 @@
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.swing.ImageIcon;
 
 public class Rook extends Piece implements java.io.Serializable{
- static int whitenewId = 2;
- static int blacknewId = 2;
+ private int whitenewId = 2;
+ private int blacknewId = 2;
  int kingDirection = -1;
  public Rook(int id, Color color, Position pos, ImageIcon image, String name, boolean hasMovedYet) {
   setId(id);
@@ -17,8 +13,9 @@ public class Rook extends Piece implements java.io.Serializable{
   setName(name);
   this.hasMovedYet = hasMovedYet;
  }
- public void setPath(Board board, TileButton t) {
-   this.path.clear();
+ public void setPath(Game g, TileButton t) {
+  Board board = g.getBoard();
+  this.path.clear();
   Color c = this.getColor();
   int x = t.getTile().getPosition().getX();
   int y = t.getTile().getPosition().getY();
@@ -33,6 +30,7 @@ public class Rook extends Piece implements java.io.Serializable{
    y -= 1;
    TileButton til = board.tiles[y][x];
    if (til.getTile().getPiece() != null) {
+	   //System.out.println("RATS: " + til.getTile().getPiece().getName() + ":" + x + ", " + y);
     Color otherCol = til.getTile().getPiece().getColor();
     if (!c.equals(otherCol)) {
      this.path.add(til);
@@ -75,6 +73,8 @@ public class Rook extends Piece implements java.io.Serializable{
    x += 1;
    TileButton til = board.tiles[y][x];
    if (til.getTile().getPiece() != null) {
+	   if (x == 6 && y == 6)
+		   System.out.println("FOUND SOMETHING: " + til.getTile().getPiece().getName());
     Color otherCol = til.getTile().getPiece().getColor();
     if (!c.equals(otherCol)) {
      this.path.add(til);
@@ -195,41 +195,54 @@ public class Rook extends Piece implements java.io.Serializable{
   if (!foundKing) {
     this.checkPath.clear();
   }
-  Board.checkPaths.put(this, this.checkPath);
+  board.checkPaths.put(this, this.checkPath);
  }
- public void furtherReducePath() {
+ public int getWhiteNewId() {
+   return this.whitenewId;
+ }
+ public int getBlackNewId() {
+   return this.blacknewId;
+ }
+ public void setWhiteNewId(int val) {
+   this.whitenewId = val;
+ }
+ public void setBlackNewId(int val) {
+   this.blacknewId = val;
+ }
+ public void furtherReducePath(Game g) {
+   int colindex = g.getTurnCount() % 2;
   if (kingDirection >= 0) {
-    int x = Game.board.kingsButton[Game.turnCount % 2].getTile().getPosition().getX();
-    int y = Game.board.kingsButton[Game.turnCount % 2].getTile().getPosition().getY();
+    int x = g.getBoard().kingsButton[colindex].getTile().getPosition().getX();
+    int y = g.getBoard().kingsButton[colindex].getTile().getPosition().getY();
     switch(kingDirection) {
       case 0 : {
         if (y - 1 >= 0) {
-          if (Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().contains(Game.board.tiles[y - 1][x])) {
-            Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().remove(Game.board.tiles[y - 1][x]);
+          if (g.getBoard().kingsButton[colindex].getTile().getPiece().getPath().contains(g.getBoard().tiles[y - 1][x])) {
+            g.getBoard().kingsButton[colindex].getTile().getPiece().getPath().remove(g.getBoard().tiles[y - 1][x]);
           }
         }
         break;
       }
       case 1 : {
         if (x + 1 < 8) {
-          if (Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().contains(Game.board.tiles[y][x + 1])) {
-            Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().remove(Game.board.tiles[y][x + 1]);
+          if (g.getBoard().kingsButton[colindex].getTile().getPiece().getPath().contains(g.getBoard().tiles[y][x + 1])) {
+            g.getBoard().kingsButton[colindex].getTile().getPiece().getPath().remove(g.getBoard().tiles[y][x + 1]);
           }
         }
         break;
       }
       case 2 : {
         if (y + 1 < 8) {
-          if (Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().contains(Game.board.tiles[y + 1][x])) {
-            Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().remove(Game.board.tiles[y + 1][x]);
+          if (g.getBoard().kingsButton[colindex].getTile().getPiece().getPath().contains(g.getBoard().tiles[y + 1][x])) {
+            g.getBoard().kingsButton[colindex].getTile().getPiece().getPath().remove(g.getBoard().tiles[y + 1][x]);
           }
         }
         break;
       }
       case 3 : {
         if (x - 1 >= 0) {
-          if (Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().contains(Game.board.tiles[y][x - 1])) {
-            Game.board.kingsButton[Game.turnCount % 2].getTile().getPiece().getPath().remove(Game.board.tiles[y][x - 1]);
+          if (g.getBoard().kingsButton[colindex].getTile().getPiece().getPath().contains(g.getBoard().tiles[y][x - 1])) {
+            g.getBoard().kingsButton[colindex].getTile().getPiece().getPath().remove(g.getBoard().tiles[y][x - 1]);
           }
         }
         break;
@@ -245,6 +258,6 @@ public class Rook extends Piece implements java.io.Serializable{
   Piece p = t.getTile().getPiece();
   //System.out.println(p);
   Rook q = (Rook) p;
-  q.setPath(board, t);
+  //q.setPath(board, t);
  }
 }
