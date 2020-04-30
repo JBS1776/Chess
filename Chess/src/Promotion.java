@@ -23,7 +23,7 @@ private Random rand = new Random();
 	  Rook rook = new Rook(3, c, pos, images[row][0], images[row][0].getDescription(), false);
 	  Knight knight = new Knight(3, c, pos, images[row][1], images[row][1].getDescription());
 	  Bishop bishop = new Bishop(3, c, pos, images[row][2], images[row][2].getDescription());
-	  Queen queen = new Queen(3, c, pos, images[row][3], images[row][3].getDescription());
+	  Queen queen = new Queen(2, c, pos, images[row][3], images[row][3].getDescription());
 	  King king = new King(2, c, pos, images[row][4], images[row][4].getDescription(), false);
 	  //Piece[] pieces = {rook, knight, bishop, queen, king};
 	  int rand100 = rand.nextInt(100);
@@ -34,23 +34,58 @@ private Random rand = new Random();
 	  switch(random) {
 	  case 0:
 		  piece = (Rook) rook;
+		  if (c.equals(Constants.colors[0])) {
+			  rook.setWhiteNewId(rook.getWhiteNewId() + 1);
+			  rook.setId(rook.getWhiteNewId());
+		  }
+		  else {
 		  rook.setBlackNewId(rook.getBlackNewId() + 1);
+		  rook.setId(rook.getBlackNewId());
+		  }
 		  break;
 	  case 1:
 		  piece = (Knight) knight;
+		  if (c.equals(Constants.colors[0])) {
+			  knight.setWhiteNewId(knight.getWhiteNewId() + 1);
+			  knight.setId(knight.getWhiteNewId());
+		  }
+		  else {
 		  knight.setBlackNewId(knight.getBlackNewId() + 1);
+		  knight.setId(knight.getBlackNewId());
+		  }
 		  break;
 	  case 2:
 		  piece = (Bishop) bishop;
+		  if (c.equals(Constants.colors[0])) {
+			  bishop.setWhiteNewId(bishop.getWhiteNewId() + 1);
+			  bishop.setId(bishop.getWhiteNewId());
+		  }
+		  else {
 		  bishop.setBlackNewId(bishop.getBlackNewId() + 1);
+		  bishop.setId(bishop.getBlackNewId());
+		  }
 		  break;
 	  case 4:
 		  piece = (King) king;
+		  if (c.equals(Constants.colors[0])) {
+			  king.setWhiteNewId(king.getWhiteNewId() + 1);
+			  king.setId(king.getWhiteNewId());
+		  }
+		  else {
 		  king.setBlackNewId(king.getBlackNewId() + 1);
+		  king.setId(king.getBlackNewId());
+		  }
 		  break;
 	  default:
 		  piece = (Queen) queen;
+		  if (c.equals(Constants.colors[0])) {
+			  queen.setWhiteNewId(queen.getWhiteNewId() + 1);
+			  queen.setId(queen.getWhiteNewId());
+		  }
+		  else {
 		  queen.setBlackNewId(queen.getBlackNewId() + 1);
+		  queen.setId(queen.getBlackNewId());
+		  }
 		  break;
 	  }
 	  gw.setEnabled(true);
@@ -58,7 +93,7 @@ private Random rand = new Random();
       g.getBoard().pieces[g.getAiColor()].remove(tile.getPiece());
       //g.getBoard().decTypeCount(tile.getPiece(), 1);
       g.capturedpieces.get(Graveyard.findIndex(tile.getPiece(), Constants.colors[g.getAiColor()])).add(tile.getPiece());
-      System.out.println("Pawn Removed: " + g.getBoard().pieces[g.getAiColor()].size());
+      //System.out.println("Pawn Removed: " + g.getBoard().pieces[g.getAiColor()].size());
       tile.setPiece(null);
       tile.setImage(null);
       t.setIcon(null);
@@ -66,13 +101,15 @@ private Random rand = new Random();
       tile.setImage(piece.getImage());
       t.setIcon(tile.getImage());
       g.getBoard().pieces[g.getAiColor()].add(piece);
+      String str = g.moveList.get(g.moveList.size() - 1);
+      g.moveList.set(g.moveList.size() - 1, str + " " + piece.getName() + piece.getId() + " promotion complete!");
       //g.capturedpieces.get(Graveyard.findIndex(piece, piece.getColor())).add(piece);
       //g.getBoard().decTypeCount(piece, -1);
-      System.out.println("Queen added: " + g.getBoard().pieces[g.getAiColor()].size());
-        for (Piece p : g.getBoard().pieces[g.getAiColor()]) {
+      //System.out.println("Queen added: " + g.getBoard().pieces[g.getAiColor()].size());
+        /*for (Piece p : g.getBoard().pieces[g.getAiColor()]) {
         	//System.out.println();
        System.out.println(p);
-        }
+        }*/
       g.getBoard().setPieces(g);
       if (!Constants.takeMeChess) {
         g.getBoard().kingsButton[g.getTurnCount() % 2].setBackground(Constants.TURNHIGHLIGHT);
@@ -81,11 +118,11 @@ private Random rand = new Random();
                }
       g.getBoard().reducePath(g.getTurnColor(), g);
       g.getBoard().pinnedPieces(g.getTurnColor());
-      System.out.println("Choosing promotion!");
-      for (Piece p : g.getBoard().pieces[g.getAiColor()]) {
+      //System.out.println("Choosing promotion!");
+      /*for (Piece p : g.getBoard().pieces[g.getAiColor()]) {
       	//System.out.println();
      System.out.println(p);
-      }
+      }*/
       //System.out.println();
       }
       else
@@ -158,9 +195,11 @@ private Random rand = new Random();
         Rook rook = (Rook) piece;
        if (col.equals(Constants.colors[0])) {
         rook.setWhiteNewId(rook.getWhiteNewId() + 1);
+        rook.setId(rook.getWhiteNewId());
        }
-       if (col.equals(Constants.colors[1])) {
+       else {
         rook.setBlackNewId(rook.getBlackNewId() + 1);
+        rook.setId(rook.getBlackNewId());
        }
        gw.setEnabled(true);
       }
@@ -168,9 +207,11 @@ private Random rand = new Random();
        Knight knight = (Knight) piece;
        if (col.equals(Constants.colors[0])) {
         knight.setWhiteNewId(knight.getWhiteNewId() + 1);
+        knight.setId(knight.getWhiteNewId());
        }
-       if (col.equals(Constants.colors[1])) {
+       else {
         knight.setBlackNewId(knight.getBlackNewId() + 1);
+        knight.setId(knight.getBlackNewId());
        }
        gw.setEnabled(true);
       }
@@ -178,9 +219,11 @@ private Random rand = new Random();
         Bishop bishop = (Bishop) piece;
        if (col.equals(Constants.colors[0])) {
         bishop.setWhiteNewId(bishop.getWhiteNewId() + 1);
+        bishop.setId(bishop.getWhiteNewId());
        }
-       if (col.equals(Constants.colors[1])) {
+       else {
         bishop.setBlackNewId(bishop.getBlackNewId() + 1);
+        bishop.setBlackNewId(bishop.getBlackNewId());
        }
        gw.setEnabled(true);
       }
@@ -188,9 +231,11 @@ private Random rand = new Random();
        Queen queen = (Queen) piece;
        if (col.equals(Constants.colors[0])) {
         queen.setWhiteNewId(queen.getWhiteNewId() + 1);
+        queen.setId(queen.getWhiteNewId());
        }
-       if (col.equals(Constants.colors[1])) {
+       else {
         queen.setBlackNewId(queen.getBlackNewId() + 1);
+        queen.setId(queen.getBlackNewId());
        }
        gw.setEnabled(true);
       }
@@ -198,9 +243,11 @@ private Random rand = new Random();
        King king = (King) piece;
        if (col.equals(Constants.colors[0])) {
         king.setWhiteNewId(king.getWhiteNewId() + 1);
+        king.setId(king.getWhiteNewId());
        }
-       if (col.equals(Constants.colors[1])) {
+       else {
         king.setBlackNewId(king.getBlackNewId() + 1);
+        king.setId(king.getBlackNewId());
        }
        gw.setEnabled(true);
       }
@@ -217,8 +264,8 @@ private Random rand = new Random();
       t.setIcon(tile.getImage());
       g.getBoard().pieces[(g.getTurnCount() + 1) % 2].add(promPiece);
       String str = g.moveList.get(g.moveList.size() - 1);
-      g.moveList.set(g.moveList.size() - 1, str + " " + promPiece.getName() + " promotion complete!");
-      System.out.println(g.moveList.get(g.moveList.size() - 1));
+      g.moveList.set(g.moveList.size() - 1, str + " " + promPiece.getName() + promPiece.getId() + " promotion complete!");
+      //System.out.println(g.moveList.get(g.moveList.size() - 1));
       //System.out.println("Before: " + g.getBoard().pieceCount[0][3]);
       //g.getBoard().decTypeCount(((PieceButton)source).getPiece(), -1);
       //System.out.println("After: " + g.getBoard().pieceCount[0][3]);

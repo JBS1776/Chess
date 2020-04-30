@@ -23,6 +23,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -74,9 +75,10 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
  	@Override
  	public void actionPerformed(ActionEvent e) {
  		JFrame fr = new JFrame("Move list");
+ 		//DefaultListModel listmodel = new DefaultListModel();
  		Object[] moves = g.moveList.toArray();
  		JList lis = new JList(moves);
- 		fr.add(lis);
+ 		fr.add(new JScrollPane(lis));
  		fr.setSize(500, 500);
  		fr.setVisible(true);
  	}

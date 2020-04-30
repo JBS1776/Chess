@@ -276,6 +276,7 @@ public class Game extends JPanel implements java.io.Serializable{
                       int posDiff = pos.getX() - posPrev.getX();
                       TileButton but1 = null;
                       TileButton but2 = null;
+                      String castlingComplete = "";
                     if (p instanceof King && !p.hasMovedYet) {
                         if (posDiff == 2 || posDiff == -2) {
                           if (posDiff == 2) {
@@ -294,13 +295,18 @@ public class Game extends JPanel implements java.io.Serializable{
                           board.setPieces(g);
                           //System.out.println("Castling Complete");
                           board.kingsButton[turnCount % 2].setBackground(board.kingsButton[turnCount % 2].getTile().getColor());
-                          board.kingsButton[turnCount % 2] = b;                         
+                          board.kingsButton[turnCount % 2] = b;
+                          System.out.println(p.getName() + p.getId());
+                          // Pop Rook's move from list
+                          g.moveList.remove(g.moveList.size() - 1);
+                          castlingComplete = " Castling comptele!";
                         }
                         }
                     boolean hasPieceMovedYet = previouslySelected.getTile().getPiece().hasMovedYet;
                     Piece ploginitial = previouslySelected.getTile().getPiece();
                     //System.out.print(ploginitial.getName() + " " + ploginitial.getId() + " " + ploginitial.getPosition() + " -> ");
                     board.move(previouslySelected, b, g);
+                    g.moveList.set(g.moveList.size() - 1, g.moveList.get(g.moveList.size() - 1) + castlingComplete);
                     board.setPieces(g);
                     Piece plognew = b.getTile().getPiece();
                     //System.out.println(plognew.getName() + " " + plognew.getId() + " " + plognew.getPosition());

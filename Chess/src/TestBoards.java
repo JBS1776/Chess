@@ -222,4 +222,43 @@ public class TestBoards implements java.io.Serializable{
 	  }
 	  return pieces;
   }
+  // Ran into this test case during computer random play, resulted in checkmate for white King even though move was available.
+  // Running test as new game does not cause the issue, perhaps there is an issue with pieceID
+  public static ArrayList<Piece>[] test14() {
+	  ArrayList<Piece>[] pieces = new ArrayList[2];
+	  for (int i = 0; i < 2; i++)
+		  pieces[i] = new ArrayList<Piece>();
+	  pieces[0].add(new King(1, Color.WHITE, new Position(0, 6), Constants.images[0][4], "WhiteKing", true));
+	  pieces[0].add(new Rook(1, Color.WHITE, new Position(2, 1), Constants.images[0][0], "WhiteRook", true));
+	  pieces[0].add(new Knight(1, Color.WHITE, new Position(1, 3), Constants.images[0][1], "WhiteKnight"));
+	  pieces[0].add(new Knight(2, Color.WHITE, new Position(3, 6), Constants.images[0][1], "WhiteKnight"));
+	  pieces[0].add(new Bishop(1, Color.WHITE, new Position(6, 1), Constants.images[0][2], "WhiteBishop"));
+	  pieces[0].add(new Queen(1, Color.WHITE, new Position(7, 0), Constants.images[0][3], "WhiteQueen"));
+	  pieces[1].add(new King(1, Color.BLACK, new Position(6, 3), Constants.images[1][4], "BlackKing", true));
+	  pieces[1].add(new Queen(1, Color.BLACK, new Position(5, 7), Constants.images[1][3], "BlackQueen"));
+	  pieces[1].add(new Queen(2, Color.BLACK, new Position(5, 5), Constants.images[1][3], "BlackQueen"));
+	  return pieces;
+  }
+  // Test to ensure AI can perform Castling
+  public static ArrayList<Piece>[] test15() {
+	  ArrayList<Piece>[] pieces = new ArrayList[2];
+	  for (int i = 0; i < 2; i++) {
+		  pieces[i] = new ArrayList<Piece>();
+	  }
+	  pieces[0].add(new King(1, Color.WHITE, new Position(4, 7), Constants.images[0][4], "WhiteKing", false));
+	  pieces[0].add(new Rook(2, Color.WHITE, new Position(7, 7), Constants.images[0][0], "WhiteRook", false));
+	  pieces[1].add(new King(1, Color.BLACK, new Position(0, 0), Constants.images[1][4], "BlackKing", true));
+	  for (int i = 1; i < 6; i++) {
+		  for (int j = 0; j < 8; j++) {
+			  pieces[1].add(new Pawn(j + 1, Color.BLACK, new Position(j, i), Constants.images[1][8], "BlackPawn", false));
+		  }
+	  }
+	  for (int i = 0; i < 4; i++) {
+		  pieces[1].add(new Rook(i + 1, Color.BLACK, new Position(i, 6), Constants.images[1][0], "BlackRook", true));
+		  pieces[1].add(new Bishop(i + 1, Color.BLACK, new Position(i, 7), Constants.images[1][2], "BlackBishop"));
+	  }
+	  //Castling should not work when line below is not commented out
+	  //pieces[1].add(new Bishop(5, Color.BLACK, new Position(4, 6), Constants.images[1][2], "BlackBishop"));
+	  return pieces;
+  }
   }

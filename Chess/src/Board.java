@@ -358,8 +358,9 @@ public void move(TileButton prev, TileButton next, Game g) {
   Piece q = next.getTile().getPiece();
   Position posPrev = prev.getTile().getPosition();
   Position pos = next.getTile().getPosition();
+  boolean enpassSuccess = false;
   if (q != null) {
-	g.moveList.add((g.moveList.size() + 1) + ". " + p.getName() + ": " + posPrev + " -> " + pos);
+	g.moveList.add((g.moveList.size() + 1) + ". " + p.getName() + p.getId() + ": " + posPrev + " X " + pos);
 	System.out.println(g.moveList.get(g.moveList.size() - 1));
     g.setEnPass(null);
     p.setHasMoved();
@@ -403,6 +404,7 @@ public void move(TileButton prev, TileButton next, Game g) {
           g.capturedpieces.get(Graveyard.findIndex(g.getEnPass(), Constants.colors[(currTurn + 1) % 2])).add(g.getEnPass());
           System.out.println("Enpass success!!");
           //this.removedPieces[(Game.turnCount + 1) % 2].add(Game.enPassant);
+          enpassSuccess = true;
         }
         g.setEnPass(null);
       }
@@ -416,7 +418,7 @@ public void move(TileButton prev, TileButton next, Game g) {
     }
     //if (p instanceof King)
       //System.out.println(p);
-	g.moveList.add((g.moveList.size() + 1) + ". " + p.getName() + ": " + posPrev + " -> " + pos);
+	g.moveList.add((g.moveList.size() + 1) + ". " + p.getName() + p.getId() + ": " + posPrev + (enpassSuccess ? " X " : " -> ") + pos + (enpassSuccess ? " enpassant capture!" : ""));
 	System.out.println(g.moveList.get(g.moveList.size() - 1));
     p.setHasMoved();
     next.setIcon(prev.getTile().getImage());
@@ -500,6 +502,7 @@ public void reducePath(Color color, Game g) {
   int x = g.board.kingsButton[colIndex].getTile().getPosition().getX();
   int y = g.board.kingsButton[colIndex].getTile().getPosition().getY();
   if (isCheck) {
+	//g.moveList.set(g.moveList.size() - 1, g.moveList.get(g.moveList.size() - 1) + " King in Check!");
     Duple[] buts = new Duple[8];
     for (int i = 0; i < 8; i++)
       buts[i] = new Duple(null, false);
@@ -1010,11 +1013,13 @@ public void checkMate(Color color, Game g) {
   }
   if (largestPath == 1) {
     if (!g.getcurrKingCheck()) {
+      g.moveList.add("Stalemate!");
       JOptionPane.showMessageDialog(null, "The game has ended in stalemate!", "STALEMATE!", JOptionPane.ERROR_MESSAGE, Constants.images[oppositeColor][rand.nextInt(Constants.images[oppositeColor].length)]);
       g.setGameEnded(true);
       //Gamewindow.timer.stop();
     }
     else {
+      g.moveList.add("Checkmate!");
       JOptionPane.showMessageDialog(null, "Checkmate!  " + ((oppositeColor == 0) ? "White" : "Black")  + " wins!", "Long live the King!", JOptionPane.ERROR_MESSAGE, Constants.images[oppositeColor][rand.nextInt(Constants.images[oppositeColor].length)]);
       g.setGameEnded(true);
       //Gamewindow.timer.stop();
@@ -1028,6 +1033,7 @@ public void checkMate(Color color, Game g) {
   }
   else {
       if (this.pieces[g.getTurnCount() % 2].isEmpty()) {
+    	g.moveList.add("Game ended!");
         JOptionPane.showMessageDialog(null, "No pieces left!  " + ((g.getTurnCount() % 2 == 0) ? "White ": "Black ") + "wins!", "Ran out of pieces!", JOptionPane.ERROR_MESSAGE, Constants.images[g.getTurnCount() % 2][rand.nextInt(Constants.images[g.getTurnCount() % 2].length)]);
         g.setGameEnded(true);
         //Gamewindow.timer.stop();
