@@ -1,7 +1,11 @@
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.util.ArrayList;
 public class TestBoards implements java.io.Serializable{
-  public static ArrayList<Piece>[] original() {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+public static ArrayList<Piece>[] original() {
     ArrayList<Piece>[] pieces = new ArrayList[2];
     pieces[0] = new ArrayList<Piece>();
     pieces[1] = new ArrayList<Piece>();
@@ -56,7 +60,6 @@ public class TestBoards implements java.io.Serializable{
     return pieces;
   }
   public static ArrayList<Piece>[] test1() {
- //Board board = new Board();
  ArrayList<Piece>[] pieces = new ArrayList[2];
  ArrayList<Piece> whitePieces = new ArrayList<Piece>();
  Piece whiteKing = new King(1, Color.WHITE, new Position(6, 2), Constants.images[0][4], "King", true);

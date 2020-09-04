@@ -1,13 +1,16 @@
 
-import java.awt.*;
-import java.util.Arrays;
+import java.awt.Color;
+import java.util.Random;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 public class Constants implements java.io.Serializable{
   
- //public static int TIME = 900;
-	
- public static int TIME = 10;
+ /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+ public static int TIME = 900;
 
  public static int FULLSCREENWIDTH = 1280;
  
@@ -65,6 +68,8 @@ public class Constants implements java.io.Serializable{
  
  public static int aiColor = 1;
  
+ public static Random rand = new Random();
+ 
  public static final String[][] names = {{"sprites/BlackRook.png", "sprites/BlackKnight.png", 
    "sprites/BlackBishop.png", "sprites/BlackQueen.png", "sprites/BlackKing.png", 
    "sprites/BlackPawn.png", "sprites/WhiteRook.png", "sprites/WhiteKnight.png", 
@@ -78,25 +83,6 @@ public class Constants implements java.io.Serializable{
    "sprites3/BlackPawn.png", "sprites3/WhiteRook.png", "sprites3/WhiteKnight.png", 
    "sprites3/WhiteBishop.png", "sprites3/WhiteQueen.png", "sprites3/WhiteKing.png", 
    "sprites3/WhitePawn.png"}};
- 
- /*public static ImageIcon[] blackimages = {new ImageIcon(names[SETTING][0], "BlackRook"),
-    new ImageIcon(names[SETTING][1], "BlackKnight"), 
-    new ImageIcon(names[SETTING][2], "BlackBishop"),
-    new ImageIcon(names[SETTING][3], "BlackQueen"),
-    new ImageIcon(names[SETTING][4], "BlackKing"),
-    new ImageIcon(names[SETTING][2], "BlackBishop"),
-    new ImageIcon(names[SETTING][1], "BlackKnight"),
-    new ImageIcon(names[SETTING][0], "BlackRook"),
-    new ImageIcon(names[SETTING][5], "BlackPawn")};
- public static ImageIcon[] whiteimages = {new ImageIcon(names[SETTING][6], "WhiteRook"),
-    new ImageIcon(names[SETTING][7], "WhiteKnight"), 
-    new ImageIcon(names[SETTING][8], "WhiteBishop"),
-    new ImageIcon(names[SETTING][9], "WhiteQueen"),
-    new ImageIcon(names[SETTING][10], "WhiteKing"),
-    new ImageIcon(names[SETTING][8], "WhiteBishop"),
-    new ImageIcon(names[SETTING][7], "WhiteKnight"),
-    new ImageIcon(names[SETTING][6], "WhiteRook"),
-    new ImageIcon(names[SETTING][11], "WhitePawn")};*/
  
  public static ImageIcon[][] images = {{new ImageIcon(names[SETTING][6], "WhiteRook"),
 	        new ImageIcon(names[SETTING][7], "WhiteKnight"), 
@@ -126,12 +112,8 @@ public class Constants implements java.io.Serializable{
 	 return result < 128;
  }
  
- public static long delay(long time) {
-	 return time * 1000;
- }
- 
  public static void main(String[] args) {
-   //System.out.println(BOARDHEIGHT + ", " + BOARDWIDTH);
-	 //setImages(0);
+	 int max = 0xffff;
+	 System.out.println(max);
  }
 }

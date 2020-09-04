@@ -1,122 +1,46 @@
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
-public class Tile implements java.io.Serializable{
+public class Tile extends JButton implements java.io.Serializable{
  
+ /**
+	 * 
+	 */
+ private static final long serialVersionUID = 1L;
  private int width;
  private int height;
- private int num;
  private Color color;
  private int x;
  private int y;
- boolean hasPiece;
- boolean isSelected;
- ImageIcon image;
- Piece piece;
- static int n = Constants.TILEWIDTH;
- static int m = Constants.TILEHEIGHT;
- Position pos = new Position(x, y);
- public Tile() {
+ private boolean hasPiece;
+ private ImageIcon image;
+ private Piece piece;
+ private Position pos = new Position(x, y);
+ public Tile(int width, int height, int x, int y, Color color, Piece piece) {
   this.width = width;
   this.height = height;
-  this.num = num;
-  this.color = color;
   this.x = x;
   this.y = y;
-  this.hasPiece = false;
-  this.piece = piece;
-  if (piece != null) {
-   this.image = image;
-   this.piece = piece;
-   this.hasPiece = true;
-  }
-  this.pos = pos;
- }
- 
- public Tile(int width, int height) {
-  this.width = width;
-  this.height = height;
-  this.num = num;
   this.color = color;
-  this.x = x;
-  this.y = y;
   this.hasPiece = false;
-  this.image = image;
+  //this.image = image;
   this.piece = piece;
   if (piece != null) {
-   this.image = image;
-   this.piece = piece;
-   this.hasPiece = true;
-  }
-  this.pos = pos;
- }
- public Tile(Color color) {
-  this.width = width;
-  this.height = height;
-  this.num = num;
-  this.color = color;
-  this.x = x;
-  this.y = y;
-  this.hasPiece = false;
-  this.image = image;
-  this.piece = piece;
-  if (piece != null) {
-   this.image = image;
+   //this.image = image;
    this.piece = piece;
    this.hasPiece = true;
   }
   else {
    this.hasPiece = false;
   }
-  this.pos = pos;
- }
- public Tile(int width, int height, int num, int x, int y, Color color) {
-  this.width = width;
-  this.height = height;
-  this.num = num;
-  this.x = x;
-  this.y = y;
-  this.color = color;
-  this.hasPiece = false;
-  this.image = image;
-  this.piece = piece;
-  if (piece != null) {
-   this.image = image;
-   this.piece = piece;
-   this.hasPiece = true;
-  }
-  else {
-   this.hasPiece = false;
-  }
-  this.pos = pos;
- }
- public Tile(int width, int height, int num, int x, int y, Color color, Piece piece) {
-  this.width = width;
-  this.height = height;
-  this.num = num;
-  this.x = x;
-  this.y = y;
-  this.color = color;
-  this.hasPiece = false;
-  this.image = image;
-  this.piece = piece;
-  if (piece != null) {
-   this.image = image;
-   this.piece = piece;
-   this.hasPiece = true;
-  }
-  else {
-   this.hasPiece = false;
-  }
-  this.pos = pos;
+  //this.pos = pos;
  }
  public int getWidth() {
   return this.width;
  }
  public int getHeight() {
    return this.height;
- }
- public int getNum() {
-  return this.num;
  }
  public int getX() {
   return this.x;
@@ -154,25 +78,39 @@ public class Tile implements java.io.Serializable{
  public Piece getPiece() {
   return this.piece;
  }
- public void capturePiece(Piece p) {
-  if (this.piece != null) {
-   if (this.piece.getColor() != p.getColor()) {
-    
+ public void select(ArrayList<Tile> tiles) {
+     for (Tile t : tiles) {
+       t.setBackground(Constants.HIGHLIGHTER);
+     }
    }
-  }
- }
- public void draw(Graphics g, int x, int y, int width, int height, Color color) {
-  g.drawRect(x, y, width, height);
-  g.setColor(color);
-  g.fillRect(x, y, width, height);
- }
+ public void deSelect(ArrayList<Tile> tiles, Game g) {
+     if (g.getTakeMeEnabled()) {
+       for (Tile t : tiles) {
+           t.setBackground(t.getColor());
+       }
+       for (Tile t : g.takeRed) {
+         t.setBackground(Color.RED);
+       }
+       if (g.takeCyan != null)
+         g.takeCyan.setBackground(Color.CYAN);
+     }
+     else {
+     for (Tile t : tiles) {
+       t.setBackground(t.getColor());
+     }
+     if (!Constants.takeMeChess) {
+     if (g.getcurrKingCheck())
+     g.getBoard().kingsButton[g.getTurnCount() % 2].setBackground(Constants.CHECKHIGHLIGHT);
+     else
+       g.getBoard().kingsButton[g.getTurnCount() % 2].setBackground(Color.GREEN);
+   }
+     }
+   }
  public String toString() {
-  return "" + this.num + ", " + x + ", " + y + ", " + "Pos: " + this.pos + ", " + this.color + ", " + this.hasPiece + ", (" + this.piece + ")";
+  return "" + x + ", " + y + ", " + "Pos: " + this.pos + ", " + this.color + ", " + this.hasPiece + ", (" + this.piece + ")";
  }
 
  public static void main(String[] args) {
-  Pawn p = new Pawn(0, Color.BLACK, new Position(0, 0), Constants.images[1][8], "test", false);
-  Tile t = new Tile(Constants.TILEWIDTH, Constants.TILEWIDTH, 0, Constants.TILEWIDTH, Constants.TILEWIDTH, Color.WHITE, p);
-  System.out.println(t);
+
  }
  }
