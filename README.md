@@ -14,3 +14,7 @@ After a long time away from this project, I thought I'd update it with extra fea
 After weeks of head smashing, thousands of lines of code, and accounting for as many senarios as possible to prevent illegal moves from being made, I am proud of the progress I have made on this app.  I have dreamed of writing a Chess app ever since I started programming during my undergrad years and I'm ecstatic to live that dream everyday that I work on this.  The development process has taught me that if you keep going until it's done right, the results will be to your great satisfaction.  I challenged myself to implement every aspect of the project EXACTLY the way I desired no matter how many steps it took.  The exact same situation applies to the difficult times we are going through right now.  They will last a while but if we put our minds to getting through this, a brighter future will happen before we know it.  </br>
 
 As of this update the project (.java) files contain a cumulative 6,069 lines, 21 classes (counting inner & private classes) in 19 files and 3 piece styles(regular, classic, mario)
+
+# Update September 2020
+
+I uploaded a few changes to the game.  I corrected an issue where multiple game windows can open at once.  The main window can't be used when a settings window or the graveyard is open.
