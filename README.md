@@ -21,4 +21,4 @@ I uploaded a few changes to the game.  I corrected an issue where multiple game 
 
 In future updates, I plan on seeing what other pieces of code I can reduce.  This is important as the code should be as simple as possible so I can include algorithms for a more difficult AI, include a resizeable game, etc.
 
-As of this update the project (.java) files contain a cumulative 5,261 lines, 22 classes (counting inner or private classes) in 17 files and 3 piece styles(regular, classic, mario)
+As of this update the project (.java) files contain a cumulative 5,285 lines, 22 classes (counting inner or private classes) in 18 files and 3 piece styles(regular, classic, mario)
