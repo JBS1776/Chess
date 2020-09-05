@@ -36,7 +36,6 @@ public class Game extends JPanel implements java.io.Serializable{
  int time = Constants.TIME; // 15 * 60 = 900
  int minutes;
  int seconds;
- long delay;
  boolean gameEnded; // different save
  boolean timeEnabled; // different save
  boolean takeMeEnabled; // different save
@@ -262,7 +261,6 @@ public class Game extends JPanel implements java.io.Serializable{
                turnLabel.setText(((turnCount % 2 == 0) ? "White's" : "Black's") + " turn to move!");
                turnCountLabel.setText("Turns passed: " + turnCount);
                g.setTime(Constants.TIME);
-               g.setDelay(g.getTime() * 1000);
                         previouslySelected = null;
                       }
                       else {
@@ -348,7 +346,6 @@ public class Game extends JPanel implements java.io.Serializable{
                turnLabel.setText(((turnCount % 2 == 0) ? "White's" : "Black's") + " turn to move!");
                turnCountLabel.setText("Turns passed: " + turnCount);
                g.setTime(Constants.TIME);
-               g.setTime(g.getTime() * 1000);
                     }
                     else {
                       if (tile.getPiece() instanceof Pawn) {
@@ -387,7 +384,6 @@ public class Game extends JPanel implements java.io.Serializable{
                turnLabel.setText(((turnCount % 2 == 0) ? "White's" : "Black's") + " turn to move!");
                turnCountLabel.setText("Turns passed: " + turnCount);
                g.setTime(Constants.TIME);
-               g.setDelay(g.getTime() * 1000);
                     }
                     previouslySelected = null;
                   }
@@ -425,7 +421,7 @@ public class Game extends JPanel implements java.io.Serializable{
 	   }
 	   }
 	   // Now you can't cheat by running the clock for the AI!!
-	   if (this.time == 0 && this.getTimeEnabled() && turnCount % 2 != aiColor)  {
+	   if (this.time == 0 && this.getTimeEnabled() && (turnCount % 2 != aiColor || this.ailevel == 0))  {
 	   if (!this.getGameEnded()) {
 	   JOptionPane.showMessageDialog(null, "You ran out of time!  " + ((turnCount % 2 == 1) ? "White" : "Black")  + " wins!", "Time up!", JOptionPane.ERROR_MESSAGE, Constants.images[turnCount % 2][Constants.rand.nextInt(Constants.images[turnCount % 2].length)]);
 	     for (Tile[] tils : this.board.tiles) {
@@ -444,9 +440,8 @@ public class Game extends JPanel implements java.io.Serializable{
 	   this.setGameEnded(true);
 	 }
 	   }
-	   if (delay > 0) {
+	   if (this.time > 0 && (turnCount % 2 != aiColor || this.ailevel == 0)) {
 	   this.time -= 1;
-	   this.delay -= 1000;
 	   }
 	 }
   public int getTurnCount() {
@@ -484,12 +479,6 @@ public class Game extends JPanel implements java.io.Serializable{
   }
   public void setTime(int val) {
     this.time = val;
-  }
-  public long getDelay() {
-    return this.delay;
-  }
-  public void setDelay(long val) {
-    this.delay = val;
   }
   public boolean getGameEnded() {
     return this.gameEnded;
