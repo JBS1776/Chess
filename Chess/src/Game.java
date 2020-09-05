@@ -67,7 +67,7 @@ public class Game extends JPanel implements java.io.Serializable{
  gameEnded = endGame;
  timeEnabled = timeEnable;
  takeMeEnabled = takeMe;
- Constants.isEnabled = timeEnabled;
+ Constants.isTimeEnabled = timeEnabled;
  Constants.takeMeChess = takeMeEnabled;
  this.setTime(newTime);
  label.setBounds(1200, 20, 200, 30);
@@ -421,7 +421,7 @@ public class Game extends JPanel implements java.io.Serializable{
 	   }
 	   }
 	   // Now you can't cheat by running the clock for the AI!!
-	   if (this.time == 0 && this.getTimeEnabled() && (turnCount % 2 != aiColor || this.ailevel == 0))  {
+	   if (this.time == 0 && this.getTimeEnabled() && ((turnCount % 2 != aiColor && this.ailevel < 3) || this.ailevel == 0))  {
 	   if (!this.getGameEnded()) {
 	   JOptionPane.showMessageDialog(null, "You ran out of time!  " + ((turnCount % 2 == 1) ? "White" : "Black")  + " wins!", "Time up!", JOptionPane.ERROR_MESSAGE, Constants.images[turnCount % 2][Constants.rand.nextInt(Constants.images[turnCount % 2].length)]);
 	     for (Tile[] tils : this.board.tiles) {
@@ -440,7 +440,7 @@ public class Game extends JPanel implements java.io.Serializable{
 	   this.setGameEnded(true);
 	 }
 	   }
-	   if (this.time > 0 && (turnCount % 2 != aiColor || this.ailevel == 0)) {
+	   if (this.time > 0 && ((turnCount % 2 != aiColor && this.ailevel < 3) || this.ailevel == 0)) {
 	   this.time -= 1;
 	   }
 	 }

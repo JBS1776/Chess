@@ -1,5 +1,7 @@
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -9,8 +11,6 @@ public class Constants implements java.io.Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
- public static int TIME = 900;
 
  public static int FULLSCREENWIDTH = 1280;
  
@@ -58,15 +58,35 @@ public class Constants implements java.io.Serializable{
  
  public static int SETTING = 0;
  
- public static boolean isEnabled = false;
+ public static boolean isPromotionEnabled = false;
+ 
+ public static ArrayList<Piece>[] STARTCONFIG = null;
+ 
+ public static int STARTTURNCOUNT = 0;
+ 
+ public static boolean isKingInCheck = false;
+ 
+ public static boolean startCastle = false;
+ 
+ public static boolean isEndGame = false;
+ 
+ public static boolean isTimeEnabled = false;
  
  public static boolean takeMeChess = false;
  
- public static boolean isPromotionEnabled = false;
+ public static int TIME = 900;
+ 
+ public static int PieceLook = 0;
  
  public static int aiLevel = 0;
  
  public static int aiColor = 1;
+ 
+ public static ArrayList<LinkedList<Piece>> CAPTUREDPIECES = null;
+ 
+ public static ArrayList<String> MOVELIST = null;
+ 
+ public static Piece ENPASS = null;
  
  public static Random rand = new Random();
  
@@ -113,7 +133,6 @@ public class Constants implements java.io.Serializable{
  }
  
  public static void main(String[] args) {
-	 int max = 0xffff;
-	 System.out.println(max);
+	 
  }
 }

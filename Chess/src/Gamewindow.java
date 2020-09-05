@@ -142,7 +142,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
  reset.addActionListener(new ActionListener() {
    @Override
    public void actionPerformed(ActionEvent e) {
-     g.setTimeEnabled(Constants.isEnabled);
+     g.setTimeEnabled(Constants.isTimeEnabled);
      newGame(game);
    }
  });
@@ -355,7 +355,12 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
   } catch (Exception ex) {
       System.err.println("Cannot set LookAndFeel");
   }
-  SwingUtilities.invokeLater(new Gamewindow(null, 0, false, false, false, false, false, Constants.TIME, 0, Constants.aiLevel, Constants.aiColor, null, null, null));
+  SwingUtilities.invokeLater(new Gamewindow(Constants.STARTCONFIG, Constants.STARTTURNCOUNT, Constants.isKingInCheck, 
+		  Constants.startCastle, Constants.isEndGame, 
+		  Constants.isTimeEnabled, Constants.takeMeChess, 
+		  Constants.TIME, Constants.PieceLook, 
+		  Constants.aiLevel, Constants.aiColor, Constants.CAPTUREDPIECES, 
+		  Constants.MOVELIST, Constants.ENPASS));
   }
   @Override
   public void run() {

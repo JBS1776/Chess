@@ -27,16 +27,16 @@ public class Options extends JFrame implements Runnable, java.io.Serializable {
 	    	  }
 	    this.setLayout(null);
 	    this.setResizable(false);
-	    JCheckBox enableTime = new JCheckBox("Enable time", Constants.isEnabled);
+	    JCheckBox enableTime = new JCheckBox("Enable time", Constants.isTimeEnabled);
 	    enableTime.setBounds(0, 10, 500, 20);
 	    this.add(enableTime);
-	    Constants.isEnabled = enableTime.isSelected();
-	    boolean oldEnabled = Constants.isEnabled;
+	    Constants.isTimeEnabled = enableTime.isSelected();
+	    boolean oldEnabled = Constants.isTimeEnabled;
 	    boolean oldTakeMe = Constants.takeMeChess;
 	    enableTime.addActionListener(new ActionListener(){
 	      @Override
 	      public void actionPerformed(ActionEvent e) {
-	        Constants.isEnabled = enableTime.isSelected();
+	        Constants.isTimeEnabled = enableTime.isSelected();
 	      }
 	    });
 	    JRadioButton[] buttons = new JRadioButton[2];
@@ -141,7 +141,7 @@ public class Options extends JFrame implements Runnable, java.io.Serializable {
 		    	      System.err.println("Cannot set LookAndFeel");
 		    	  }
 	        Constants.takeMeChess = oldTakeMe;
-	        Constants.isEnabled = oldEnabled;
+	        Constants.isTimeEnabled = oldEnabled;
 	        dispose();
 	        gw.setEnabled(true);
 	      }
@@ -154,7 +154,7 @@ public class Options extends JFrame implements Runnable, java.io.Serializable {
 	      @Override
 	      public void actionPerformed(ActionEvent e) {
 	        dispose();
-	        gw.getG().setTimeEnabled(Constants.isEnabled);
+	        gw.getG().setTimeEnabled(Constants.isTimeEnabled);
 	        gw.getG().setTakeMeEnabled(Constants.takeMeChess);
 	        gw.getG().setAilevel(Constants.aiLevel);
 	        gw.getG().setAiColor(Constants.aiColor);
