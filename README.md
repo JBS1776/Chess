@@ -17,4 +17,4 @@ As of this update the project (.java) files contain a cumulative 6,069 lines, 21
 
 # Update September 2020
 
-I uploaded a few changes to the game.  I corrected an issue where multiple game windows can open at once.  The main window can't be used when a settings window or the graveyard is open.
+I uploaded a few changes to the game.  I corrected an issue where multiple game windows can open at once.  The main window can't be used when a settings window or the graveyard is open.  The time setting for time-enabled games also wasn't working correctly with the AI enabled.  I fixed the faulty boolean logic in the preceding if statements that control this function
