@@ -88,11 +88,11 @@ public class Tile extends JButton implements java.io.Serializable{
        for (Tile t : tiles) {
            t.setBackground(t.getColor());
        }
-       for (Tile t : g.takeRed) {
+       for (Tile t : g.getTakeRed()) {
          t.setBackground(Color.RED);
        }
-       if (g.takeCyan != null)
-         g.takeCyan.setBackground(Color.CYAN);
+       if (g.getTakeCyan() != null)
+         g.getTakeCyan().setBackground(Color.CYAN);
      }
      else {
      for (Tile t : tiles) {
@@ -100,9 +100,9 @@ public class Tile extends JButton implements java.io.Serializable{
      }
      if (!Constants.takeMeChess) {
      if (g.getcurrKingCheck())
-     g.getBoard().kingsButton[g.getTurnCount() % 2].setBackground(Constants.CHECKHIGHLIGHT);
+     g.getBoard().getKingButton()[g.getTurnCount() % 2].setBackground(Constants.CHECKHIGHLIGHT);
      else
-       g.getBoard().kingsButton[g.getTurnCount() % 2].setBackground(Color.GREEN);
+       g.getBoard().getKingButton()[g.getTurnCount() % 2].setBackground(Color.GREEN);
    }
      }
    }

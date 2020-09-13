@@ -25,24 +25,24 @@ public class Graveyard extends JFrame implements Runnable{
 		this.setTitle("The Graveyard");
 	    this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    this.setPreferredSize(new Dimension(500, 500));
-	    Pawn whitepawn = new Pawn(8, Color.WHITE, null, Constants.images[0][8], "Wpawn", false);
-	    Pawn blackpawn = new Pawn(8, Color.BLACK, null, Constants.images[1][8], "Bpawn", false);
-	    Rook whiterook = new Rook(0, Color.WHITE, null, Constants.images[0][0], "Wrook", false);
-	    Rook blackrook = new Rook(0, Color.BLACK, null, Constants.images[1][0], "Brook", false);
-	    Knight whiteknight = new Knight(1, Color.WHITE, null, Constants.images[0][1], "Wknight");
-	    Knight blackknight = new Knight(1, Color.BLACK, null, Constants.images[1][1], "Bknight");
-	    Bishop whitebishop = new Bishop(2, Color.WHITE, null, Constants.images[0][2], "Wbishop");
-	    Bishop blackbishop = new Bishop(2, Color.BLACK, null, Constants.images[1][2], "Bbishop");
-	    Queen whitequeen = new Queen(3, Color.WHITE, null, Constants.images[0][3], "Wqueen");
-	    Queen blackqueen = new Queen(3, Color.BLACK, null, Constants.images[1][3], "Bqueen");
-	    King whiteking = new King(4, Color.WHITE, null, Constants.images[0][4], "Wking", false);
-	    King blackking = new King(4, Color.BLACK, null, Constants.images[1][4], "Bking", false);
+	    Pawn whitepawn = new Pawn(8, Color.WHITE, null, Constants.images[0][8], false);
+	    Pawn blackpawn = new Pawn(8, Color.BLACK, null, Constants.images[1][8], false);
+	    Rook whiterook = new Rook(0, Color.WHITE, null, Constants.images[0][0], false);
+	    Rook blackrook = new Rook(0, Color.BLACK, null, Constants.images[1][0], false);
+	    Knight whiteknight = new Knight(1, Color.WHITE, null, Constants.images[0][1]);
+	    Knight blackknight = new Knight(1, Color.BLACK, null, Constants.images[1][1]);
+	    Bishop whitebishop = new Bishop(2, Color.WHITE, null, Constants.images[0][2]);
+	    Bishop blackbishop = new Bishop(2, Color.BLACK, null, Constants.images[1][2]);
+	    Queen whitequeen = new Queen(3, Color.WHITE, null, Constants.images[0][3]);
+	    Queen blackqueen = new Queen(3, Color.BLACK, null, Constants.images[1][3]);
+	    King whiteking = new King(4, Color.WHITE, null, Constants.images[0][4], false);
+	    King blackking = new King(4, Color.BLACK, null, Constants.images[1][4], false);
 	    Piece[] ps = {whiteking, blackking, whitequeen, blackqueen, whitebishop, blackbishop, whiteknight, blackknight, whiterook, blackrook, whitepawn, blackpawn};
 	    for (int i = 0; i < 12; i++) {
 	    	if (i >= 10)
-	    		ps[i].setImage(new ImageIcon(Constants.names[Constants.SETTING][ps[i].getColor().equals(Color.black) ? 5 : 11], ps[i].getName()));
+	    		ps[i].setImage(new ImageIcon(Constants.names[Constants.PieceAppearance][ps[i].getColor().equals(Color.black) ? 5 : 11], ps[i].getName()));
 	    	else
-	    	ps[i].setImage(new ImageIcon(Constants.names[Constants.SETTING][ps[i].getColor().equals(Color.black) ? ps[i].getId() : ps[i].getId() + 6], ps[i].getName()));
+	    	ps[i].setImage(new ImageIcon(Constants.names[Constants.PieceAppearance][ps[i].getColor().equals(Color.black) ? ps[i].getId() : ps[i].getId() + 6], ps[i].getName()));
 	    }
 	    PieceButton[] pbs = new PieceButton[12];
 	    JTextArea[] freqs = new JTextArea[12];
@@ -159,6 +159,7 @@ public class Graveyard extends JFrame implements Runnable{
 		}
 	}
 	public static void main(String[] args) {
+		
 	}
 	@Override
 	public void run() {

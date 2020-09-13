@@ -1,8 +1,8 @@
 import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -27,27 +27,18 @@ public class Options extends JFrame implements Runnable, java.io.Serializable {
 	    	  }
 	    this.setLayout(null);
 	    this.setResizable(false);
-	    JCheckBox enableTime = new JCheckBox("Enable time", Constants.isTimeEnabled);
+	    JCheckBox enableTime = new JCheckBox("Enable time", g.getTimeEnabled());
 	    enableTime.setBounds(0, 10, 500, 20);
 	    this.add(enableTime);
-	    Constants.isTimeEnabled = enableTime.isSelected();
-	    boolean oldEnabled = Constants.isTimeEnabled;
-	    boolean oldTakeMe = Constants.takeMeChess;
-	    enableTime.addActionListener(new ActionListener(){
-	      @Override
-	      public void actionPerformed(ActionEvent e) {
-	        Constants.isTimeEnabled = enableTime.isSelected();
-	      }
-	    });
 	    JRadioButton[] buttons = new JRadioButton[2];
 	    buttons[0] = new JRadioButton("Regular Chess");
 	    buttons[0].setBounds(0, 50, 200, 20);
 	    this.add(buttons[0]);
-	    buttons[0].setSelected(!Constants.takeMeChess);
+	    buttons[0].setSelected(!g.getTakeMeEnabled());
 	    buttons[1] = new JRadioButton("Take-me Chess");
 	    buttons[1].setBounds(0, 70, 200, 20);
 	    this.add(buttons[1]);
-	    buttons[1].setSelected(Constants.takeMeChess);
+	    buttons[1].setSelected(g.getTakeMeEnabled());
 	    for (JRadioButton buts : buttons) {
 	      buts.addActionListener(new ActionListener() {
 	        @Override
@@ -67,11 +58,11 @@ public class Options extends JFrame implements Runnable, java.io.Serializable {
 	                }
 	              }
 	            }
-	            Constants.takeMeChess = buttons[1].isSelected();
 	        }
 	        }
 	      });
 	    }
+	    //int selectedMode = this.setSelectedButton(bggameMode);
 	    JRadioButton[] aiButtons = new JRadioButton[4];
 	    aiButtons[0] = new JRadioButton("No computer");
 	    aiButtons[0].setBounds(0, 110, 200, 20);
@@ -85,25 +76,22 @@ public class Options extends JFrame implements Runnable, java.io.Serializable {
 	    aiButtons[3] = new JRadioButton("Computer vs Computer");
 	    aiButtons[3].setBounds(0, 170, 200, 20);
 	    this.add(aiButtons[3]);
-	    aiButtons[Constants.aiLevel].setSelected(true);
+	    int prevSelection = g.getAilevel();
+	    aiButtons[g.getAilevel()].setSelected(true);
 	    for (JRadioButton but : aiButtons) {
 	    	but.addActionListener(new ActionListener() {
-	    		@Override
-	    		public void actionPerformed(ActionEvent e) {
-	    			Object o = e.getSource();
-	    			if (o instanceof JRadioButton) {
-	    				JRadioButton curr = (JRadioButton) o;
-	    				for (int i = 0; i < aiButtons.length; i++) {
-	    					if (aiButtons[i].equals(curr)) {
-	    						aiButtons[i].setSelected(true);
-	    						Constants.aiLevel = i;
-	    						g.setAilevel(Constants.aiLevel);
-	    					}
-	    					else
-	    						aiButtons[i].setSelected(false);
-	    				}
-	    			}
-	    		}
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for (int i = 0; i < aiButtons.length; i++) {
+						if (e.getSource().equals(aiButtons[i])) {
+							aiButtons[i].setSelected(true);
+							g.setAilevel(i);
+						}
+						else {
+							aiButtons[i].setSelected(false);
+						}
+					}
+				}   		
 	    	});
 	    }
 	    JButton aiPlayer = new JButton();
@@ -116,13 +104,13 @@ public class Options extends JFrame implements Runnable, java.io.Serializable {
 	    	public void actionPerformed(ActionEvent e) {
 	    		if (aiPlayer.getBackground().equals(Constants.colors[0])) {
 	    			aiPlayer.setBackground(Constants.colors[1]);
-	    			Constants.aiColor = 1;
+	    			//g.setAilevel(1);
 	    		}
 	    		else {
 	    			aiPlayer.setBackground(Constants.colors[0]);
-	    			Constants.aiColor = 0;
+	    			//g.setAilevel(0);
 	    		}
-	    		g.setAiColor(Constants.aiColor);
+	    		//g.setAiColor(Constants.aiColor);
 	    	}
 	    });
 	    this.add(aiPlayer);
@@ -135,13 +123,12 @@ public class Options extends JFrame implements Runnable, java.io.Serializable {
 		    	   //System.setProperty("apple.laf.useScreenMenuBar", "true");
 		    	   //System.setProperty("com.apple.mrj.application.apple.menu.about.name", "WikiTeX");
 		    	   UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+		    	   g.setAilevel(prevSelection);
 		    	   //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		    	      //UIManager.setLookAndFeel(new javax.swing.plaf.metal.MetalLookAndFeel());
 		    	  } catch (Exception ex) {
 		    	      System.err.println("Cannot set LookAndFeel");
 		    	  }
-	        Constants.takeMeChess = oldTakeMe;
-	        Constants.isTimeEnabled = oldEnabled;
 	        dispose();
 	        gw.setEnabled(true);
 	      }
@@ -154,10 +141,9 @@ public class Options extends JFrame implements Runnable, java.io.Serializable {
 	      @Override
 	      public void actionPerformed(ActionEvent e) {
 	        dispose();
-	        gw.getG().setTimeEnabled(Constants.isTimeEnabled);
-	        gw.getG().setTakeMeEnabled(Constants.takeMeChess);
-	        gw.getG().setAilevel(Constants.aiLevel);
-	        gw.getG().setAiColor(Constants.aiColor);
+	        gw.getG().setTimeEnabled(enableTime.isSelected());
+	        gw.getG().setTakeMeEnabled(buttons[1].isSelected());
+	        gw.getG().setAiColor(aiPlayer.getBackground().equals(Constants.colors[0]) ? 0 : 1);
 	        gw.newGame(gw.getG());
 	   }
 	  });

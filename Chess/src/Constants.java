@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -12,17 +13,17 @@ public class Constants implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
- public static int FULLSCREENWIDTH = 1280;
+ public static final int FULLSCREENWIDTH = 1280;
  
- public static int FULLSCREENHEIGHT = 800;
+ public static final int FULLSCREENHEIGHT = 800;
  
  public static final int BOARDWIDTH = 600; // Height
  
  public static final int BOARDHEIGHT = 600; // Width, If JMenu set to (BOARDWIDTH + 26) otherwise BOARDWIDTH
  
- public static int SCREENPOSX = (FULLSCREENWIDTH - BOARDWIDTH) / 2;
+ public static final int SCREENPOSX = (FULLSCREENWIDTH - BOARDWIDTH) / 2;
  
- public static int SCREENPOSY = (FULLSCREENHEIGHT - BOARDHEIGHT) / 4;
+ public static final int SCREENPOSY = (FULLSCREENHEIGHT - BOARDHEIGHT) / 4;
  
  public static final int TILEWIDTH = BOARDWIDTH / 8;
  
@@ -42,53 +43,37 @@ public class Constants implements java.io.Serializable{
  
  public static final Color BACKGROUNDCOL = new Color(127, 127, 127);
  
- public static final int MAXKINGCOUNT = 1;
+ public static final boolean isPromotionEnabled = false;
  
- public static final int MAXQUEENCOUNT = 1;
+ public static final ArrayList<Piece>[] STARTCONFIG = null;
  
- public static final int MAXBISHOPCOUNT = 2;
+ public static final int STARTTURNCOUNT = 0;
  
- public static final int MAXKNIGHTCOUNT = 2;
+ public static final boolean isKingInCheck = false;
  
- public static final int MAXROOKCOUNT = 2;
+ public static final boolean startCastle = false;
  
- public static final int MAXPAWNCOUNT = 8;
+ public static final boolean isEndGame = false;
  
- public static final int[] maxFreqs = {MAXROOKCOUNT, MAXKNIGHTCOUNT, MAXBISHOPCOUNT, MAXQUEENCOUNT, MAXKINGCOUNT, MAXPAWNCOUNT};
+ public static final boolean isTimeEnabled = false;
  
- public static int SETTING = 0;
+ public static final boolean takeMeChess = false;
  
- public static boolean isPromotionEnabled = false;
+ public static final int TIME = 900;
  
- public static ArrayList<Piece>[] STARTCONFIG = null;
+ public static final int PieceAppearance = 0;
  
- public static int STARTTURNCOUNT = 0;
+ public static final int aiLevel = 0;
  
- public static boolean isKingInCheck = false;
+ public static final int aiColor = 1;
  
- public static boolean startCastle = false;
+ public static final ArrayList<LinkedList<Piece>> CAPTUREDPIECES = null;
  
- public static boolean isEndGame = false;
+ public static final ArrayList<String> MOVELIST = null;
  
- public static boolean isTimeEnabled = false;
+ public static final Piece ENPASS = null;
  
- public static boolean takeMeChess = false;
- 
- public static int TIME = 900;
- 
- public static int PieceLook = 0;
- 
- public static int aiLevel = 0;
- 
- public static int aiColor = 1;
- 
- public static ArrayList<LinkedList<Piece>> CAPTUREDPIECES = null;
- 
- public static ArrayList<String> MOVELIST = null;
- 
- public static Piece ENPASS = null;
- 
- public static Random rand = new Random();
+ public static final Random rand = new Random();
  
  public static final String[][] names = {{"sprites/BlackRook.png", "sprites/BlackKnight.png", 
    "sprites/BlackBishop.png", "sprites/BlackQueen.png", "sprites/BlackKing.png", 
@@ -104,23 +89,23 @@ public class Constants implements java.io.Serializable{
    "sprites3/WhiteBishop.png", "sprites3/WhiteQueen.png", "sprites3/WhiteKing.png", 
    "sprites3/WhitePawn.png"}};
  
- public static ImageIcon[][] images = {{new ImageIcon(names[SETTING][6], "WhiteRook"),
-	        new ImageIcon(names[SETTING][7], "WhiteKnight"), 
-	        new ImageIcon(names[SETTING][8], "WhiteBishop"),
-	        new ImageIcon(names[SETTING][9], "WhiteQueen"),
-	        new ImageIcon(names[SETTING][10], "WhiteKing"),
-	        new ImageIcon(names[SETTING][8], "WhiteBishop"),
-	        new ImageIcon(names[SETTING][7], "WhiteKnight"),
-	        new ImageIcon(names[SETTING][6], "WhiteRook"),
-	        new ImageIcon(names[SETTING][11], "WhitePawn")}, {new ImageIcon(names[SETTING][0], "BlackRook"),
-	    	    new ImageIcon(names[SETTING][1], "BlackKnight"), 
-	    	    new ImageIcon(names[SETTING][2], "BlackBishop"),
-	    	    new ImageIcon(names[SETTING][3], "BlackQueen"),
-	    	    new ImageIcon(names[SETTING][4], "BlackKing"),
-	    	    new ImageIcon(names[SETTING][2], "BlackBishop"),
-	    	    new ImageIcon(names[SETTING][1], "BlackKnight"),
-	    	    new ImageIcon(names[SETTING][0], "BlackRook"),
-	    	    new ImageIcon(names[SETTING][5], "BlackPawn")}};
+ public static ImageIcon[][] images = {{new ImageIcon(names[PieceAppearance][6], "WhiteRook"),
+	        new ImageIcon(names[PieceAppearance][7], "WhiteKnight"), 
+	        new ImageIcon(names[PieceAppearance][8], "WhiteBishop"),
+	        new ImageIcon(names[PieceAppearance][9], "WhiteQueen"),
+	        new ImageIcon(names[PieceAppearance][10], "WhiteKing"),
+	        new ImageIcon(names[PieceAppearance][8], "WhiteBishop"),
+	        new ImageIcon(names[PieceAppearance][7], "WhiteKnight"),
+	        new ImageIcon(names[PieceAppearance][6], "WhiteRook"),
+	        new ImageIcon(names[PieceAppearance][11], "WhitePawn")}, {new ImageIcon(names[PieceAppearance][0], "BlackRook"),
+	    	    new ImageIcon(names[PieceAppearance][1], "BlackKnight"), 
+	    	    new ImageIcon(names[PieceAppearance][2], "BlackBishop"),
+	    	    new ImageIcon(names[PieceAppearance][3], "BlackQueen"),
+	    	    new ImageIcon(names[PieceAppearance][4], "BlackKing"),
+	    	    new ImageIcon(names[PieceAppearance][2], "BlackBishop"),
+	    	    new ImageIcon(names[PieceAppearance][1], "BlackKnight"),
+	    	    new ImageIcon(names[PieceAppearance][0], "BlackRook"),
+	    	    new ImageIcon(names[PieceAppearance][5], "BlackPawn")}};
  
  public static boolean isColorBright(Color c) {
 	 // https://tech.chitgoks.com/2010/07/27/check-if-color-is-dark-or-light-using-java/
@@ -130,9 +115,5 @@ public class Constants implements java.io.Serializable{
 	 double sum = red + green + blue;
 	 int result = (int) Math.sqrt(sum);
 	 return result < 128;
- }
- 
- public static void main(String[] args) {
-	 
  }
 }

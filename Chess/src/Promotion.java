@@ -17,11 +17,11 @@ private Tile t1;
 	  int row = g.getTurnCount() % 2;
 	  if (g.getAilevel() == 3 || (c.equals(Constants.colors[g.getAiColor()]) && g.getAilevel() > 0)) {
 		  row = g.getAilevel() == 3 ? g.getTurnCount() % 2 : g.getAiColor();
-		  Rook rook = new Rook(3, c, pos, Constants.images[row][0], Constants.images[row][0].getDescription(), false);
-		  Knight knight = new Knight(3, c, pos, Constants.images[row][1], Constants.images[row][1].getDescription());
-		  Bishop bishop = new Bishop(3, c, pos, Constants.images[row][2], Constants.images[row][2].getDescription());
-		  Queen queen = new Queen(2, c, pos, Constants.images[row][3], Constants.images[row][3].getDescription());
-		  King king = new King(2, c, pos, Constants.images[row][4], Constants.images[row][4].getDescription(), false);
+		  Rook rook = new Rook(3, c, pos, Constants.images[row][0], false);
+		  Knight knight = new Knight(3, c, pos, Constants.images[row][1]);
+		  Bishop bishop = new Bishop(3, c, pos, Constants.images[row][2]);
+		  Queen queen = new Queen(2, c, pos, Constants.images[row][3]);
+		  King king = new King(2, c, pos, Constants.images[row][4], false);
 		  int rand100 = Constants.rand.nextInt(100);
 		  int random = g.getTakeMeEnabled() ? Constants.rand.nextInt(5) : Constants.rand.nextInt(4);
 		  if (rand100 < 95)
@@ -85,22 +85,22 @@ private Tile t1;
 			  break;
 		  }
 		  gw.setEnabled(true);
-	      g.getBoard().pieces[g.getAiColor()].remove(tile.getPiece());
-	      g.capturedpieces.get(tile.getPiece().findIndex(Constants.colors[g.getAiColor()])).add(tile.getPiece());
+	      g.getBoard().getPieces()[g.getAiColor()].remove(tile.getPiece());
+	      g.getCapturedPieces().get(tile.getPiece().findIndex(Constants.colors[g.getAiColor()])).add(tile.getPiece());
 	      tile.setPiece(null);
 	      tile.setImage(null);
 	      t1.setIcon(null);
 	      tile.setPiece(piece);
 	      tile.setImage(piece.getImage());
 	      t1.setIcon(tile.getImage());
-	      g.getBoard().pieces[g.getAiColor()].add(piece);
-	      String str = g.moveList.get(g.moveList.size() - 1);
-	      g.moveList.set(g.moveList.size() - 1, str + " " + piece.getName() + piece.getId() + " promotion complete!");
+	      g.getBoard().getPieces()[g.getAiColor()].add(piece);
+	      String str = g.getMoveList().get(g.getMoveList().size() - 1);
+	      g.getMoveList().set(g.getMoveList().size() - 1, str + " " + piece.getName() + piece.getId() + " promotion complete!");
 	      g.getBoard().setPieces(g);
-	      if (!Constants.takeMeChess) {
-	        g.getBoard().kingsButton[g.getTurnCount() % 2].setBackground(Constants.TURNHIGHLIGHT);
+	      if (!g.getTakeMeEnabled()) {
+	        g.getBoard().getKingButton()[g.getTurnCount() % 2].setBackground(Constants.TURNHIGHLIGHT);
 	               if (g.getBoard().isKingInCheck(g.getTurnColor(), g)) {
-	                 g.getBoard().kingsButton[g.getTurnCount() % 2].setBackground(Constants.CHECKHIGHLIGHT);
+	                 g.getBoard().getKingButton()[g.getTurnCount() % 2].setBackground(Constants.CHECKHIGHLIGHT);
 	               }
 	      g.getBoard().reducePath(g.getTurnColor(), g);
 	      g.getBoard().pinnedPieces(g.getTurnColor());
@@ -109,21 +109,19 @@ private Tile t1;
 	        g.getBoard().takeMePath(g.getTurnColor(), g);
 	      g.getBoard().checkMate(g.getTurnColor(), g);
 	      this.dispose();
-	      Constants.isPromotionEnabled = false;
 	  }
 	  else {
 	  PieceButton[] buttons = new PieceButton[5];
-	  Constants.isPromotionEnabled = true;
 	  setLayout(null);
 	  row = g.getTurnCount() % 2;
-	  Rook newWhiteRook = new Rook(3, c, pos, Constants.images[row][0], Constants.images[row][0].getDescription(), false);
-	  Knight newWhiteKnight = new Knight(3, c, pos, Constants.images[row][1], Constants.images[row][1].getDescription());
-	  Bishop newWhiteBishop = new Bishop(3, c, pos, Constants.images[row][2], Constants.images[row][2].getDescription());
-	  Queen newWhiteQueen = new Queen(3, c, pos, Constants.images[row][3], Constants.images[row][3].getDescription());
-	  King newWhiteKing = new King(2, c, pos, Constants.images[row][4], Constants.images[row][4].getDescription(), false);
+	  Rook newWhiteRook = new Rook(3, c, pos, Constants.images[row][0], false);
+	  Knight newWhiteKnight = new Knight(3, c, pos, Constants.images[row][1]);
+	  Bishop newWhiteBishop = new Bishop(3, c, pos, Constants.images[row][2]);
+	  Queen newWhiteQueen = new Queen(3, c, pos, Constants.images[row][3]);
+	  King newWhiteKing = new King(2, c, pos, Constants.images[row][4], false);
 	  Piece[] pieces = {newWhiteRook, newWhiteKnight, newWhiteBishop, newWhiteQueen, newWhiteKing};
 	  for (int i = 0; i < pieces.length; i++) {
-		  ImageIcon set = new ImageIcon(Constants.names[Constants.SETTING][c.equals(Color.black) ? i : i + 6], pieces[i].getName());
+		  ImageIcon set = new ImageIcon(Constants.names[g.getSetting()][c.equals(Color.black) ? i : i + 6], pieces[i].getName());
 		  pieces[i].setImage(set);
 	  }
 	  buttons[0] = new PieceButton(newWhiteRook);
@@ -150,7 +148,7 @@ private Tile t1;
 	  buttons[3].setIcon(pieces[3].getImage());
 	  buttons[3].setFocusable(false);
 	  add(buttons[3]);
-	  if (Constants.takeMeChess) {
+	  if (g.getTakeMeEnabled()) {
 	    buttons[4] = new PieceButton(newWhiteKing);
 	    buttons[4].setOpaque(true);
 	    buttons[4].setBounds(825, 10, 150, 150);
@@ -225,8 +223,8 @@ private Tile t1;
 	       }
 	       gw.setEnabled(true);
 	      }
-	      g.getBoard().pieces[(g.getTurnCount() + 1) % 2].remove(tile.getPiece());
-	      g.capturedpieces.get(tile.getPiece().findIndex(Constants.colors[(g.getTurnCount() + 1) % 2])).add(tile.getPiece());
+	      g.getBoard().getPieces()[(g.getTurnCount() + 1) % 2].remove(tile.getPiece());
+	      g.getCapturedPieces().get(tile.getPiece().findIndex(Constants.colors[(g.getTurnCount() + 1) % 2])).add(tile.getPiece());
 	      tile.setPiece(null);
 	      tile.setImage(null);
 	      t1.setIcon(null);
@@ -234,14 +232,14 @@ private Tile t1;
 	      tile.setPiece(promPiece);
 	      tile.setImage(promPiece.getImage());
 	      t1.setIcon(tile.getImage());
-	      g.getBoard().pieces[(g.getTurnCount() + 1) % 2].add(promPiece);
-	      String str = g.moveList.get(g.moveList.size() - 1);
-	      g.moveList.set(g.moveList.size() - 1, str + " " + promPiece.getName() + promPiece.getId() + " promotion complete!");
+	      g.getBoard().getPieces()[(g.getTurnCount() + 1) % 2].add(promPiece);
+	      String str = g.getMoveList().get(g.getMoveList().size() - 1);
+	      g.getMoveList().set(g.getMoveList().size() - 1, str + " " + promPiece.getName() + promPiece.getId() + " promotion complete!");
 	      g.getBoard().setPieces(g);
-	      if (!Constants.takeMeChess) {
-	        g.getBoard().kingsButton[g.getTurnCount() % 2].setBackground(Constants.TURNHIGHLIGHT);
+	      if (!g.getTakeMeEnabled()) {
+	        g.getBoard().getKingButton()[g.getTurnCount() % 2].setBackground(Constants.TURNHIGHLIGHT);
 	               if (g.getBoard().isKingInCheck(g.getTurnColor(), g)) {
-	                 g.getBoard().kingsButton[g.getTurnCount() % 2].setBackground(Constants.CHECKHIGHLIGHT);
+	                 g.getBoard().getKingButton()[g.getTurnCount() % 2].setBackground(Constants.CHECKHIGHLIGHT);
 	               }
 	      g.getBoard().reducePath(g.getTurnColor(), g);
 	      g.getBoard().pinnedPieces(g.getTurnColor());
@@ -250,7 +248,6 @@ private Tile t1;
 	        g.getBoard().takeMePath(g.getTurnColor(), g);
 	      g.getBoard().checkMate(g.getTurnColor(), g);
 	      dispose();
-	      Constants.isPromotionEnabled = false;
 	    }
 	    }
 	   };
@@ -258,12 +255,12 @@ private Tile t1;
 	   buttons[1].addActionListener(listener);
 	   buttons[2].addActionListener(listener);
 	   buttons[3].addActionListener(listener);
-	   if (Constants.takeMeChess)
+	   if (g.getTakeMeEnabled())
 	     buttons[4].addActionListener(listener);
 	  
 	  this.setTitle("Choose a piece.  You can't close this window without selecting a piece.");
 	  setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	     if (Constants.takeMeChess)
+	     if (g.getTakeMeEnabled())
 	       this.setSize(1025, 200);
 	     else
 	     this.setSize(825, 200);

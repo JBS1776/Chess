@@ -9,288 +9,284 @@ public class Knight extends Piece implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
  private int whitenewId = 2;
  private int blacknewId = 2;
- public Knight(int id, Color color, Position pos, ImageIcon image, String name) {
-  setId(id);
-  setColor(color);
-  setPosition(pos);
-  setImage(image);
-  setName(name);
+ public Knight(int id, Color color, Position pos, ImageIcon image) {
+	 super(id, color, pos, image);
  }
  public void setPath(Game g, Tile t) {
 	  Board board = g.getBoard();
 	  Color c = this.getColor();
-	  this.path.clear();
+	  this.getPath().clear();
 	  int x = t.getPosition().getX();
 	  int y = t.getPosition().getY();
-	  this.path.add(t);
-	  this.checkPath.clear();
-	  this.checkPath.add(t);
-	  this.allies.clear();
+	  this.getPath().add(t);
+	  this.getCheckPath().clear();
+	  this.getCheckPath().add(t);
+	  this.getAllies().clear();
 	  boolean foundKing = false;
 	   if (y - 2 >= 0 && x + 1 < 8) {
-	    Tile tile = board.tiles[y - 2][x + 1];
+	    Tile tile = board.getTiles()[y - 2][x + 1];
 	    if (tile.getPiece() != null) {
 	     Color otherCol = tile.getPiece().getColor();
 	     if (!c.equals(otherCol)) {
-	      this.path.add(tile);
+	      this.getPath().add(tile);
 	      if (tile.getPiece() instanceof King) {
-	        this.checkPath.add(tile);
+	        this.getCheckPath().add(tile);
 	        foundKing = true;
 	      }
 	      else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
 	      }
 	     }
 	     else {
-	       this.allies.add(tile);
+	       this.getAllies().add(tile);
 	     }
 	    }
 	    else  {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
-	    this.path.add(tile);
+	    this.getPath().add(tile);
 	    }
 	   }
 	    if (!foundKing) {
-	      this.checkPath.clear();
-	      this.checkPath.add(t);
+	      this.getCheckPath().clear();
+	      this.getCheckPath().add(t);
 	    }
 	   if (y - 1 >= 0 && x + 2 < 8) {
-	    Tile tile = board.tiles[y - 1][x + 2];
+	    Tile tile = board.getTiles()[y - 1][x + 2];
 	    if (tile.getPiece() != null) {
 	     Color otherCol = tile.getPiece().getColor();
 	     if (!c.equals(otherCol)) {
-	      this.path.add(tile);
+	      this.getPath().add(tile);
 	      if (tile.getPiece() instanceof King) {
-	        this.checkPath.add(tile);
+	        this.getCheckPath().add(tile);
 	        foundKing = true;
 	      }
 	      else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
 	      }
 	     }
 	     else {
-	       this.allies.add(tile);
+	       this.getAllies().add(tile);
 	     }
 	    }
 	    else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
-	    this.path.add(tile);
+	    this.getPath().add(tile);
 	    }
 	   }
 	    if (!foundKing) {
-	      this.checkPath.clear();
-	      this.checkPath.add(t);
+	      this.getCheckPath().clear();
+	      this.getCheckPath().add(t);
 	    }
 	   if (y + 1 < 8 && x + 2 < 8) {
-	    Tile tile = board.tiles[y + 1][x + 2];
+	    Tile tile = board.getTiles()[y + 1][x + 2];
 	    if (tile.getPiece() != null) {
 	     Color otherCol = tile.getPiece().getColor();
 	     if (!c.equals(otherCol)) {
-	      this.path.add(tile);
+	      this.getPath().add(tile);
 	      if (tile.getPiece() instanceof King) {
-	        this.checkPath.add(tile);
+	        this.getCheckPath().add(tile);
 	        foundKing = true;
 	      }
 	      else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
 	      }
 	     }
 	     else {
-	       this.allies.add(tile);
+	       this.getAllies().add(tile);
 	     }
 	    }
 	    else {
 	     if (!foundKing) {
-	        this.checkPath.clear();
-	        this.checkPath.add(t);
+	        this.getCheckPath().clear();
+	        this.getCheckPath().add(t);
 	     }
-	    this.path.add(tile);
+	    this.getPath().add(tile);
 	    }
 	   }
 	    if (!foundKing) {
-	      this.checkPath.clear();
-	      this.checkPath.add(t);
+	      this.getCheckPath().clear();
+	      this.getCheckPath().add(t);
 	    }
 	   if (y + 2 < 8 && x + 1 < 8) {
-	    Tile tile = board.tiles[y + 2][x + 1];
+	    Tile tile = board.getTiles()[y + 2][x + 1];
 	    if (tile.getPiece() != null) {
 	     Color otherCol = tile.getPiece().getColor();
 	     if (!c.equals(otherCol)) {
-	      this.path.add(tile);
+	      this.getPath().add(tile);
 	      if (tile.getPiece() instanceof King) {
-	        this.checkPath.add(tile);
+	        this.getCheckPath().add(tile);
 	        foundKing = true;
 	      }
 	      else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
 	      }
 	     }
 	     else {
-	       this.allies.add(tile);
+	       this.getAllies().add(tile);
 	     }
 	    }
 	    else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
-	    this.path.add(tile);
+	    this.getPath().add(tile);
 	    }
 	   }
 	    if (!foundKing) {
-	      this.checkPath.clear();
-	      this.checkPath.add(t);
+	      this.getCheckPath().clear();
+	      this.getCheckPath().add(t);
 	    }
 	   if (y + 2 < 8 && x - 1 >= 0) {
-	    Tile tile = board.tiles[y + 2][x - 1];
+	    Tile tile = board.getTiles()[y + 2][x - 1];
 	    if (tile.getPiece() != null) {
 	     Color otherCol = tile.getPiece().getColor();
 	     if (!c.equals(otherCol)) {
-	      this.path.add(tile);
+	      this.getPath().add(tile);
 	      if (tile.getPiece() instanceof King) {
-	        this.checkPath.add(tile);
+	        this.getCheckPath().add(tile);
 	        foundKing = true;
 	      }
 	      else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
 	      }
 	     }
 	     else {
-	       this.allies.add(tile);
+	       this.getAllies().add(tile);
 	     }
 	    }
 	    else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
-	    this.path.add(tile);
+	    this.getPath().add(tile);
 	    }
 	   }
 	    if (!foundKing) {
-	      this.checkPath.clear();
-	      this.checkPath.add(t);
+	      this.getCheckPath().clear();
+	      this.getCheckPath().add(t);
 	    }
 	   if (y + 1 < 8 && x - 2 >= 0) {
-	    Tile tile = board.tiles[y + 1][x - 2];
+	    Tile tile = board.getTiles()[y + 1][x - 2];
 	    if (tile.getPiece() != null) {
 	     Color otherCol = tile.getPiece().getColor();
 	     if (!c.equals(otherCol)) {
-	      this.path.add(tile);
+	      this.getPath().add(tile);
 	      if (tile.getPiece() instanceof King) {
-	        this.checkPath.add(tile);
+	        this.getCheckPath().add(tile);
 	        foundKing = true;
 	      }
 	      else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
 	      }
 	     }
 	     else {
-	       this.allies.add(tile);
+	       this.getAllies().add(tile);
 	     }
 	    }
 	    else {
 	     if (!foundKing) {
-	       this.checkPath.clear();
-	       this.checkPath.add(t);
+	       this.getCheckPath().clear();
+	       this.getCheckPath().add(t);
 	     }
-	    this.path.add(tile);
+	    this.getPath().add(tile);
 	    }
 	   }
 	    if (!foundKing) {
-	      this.checkPath.clear();
-	      this.checkPath.add(t);
+	      this.getCheckPath().clear();
+	      this.getCheckPath().add(t);
 	    }
 	   if (y - 1 >= 0 && x - 2 >= 0) {
-	    Tile tile = board.tiles[y - 1][x - 2];
+	    Tile tile = board.getTiles()[y - 1][x - 2];
 	    if (tile.getPiece() != null) {
 	     Color otherCol = tile.getPiece().getColor();
 	     if (!c.equals(otherCol)) {
-	      this.path.add(tile);
+	      this.getPath().add(tile);
 	      if (tile.getPiece() instanceof King) {
-	        this.checkPath.add(tile);
+	        this.getCheckPath().add(tile);
 	        foundKing = true;
 	      }
 	      else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
 	      }
 	     }
 	     else {
-	       this.allies.add(tile);
+	       this.getAllies().add(tile);
 	     }
 	    }
 	    else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
-	    this.path.add(tile);
+	    this.getPath().add(tile);
 	    }
 	   }
 	    if (!foundKing) {
-	      this.checkPath.clear();
-	      this.checkPath.add(t);
+	      this.getCheckPath().clear();
+	      this.getCheckPath().add(t);
 	    }
 	   if (y - 2 >= 0 && x - 1 >= 0) {
-	    Tile tile = board.tiles[y - 2][x - 1];
+	    Tile tile = board.getTiles()[y - 2][x - 1];
 	    if (tile.getPiece() != null) {
 	     Color otherCol = tile.getPiece().getColor();
 	     if (!c.equals(otherCol)) {
-	      this.path.add(tile);
+	      this.getPath().add(tile);
 	      if (tile.getPiece() instanceof King) {
-	        this.checkPath.add(tile);
+	        this.getCheckPath().add(tile);
 	        foundKing = true;
 	      }
 	      else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
 	      }
 	     }
 	     else {
-	       this.allies.add(tile);
+	       this.getAllies().add(tile);
 	     }
 	    }
 	    else {
 	        if (!foundKing) {
-	          this.checkPath.clear();
-	          this.checkPath.add(t);
+	          this.getCheckPath().clear();
+	          this.getCheckPath().add(t);
 	        }
-	    this.path.add(tile);
+	    this.getPath().add(tile);
 	    }
 	   }
 	    if (!foundKing) {
-	      this.checkPath.clear();
+	      this.getCheckPath().clear();
 	     }
-	    board.checkPaths.put(this, this.checkPath);
+	    board.getCheckPaths().put(this, this.getCheckPath());
 	 }
  public int getWhiteNewId() {
    return this.whitenewId;

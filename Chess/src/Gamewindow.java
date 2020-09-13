@@ -1,4 +1,5 @@
 import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +14,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 
@@ -63,7 +63,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
       e.printStackTrace();
     }
   }
- public void initializeMenu(Game g) {
+ private void initializeMenu(Game g) {
  Gamewindow window = this;
  JMenuBar menu = new JMenuBar();
  JMenu menu1 = new JMenu("File");
@@ -80,8 +80,8 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
  initial.addActionListener(new ActionListener() {
 	 @Override
 	 public void actionPerformed(ActionEvent e) {
-		 Constants.SETTING = 0;
-		 setImages(Constants.SETTING, g);
+		 g.setSetting(0);
+		 setImages(g);
 	 }
  });
  initial.setMnemonic(KeyEvent.VK_D);
@@ -91,8 +91,8 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
  classic.addActionListener(new ActionListener() {
 	 @Override
 	 public void actionPerformed(ActionEvent e) {
-		 Constants.SETTING = 1;
-		 setImages(Constants.SETTING, g);
+		 g.setSetting(1);
+		 setImages(g);
 	 }
  });
  classic.setMnemonic(KeyEvent.VK_D);
@@ -102,8 +102,8 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
  mario.addActionListener(new ActionListener() {
 	 @Override
 	 public void actionPerformed(ActionEvent e) {
-		 Constants.SETTING = 2;
-		 setImages(Constants.SETTING, g);
+		 g.setSetting(2);
+		 setImages(g);
 	 }
  });
  mario.setMnemonic(KeyEvent.VK_D);
@@ -142,7 +142,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
  reset.addActionListener(new ActionListener() {
    @Override
    public void actionPerformed(ActionEvent e) {
-     g.setTimeEnabled(Constants.isTimeEnabled);
+     g.setTimeEnabled(!g.getTimeEnabled() ? true : false);
      newGame(game);
    }
  });
@@ -150,6 +150,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
    @Override
    public void actionPerformed(ActionEvent e) {
 	 JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+	 fc.showSaveDialog(null);
      File fil = fc.getSelectedFile();
      // Border gets re-enabled here for some reason requiring the borders to be set to null again
      try {
@@ -159,29 +160,29 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
      obj.writeObject(g);
      obj.close();
      file.close();
-     g.label.setBorder(null);
-     g.turnLabel.setBorder(null);
-     g.turnCountLabel.setBorder(null);
+     g.getLabel().setBorder(null);
+     g.getTurnLabel().setBorder(null);
+     g.getTurnCountLabel().setBorder(null);
    }
      catch (FileNotFoundException ex) {
-         g.label.setBorder(null);
-         g.turnLabel.setBorder(null);
-         g.turnCountLabel.setBorder(null);
+         g.getLabel().setBorder(null);
+         g.getTurnLabel().setBorder(null);
+         g.getTurnCountLabel().setBorder(null);
          ex.printStackTrace();
     	 JOptionPane.showMessageDialog(null, "File Not found!", "File not found!", JOptionPane.ERROR_MESSAGE, Constants.images[g.getTurnCount() % 2][Constants.rand.nextInt(Constants.images[g.getTurnCount() % 2].length)]);
      }
      catch (IOException ex) {
-         g.label.setBorder(null);
-         g.turnLabel.setBorder(null);
-         g.turnCountLabel.setBorder(null);
+         g.getLabel().setBorder(null);
+         g.getTurnLabel().setBorder(null);
+         g.getTurnCountLabel().setBorder(null);
          ex.printStackTrace();
     	 JOptionPane.showMessageDialog(null, "This save file is not valid", "Choose another save file!", JOptionPane.ERROR_MESSAGE, Constants.images[g.getTurnCount() % 2][Constants.rand.nextInt(Constants.images[g.getTurnCount() % 2].length)]);
 	}
      catch (NullPointerException ex) {
     	 // Occurs when user hits cancel
-         g.label.setBorder(null);
-         g.turnLabel.setBorder(null);
-         g.turnCountLabel.setBorder(null);
+         g.getLabel().setBorder(null);
+         g.getTurnLabel().setBorder(null);
+         g.getTurnCountLabel().setBorder(null);
     	 ex.printStackTrace();
    }
    }
@@ -190,6 +191,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
    @Override
    public void actionPerformed(ActionEvent e) {
 	 JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+	 fc.showOpenDialog(null);
 	 File fil = fc.getSelectedFile();
 	// Prevents null pointer exception when hitting cancel
      try {
@@ -228,13 +230,13 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
  menu4.addMouseListener(new MouseAdapter() {
 	 @Override
 	 public void mouseClicked(MouseEvent e) {
-		 SwingUtilities.invokeLater(new Graveyard(g.capturedpieces, window));
+		 SwingUtilities.invokeLater(new Graveyard(g.getCapturedPieces(), window));
 	 }
  });
  menu.add(menu4);
   this.setJMenuBar(menu);
   }
- public void newSavedGame(Game g) {
+ private void newSavedGame(Game g) {
 	 g.setTime(g.getTime());
    dispose();
      try {
@@ -245,11 +247,10 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
   } catch (Exception ex) {
       System.err.println("Cannot set LookAndFeel");
   }
-  Constants.SETTING = g.getSetting();
-  setImages(Constants.SETTING, g);
-  SwingUtilities.invokeLater(new Gamewindow(g.board.pieces, g.getTurnCount(), g.getcurrKingCheck(), g.getCastling(), g.getGameEnded(), g.getTimeEnabled(), g.getTakeMeEnabled(), g.getTime(), g.getSetting(), g.getAilevel(), g.getAiColor(), g.capturedpieces, g.moveList, g.getEnPass()));
+  setImages(g);
+  SwingUtilities.invokeLater(new Gamewindow(g.getBoard().getPieces(), g.getTurnCount(), g.getcurrKingCheck(), g.getCastling(), g.getGameEnded(), g.getTimeEnabled(), g.getTakeMeEnabled(), g.getTime(), g.getSetting(), g.getAilevel(), g.getAiColor(), g.getCapturedPieces(), g.getMoveList(), g.getEnPass()));
  }
- public void newGame(Game g) {
+ void newGame(Game g) {
    g.setTime(Constants.TIME);
    // Above line fixes a glitch where the timer won't reset itself after hitting apply for settings, better alternative than timer.stop()
    dispose();
@@ -261,13 +262,18 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
   } catch (Exception ex) {
       System.err.println("Cannot set LookAndFeel");
   }
-  Constants.SETTING = 0;
-  setImages(Constants.SETTING, g);
-  SwingUtilities.invokeLater(new Gamewindow(null, 0, false, false, false, g.getTimeEnabled(), g.getTakeMeEnabled(), Constants.TIME, 0, g.getAilevel(), g.getAiColor(), null, null, null));
+  setImages(g);
+  SwingUtilities.invokeLater(new Gamewindow(Constants.STARTCONFIG, Constants.STARTTURNCOUNT, 
+		  Constants.isKingInCheck, Constants.startCastle, 
+		  Constants.isEndGame, g.getTimeEnabled(), 
+		  g.getTakeMeEnabled(), Constants.TIME, 
+		  g.getSetting(), g.getAilevel(), 
+		  g.getAiColor(), Constants.CAPTUREDPIECES, 
+		  Constants.MOVELIST, Constants.ENPASS));
  }
- public void setImages(int setting, Game g) {
+ private void setImages(Game g) {
 	 for (int i = 0; i < 2; i++) {
-		 for (Piece p : g.getBoard().pieces[i]) {
+		 for (Piece p : g.getBoard().getPieces()[i]) {
 			 int val = 0;
 			 Color c = p.getColor();
 			 if (p instanceof Pawn) {
@@ -288,21 +294,19 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
 			 if (p instanceof King) {
 				 val = 4;
 			 }
-			 ImageIcon set = new ImageIcon(Constants.names[setting][c.equals(Color.black) ? val : val + 6], p.getName());
+			 ImageIcon set = new ImageIcon(Constants.names[g.getSetting()][c.equals(Color.black) ? val : val + 6], p.getName());
 			 p.setImage(set);
 		 }
 	 }
-	 Constants.SETTING = setting;
-	 g.setSetting(setting);
-	 for (Tile[] tils : g.getBoard().tiles) {
+	 for (Tile[] tils : g.getBoard().getTiles()) {
 		 for (Tile tb : tils) {
 			 if (tb.getPiece() != null) {
 				 tb.setImage(tb.getPiece().getImage());
 				 tb.setIcon(tb.getImage());
 			 }
-			 if (g.pieceLook == 1) {
+			 if (g.getSetting() == 1) {
 				 if (tb.getColor().equals(Color.BLACK)) {
-					 if (!tb.equals(g.getBoard().kingsButton[g.getTurnCount() % 2])) {
+					 if (!tb.equals(g.getBoard().getKingButton()[g.getTurnCount() % 2])) {
 					 tb.setBackground(Constants.GRAY);
 					 tb.setColor(tb.getBackground());
 					 }
@@ -313,7 +317,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
 			 }
 			 else {
 				 if (tb.getColor().equals(Constants.GRAY)) {
-					 if (!tb.equals(g.getBoard().kingsButton[g.getTurnCount() % 2])) {
+					 if (!tb.equals(g.getBoard().getKingButton()[g.getTurnCount() % 2])) {
 					 tb.setBackground(Color.BLACK);
 					 tb.setColor(tb.getBackground());
 					 }
@@ -326,11 +330,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
 	 }
 	 this.setSelectedButton(this.game);
  }
- public ArrayList<AbstractButton> butToLis() {
-	 ArrayList<AbstractButton> lis = Collections.list(group.getElements());
-	 return lis;
- }
- public void setSelectedButton(Game g) {
+private void setSelectedButton(Game g) {
 	 int index = 0;
 	 this.group.clearSelection();
 	 Enumeration<AbstractButton> buttons = this.group.getElements();
@@ -358,7 +358,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
   SwingUtilities.invokeLater(new Gamewindow(Constants.STARTCONFIG, Constants.STARTTURNCOUNT, Constants.isKingInCheck, 
 		  Constants.startCastle, Constants.isEndGame, 
 		  Constants.isTimeEnabled, Constants.takeMeChess, 
-		  Constants.TIME, Constants.PieceLook, 
+		  Constants.TIME, Constants.PieceAppearance, 
 		  Constants.aiLevel, Constants.aiColor, Constants.CAPTUREDPIECES, 
 		  Constants.MOVELIST, Constants.ENPASS));
   }

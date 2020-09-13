@@ -10,161 +10,156 @@ public class King extends Piece implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
  private int whitenewId = 1;
  private int blacknewId = 1;
- public King(int id, Color color, Position pos, ImageIcon image, String name, boolean hasMovedYet) {
-  setId(id);
-  setColor(color);
-  setPosition(pos);
-  setImage(image);
-  setName(name);
-  this.hasMovedYet = hasMovedYet;
+ public King(int id, Color color, Position pos, ImageIcon image, boolean hasMovedYet) {
+	 super(id, color, pos, image, hasMovedYet);
  }
  public void setPath(Game g, Tile t) {
 	  Board board = g.getBoard();
 	  Color c = this.getColor();
-	  this.path.clear();
+	  this.getPath().clear();
 	  int x = t.getPosition().getX();
 	  int y = t.getPosition().getY();
-	  this.path.add(t);
-	  this.allies.clear();
+	  this.getPath().add(t);
+	  this.getAllies().clear();
 	  if (x - 1 >= 0 && y - 1 >= 0) {
-	   Tile til = board.tiles[y - 1][x - 1];
+	   Tile til = board.getTiles()[y - 1][x - 1];
 	   if (til.getPiece() != null) {
 	    Color colOther = til.getPiece().getColor();
 	    if (!c.equals(colOther)) {
-	     this.path.add(til);
+	     this.getPath().add(til);
 	    }
 	    else {
-	      this.allies.add(til);
+	      this.getAllies().add(til);
 	    }
 	   }
 	   else {
-	    this.path.add(til);
+	    this.getPath().add(til);
 	   }
 	  }
 	  if (y - 1 >= 0) {
-	   Tile til = board.tiles[y - 1][x];
+	   Tile til = board.getTiles()[y - 1][x];
 	   if (til.getPiece() != null) {
 	    Color colOther = til.getPiece().getColor();
 	    if (!c.equals(colOther)) {
-	     this.path.add(til);
+	     this.getPath().add(til);
 	    }
 	    else {
-	      this.allies.add(til);
+	      this.getAllies().add(til);
 	    }
 	   }
 	   else {
-	    this.path.add(til);
+	    this.getPath().add(til);
 	   }
 	  }
 	  if (x + 1 < 8 && y - 1 >= 0) {
-	   Tile til = board.tiles[y - 1][x + 1];
+	   Tile til = board.getTiles()[y - 1][x + 1];
 	   if (til.getPiece() != null) {
 	    Color colOther = til.getPiece().getColor();
 	    if (!c.equals(colOther)) {
-	     this.path.add(til);
+	     this.getPath().add(til);
 	    }
 	    else {
-	      this.allies.add(til);
+	      this.getAllies().add(til);
 	    }
 	   }
 	   else {
-	    this.path.add(til);
+	    this.getPath().add(til);
 	   }
 	  }
 	  if (x - 1 >= 0) {
-	   Tile til = board.tiles[y][x - 1];
+	   Tile til = board.getTiles()[y][x - 1];
 	   if (til.getPiece() != null) {
 	    Color colOther = til.getPiece().getColor();
 	    if (!c.equals(colOther)) {
-	     this.path.add(til);
+	     this.getPath().add(til);
 	    }
 	    else {
-	      this.allies.add(til);
+	      this.getAllies().add(til);
 	    }
 	   }
 	   else {
-	    this.path.add(til);
+	    this.getPath().add(til);
 	   }
 	  }
 	  if (x + 1 < 8) {
-	   Tile til = board.tiles[y][x + 1];
+	   Tile til = board.getTiles()[y][x + 1];
 	   if (til.getPiece() != null) {
 	    Color colOther = til.getPiece().getColor();
 	    if (!c.equals(colOther)) {
-	     this.path.add(til);
+	     this.getPath().add(til);
 	    }
 	    else {
-	      this.allies.add(til);
+	      this.getAllies().add(til);
 	    }
 	   }
 	   else {
-	    this.path.add(til);
+	    this.getPath().add(til);
 	   }
 	  }
 	  if (x - 1 >= 0 && y + 1 < 8) {
-	   Tile til = board.tiles[y + 1][x - 1];
+	   Tile til = board.getTiles()[y + 1][x - 1];
 	   if (til.getPiece() != null) {
 	    Color colOther = til.getPiece().getColor();
 	    if (!c.equals(colOther)) {
-	     this.path.add(til);
+	     this.getPath().add(til);
 	    }
 	    else {
-	      this.allies.add(til);
+	      this.getAllies().add(til);
 	    }
 	   }
 	   else {
-	    this.path.add(til);
+	    this.getPath().add(til);
 	   }
 	  }
 	  if (y + 1 < 8) {
-	   Tile til = board.tiles[y + 1][x];
+	   Tile til = board.getTiles()[y + 1][x];
 	   if (til.getPiece() != null) {
 	    Color colOther = til.getPiece().getColor();
 	    if (!c.equals(colOther)) {
-	     this.path.add(til);
+	     this.getPath().add(til);
 	    }
 	    else {
-	      this.allies.add(til);
+	      this.getAllies().add(til);
 	    }
 	   }
 	   else {
-	    this.path.add(til);
+	    this.getPath().add(til);
 	   }
 	  }
 	  if (x + 1 < 8 && y + 1 < 8) {
-	   Tile til = board.tiles[y + 1][x + 1];
+	   Tile til = board.getTiles()[y + 1][x + 1];
 	   if (til.getPiece() != null) {
 	    Color colOther = til.getPiece().getColor();
 	    if (!c.equals(colOther)) {
-	     this.path.add(til);
+	     this.getPath().add(til);
 	    }
 	    else {
-	      this.allies.add(til);
+	      this.getAllies().add(til);
 	    }
 	   }
 	   else {
-	    this.path.add(til);
+	    this.getPath().add(til);
 	   }
 	  }
-	  if (!this.hasMovedYet) {
+	  if (!this.getHasMoved()) {
 	    if (x + 3 < 8 && y >= 0 && y < 8) {
-	   if (board.tiles[y][x + 1].getPiece() == null && 
-	     board.tiles[y][x + 2].getPiece() == null &&
-	     board.tiles[y][x + 3].getPiece() != null) {
-	    Piece p = board.tiles[y][x + 3].getPiece();
-	    if (p.getId() == 2 && !p.hasMovedYet) {
-	     this.path.add(board.tiles[y][x + 2]);
+	   if (board.getTiles()[y][x + 1].getPiece() == null && 
+	     board.getTiles()[y][x + 2].getPiece() == null &&
+	     board.getTiles()[y][x + 3].getPiece() != null) {
+	    Piece p = board.getTiles()[y][x + 3].getPiece();
+	    if (p.getId() == 2 && !p.getHasMoved()) {
+	     this.getPath().add(board.getTiles()[y][x + 2]);
 	    }
 	   }
 	    }
 	    if (x - 4 >= 0 && y >= 0 && y < 8) {
-	   if (board.tiles[y][x - 1].getPiece() == null && 
-	     board.tiles[y][x - 2].getPiece() == null &&
-	     board.tiles[y][x - 3].getPiece() == null &&
-	     board.tiles[y][x - 4].getPiece() != null) {
-	    Piece p = board.tiles[y][x - 4].getPiece();
-	    if (p.getId() == 1 && !p.hasMovedYet) {
-	     this.path.add(board.tiles[y][x - 2]);
+	   if (board.getTiles()[y][x - 1].getPiece() == null && 
+	     board.getTiles()[y][x - 2].getPiece() == null &&
+	     board.getTiles()[y][x - 3].getPiece() == null &&
+	     board.getTiles()[y][x - 4].getPiece() != null) {
+	    Piece p = board.getTiles()[y][x - 4].getPiece();
+	    if (p.getId() == 1 && !p.getHasMoved()) {
+	     this.getPath().add(board.getTiles()[y][x - 2]);
 	    }
 	   }    
 	  }

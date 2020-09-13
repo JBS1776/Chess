@@ -21,35 +21,36 @@ public class Game extends JPanel implements java.io.Serializable{
  private static final long serialVersionUID = 1L;
  
  
- Board board;
- Tile previouslySelected;
- Tile takeCyan;
- Piece enPassant;
- ArrayList<Tile> takeRed = new ArrayList<Tile>();
- ArrayList<String> moveList = new ArrayList<String>();
- ArrayList<LinkedList<Piece>> capturedpieces = new ArrayList<LinkedList<Piece>>();
- int turnCount; // different save
- int maxSeconds = Integer.MAX_VALUE;
- Color turnColor = Constants.colors[this.getTurnCount() % 2];
- boolean currKingCheck; // different save
- boolean castleProcessing; // different save
- int time = Constants.TIME; // 15 * 60 = 900
- int minutes;
- int seconds;
- boolean gameEnded; // different save
- boolean timeEnabled; // different save
- boolean takeMeEnabled; // different save
- JTextField label = new JTextField("", JLabel.LEFT);
- JTextField turnLabel = new JTextField("", JLabel.LEFT);
- JTextField turnCountLabel = new JTextField("", JLabel.LEFT);
- int pieceLook;
- int ailevel;
- int aiColor;
- Computerplayer cp;
- public Game(ArrayList<Piece>[] ps, int turnInc, boolean kingCheck, boolean castle, boolean endGame, boolean timeEnable, boolean takeMe, int newTime, Piece enpass, int pieceLook, int ailevel, int aiColor, ArrayList<LinkedList<Piece>> caps, ArrayList<String> movs, Gamewindow gw) throws InterruptedException {
+ private Board board;
+ private Tile previouslySelected;
+ private Tile takeCyan;
+ private Piece enPassant;
+ private ArrayList<Tile> takeRed = new ArrayList<Tile>();
+ private ArrayList<String> moveList = new ArrayList<String>();
+ private ArrayList<LinkedList<Piece>> capturedpieces = new ArrayList<LinkedList<Piece>>();
+ private int turnCount; // different save
+ private int maxSeconds = Integer.MAX_VALUE;
+ private Color turnColor = Constants.colors[this.getTurnCount() % 2];
+ private boolean currKingCheck; // different save
+ private boolean castleProcessing; // different save
+ private int time = Constants.TIME; // 15 * 60 = 900
+ private int minutes;
+ private int seconds;
+ private boolean gameEnded; // different save
+ private boolean timeEnabled; // different save
+ private boolean takeMeEnabled; // different save
+ private JTextField label = new JTextField("", JLabel.LEFT);
+ private JTextField turnLabel = new JTextField("", JLabel.LEFT);
+ private JTextField turnCountLabel = new JTextField("", JLabel.LEFT);
+ private int pieceAppearance;
+ private int ailevel;
+ private int aiColor;
+ private Computerplayer cp;
+ public Game(ArrayList<Piece>[] ps, int turnInc, boolean kingCheck, boolean castle, boolean endGame, boolean timeEnable, boolean takeMe, int newTime, Piece enpass, int pieceAppearance, int ailevel, int aiColor, ArrayList<LinkedList<Piece>> caps, ArrayList<String> movs, Gamewindow gw) throws InterruptedException {
 	 // this.capturedpieces and this.moveList always starts as empty list
 	 if (caps == null) {
 		 caps = this.capturedpieces;
+		 // 6 pieces per color
  for (int i = 0; i < 12; i++) {
 	 this.capturedpieces.add(new LinkedList<Piece>());
  }
@@ -67,8 +68,6 @@ public class Game extends JPanel implements java.io.Serializable{
  gameEnded = endGame;
  timeEnabled = timeEnable;
  takeMeEnabled = takeMe;
- Constants.isTimeEnabled = timeEnabled;
- Constants.takeMeChess = takeMeEnabled;
  this.setTime(newTime);
  label.setBounds(1200, 20, 200, 30);
  label.setEditable(false);
@@ -94,27 +93,22 @@ public class Game extends JPanel implements java.io.Serializable{
  this.turnColor = Constants.colors[turnCount % 2];
  this.previouslySelected = null;
  this.enPassant = enpass;
- this.pieceLook = pieceLook;
+ this.pieceAppearance = pieceAppearance;
  this.ailevel = ailevel;
  this.aiColor = aiColor;
  board = new Board();
  if (ps == null)
- board.fillTiles(Constants.SCREENPOSX, Constants.SCREENPOSY);
+ board.fillTiles(Constants.SCREENPOSX, Constants.SCREENPOSY, this.pieceAppearance);
  else
-   board.fillTiles2(Constants.SCREENPOSX, Constants.SCREENPOSY, ps);
+   board.fillTiles2(Constants.SCREENPOSX, Constants.SCREENPOSY, this.pieceAppearance, ps);
  board.setPieces(this);
- if (!Constants.takeMeChess) {
+ if (!this.getTakeMeEnabled()) {
  board.reducePath(turnColor, this);
  board.pinnedPieces(turnColor);
  board.checkMate(turnColor, this);
  }
  this.setBackground(Constants.BACKGROUNDCOL);
- int n = Constants.TILEWIDTH;
- int m = Constants.TILEHEIGHT;
  this.setGameEnded(false);
- this.setTimeEnabled(timeEnable);
- this.setTakeMeEnabled(takeMe);
- this.pieceLook = pieceLook;
  Game g = this;
  JButton button = new JButton("Moves");
  button.setBounds(1100, 30, 75, 30);
@@ -122,8 +116,7 @@ public class Game extends JPanel implements java.io.Serializable{
  	@Override
  	public void actionPerformed(ActionEvent e) {
  		JFrame fr = new JFrame("Move list");
- 		Object[] moves = g.moveList.toArray();
- 		fr.add(new JScrollPane(new JList<Object>(moves)));
+ 		fr.add(new JScrollPane(new JList<Object>(g.moveList.toArray())));
  		fr.setSize(500, 500);
  		fr.setVisible(true);
  		fr.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -132,8 +125,6 @@ public class Game extends JPanel implements java.io.Serializable{
 
 			@Override
 			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
@@ -144,66 +135,49 @@ public class Game extends JPanel implements java.io.Serializable{
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
  			
  		});
  	}
  });
  this.add(button);
- for (Tile[] til : board.tiles) {
+ for (Tile[] til : board.getTiles()) {
   for (Tile s : til) {
-  add(s);
   s.setIcon(s.getImage());
-  Tile b = s;
-  add(b);
-  b.setBounds(b.getX(), b.getY(), n, m);
-  b.setOpaque(true);
-  //b.setBorderPainted(false);
-  b.setBackground(b.getColor());
-  b.setIcon(b.getImage());
-  b.setFocusable(false);
-  if (!Constants.takeMeChess)
-    board.kingsButton[turnCount % 2].setBackground(Constants.TURNHIGHLIGHT);
-  if (board.isKingInCheck(turnColor, g) && !Constants.takeMeChess)
-    board.kingsButton[turnCount % 2].setBackground(Constants.CHECKHIGHLIGHT);
-  if (Constants.takeMeChess)
+  add(s);
+  s.setBounds(s.getX(), s.getY(), Constants.TILEWIDTH, Constants.TILEHEIGHT);
+  s.setOpaque(true);
+  //s.setBorderPainted(false);
+  s.setBackground(s.getColor());
+  s.setIcon(s.getImage());
+  s.setFocusable(false);
+  if (!this.getTakeMeEnabled())
+    board.getKingButton()[turnCount % 2].setBackground(Constants.TURNHIGHLIGHT);
+  if (board.isKingInCheck(turnColor, g) && !this.getTakeMeEnabled())
+    board.getKingButton()[turnCount % 2].setBackground(Constants.CHECKHIGHLIGHT);
+  if (this.getTakeMeEnabled())
     board.takeMePath(turnColor, g);
   ActionListener listener = new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent e) {
                Object source = e.getSource();
                if (source instanceof Tile) {
-                 // Pauses the game to let player choose a pawn promotion
-                 if (Constants.isPromotionEnabled) {
-                 JOptionPane.showMessageDialog(null, "Choose a promotion before continuing!", "NO CHEATING!", JOptionPane.ERROR_MESSAGE, Constants.images[turnCount % 2][Constants.rand.nextInt(Constants.images[turnCount % 2].length)]);
-               }
-                 else {
                 Tile b = ((Tile)source);
                 if (ailevel > 0 && !g.getGameEnded()) {
                 	if (ailevel == 3 || turnCount % 2 == aiColor) {
@@ -221,9 +195,9 @@ public class Game extends JPanel implements java.io.Serializable{
                       if (tile.getPiece() != null && previouslySelected.getPiece().getPath().contains(b)) {
                         board.move(previouslySelected, b, g);
                         board.setPieces(g);
-                        if (tile.getPiece() instanceof King && !Constants.takeMeChess) {
-                        board.kingsButton[turnCount % 2].setBackground(board.kingsButton[turnCount % 2].getColor());
-                        board.kingsButton[turnCount % 2] = b;
+                        if (tile.getPiece() instanceof King && !g.getTakeMeEnabled()) {
+                        board.getKingButton()[turnCount % 2].setBackground(board.getKingButton()[turnCount % 2].getColor());
+                        board.getKingButton()[turnCount % 2] = b;
                         }
                         if (tile.getPiece() instanceof Pawn) {
                           Position pos = b.getPosition();
@@ -237,23 +211,21 @@ public class Game extends JPanel implements java.io.Serializable{
                             	p.setVisible(true);
                    }
                  }
-                        if (!Constants.takeMeChess)
-                        board.kingsButton[turnCount % 2].setBackground(board.kingsButton[turnCount % 2].getColor());
+                        if (!g.getTakeMeEnabled())
+                        board.getKingButton()[turnCount % 2].setBackground(board.getKingButton()[turnCount % 2].getColor());
                         else
                           board.clearPaint(g);
                         turnCount += 1;
                         turnColor = Constants.colors[turnCount % 2];
                         takeCyan = null;
                         takeRed.clear();
-                        if (!Constants.takeMeChess) {
-                          if (!Constants.isPromotionEnabled) {
-                        board.kingsButton[turnCount % 2].setBackground(Constants.TURNHIGHLIGHT);
+                        if (!g.getTakeMeEnabled()) {
+                        board.getKingButton()[turnCount % 2].setBackground(Constants.TURNHIGHLIGHT);
                if (board.isKingInCheck(turnColor, g)) {
-                 board.kingsButton[turnCount % 2].setBackground(Constants.CHECKHIGHLIGHT);
+                 board.getKingButton()[turnCount % 2].setBackground(Constants.CHECKHIGHLIGHT);
                }
                board.pinnedPieces(turnColor);
                board.reducePath(turnColor, g);
-                          }
                }
                else
                board.takeMePath(turnColor, g);
@@ -296,21 +268,21 @@ public class Game extends JPanel implements java.io.Serializable{
                       Tile but1 = null;
                       Tile but2 = null;
                       String castlingComplete = "";
-                    if (p instanceof King && !p.hasMovedYet) {
+                    if (p instanceof King && !p.getHasMoved()) {
                         if (posDiff == 2 || posDiff == -2) {
                           if (posDiff == 2) {
-                            but1 = board.tiles[pos.getY()][pos.getX() + 1];
-                            but2 = board.tiles[pos.getY()][pos.getX() - 1];
+                            but1 = board.getTiles()[pos.getY()][pos.getX() + 1];
+                            but2 = board.getTiles()[pos.getY()][pos.getX() - 1];
                             board.move(but1, but2, g);
                           }
                           if (posDiff == -2) {
-                            but1 = board.tiles[pos.getY()][pos.getX() - 2];
-                            but2 = board.tiles[pos.getY()][pos.getX() + 1];
+                            but1 = board.getTiles()[pos.getY()][pos.getX() - 2];
+                            but2 = board.getTiles()[pos.getY()][pos.getX() + 1];
                             board.move(but1, but2, g);
                           }
                           board.setPieces(g);
-                          board.kingsButton[turnCount % 2].setBackground(board.kingsButton[turnCount % 2].getColor());
-                          board.kingsButton[turnCount % 2] = b;
+                          board.getKingButton()[turnCount % 2].setBackground(board.getKingButton()[turnCount % 2].getColor());
+                          board.getKingButton()[turnCount % 2] = b;
                           // Pop Rook's move from list
                           g.moveList.remove(g.moveList.size() - 1);
                           castlingComplete = " Castling comptele!";
@@ -320,9 +292,9 @@ public class Game extends JPanel implements java.io.Serializable{
                     g.moveList.set(g.moveList.size() - 1, g.moveList.get(g.moveList.size() - 1) + castlingComplete);
                     board.setPieces(g);
                     if (tile.getPiece() instanceof King) {
-                      if (!Constants.takeMeChess) {
-                        board.kingsButton[turnCount % 2].setBackground(board.kingsButton[turnCount % 2].getColor());
-                        board.kingsButton[turnCount % 2] = b;
+                      if (!g.getTakeMeEnabled()) {
+                        board.getKingButton()[turnCount % 2].setBackground(board.getKingButton()[turnCount % 2].getColor());
+                        board.getKingButton()[turnCount % 2] = b;
                       }
                       else
                         board.clearPaint(g);
@@ -330,15 +302,13 @@ public class Game extends JPanel implements java.io.Serializable{
                         turnColor = Constants.colors[turnCount % 2];
                         takeCyan = null;
                         takeRed.clear();
-                        if (!Constants.takeMeChess) {
-                          if (!Constants.isPromotionEnabled) {
-                        board.kingsButton[turnCount % 2].setBackground(Constants.TURNHIGHLIGHT);
+                        if (!g.getTakeMeEnabled()) {
+                        board.getKingButton()[turnCount % 2].setBackground(Constants.TURNHIGHLIGHT);
                if (board.isKingInCheck(turnColor, g)) {
-                 board.kingsButton[turnCount % 2].setBackground(Constants.CHECKHIGHLIGHT);
+                 board.getKingButton()[turnCount % 2].setBackground(Constants.CHECKHIGHLIGHT);
                }
                board.pinnedPieces(turnColor);
                board.reducePath(turnColor, g);
-                          }
                }
                else
                board.takeMePath(turnColor, g);              
@@ -360,23 +330,23 @@ public class Game extends JPanel implements java.io.Serializable{
                             	prom.setVisible(true);
                    }
                       }
-                      if (!Constants.takeMeChess)
-                    board.kingsButton[turnCount % 2].setBackground(board.kingsButton[turnCount % 2].getColor());
+                      if (!g.getTakeMeEnabled())
+                    board.getKingButton()[turnCount % 2].setBackground(board.getKingButton()[turnCount % 2].getColor());
                       else
                         board.clearPaint(g);
                     turnCount += 1;
                     turnColor = Constants.colors[turnCount % 2];
                     takeCyan = null;
                     takeRed.clear();
-                    if (!Constants.takeMeChess) {
-                      if (!Constants.isPromotionEnabled) {
-                    board.kingsButton[turnCount % 2].setBackground(Constants.TURNHIGHLIGHT);
+                    if (!g.getTakeMeEnabled()) {
+                      //if (!g.promotionEnabled()) {
+                    board.getKingButton()[turnCount % 2].setBackground(Constants.TURNHIGHLIGHT);
                if (board.isKingInCheck(turnColor, g)) {
-                 board.kingsButton[turnCount % 2].setBackground(Constants.CHECKHIGHLIGHT);
+                 board.getKingButton()[turnCount % 2].setBackground(Constants.CHECKHIGHLIGHT);
                }
                board.pinnedPieces(turnColor);
                board.reducePath(turnColor, g);
-                      }
+                      //}
                     }
                else
                board.takeMePath(turnColor, g);
@@ -394,14 +364,13 @@ public class Game extends JPanel implements java.io.Serializable{
                 }
                  }
                }
-               }
  }
   };
-  b.addActionListener(listener);
+  s.addActionListener(listener);
  }
      }
   }
- public void setTime() throws InterruptedException {
+ void setTime() throws InterruptedException {
 	   this.minutes = time / 60;
 	   this.seconds = time % 60;
 	   if (this.getTimeEnabled()) {
@@ -424,17 +393,17 @@ public class Game extends JPanel implements java.io.Serializable{
 	   if (this.time == 0 && this.getTimeEnabled() && ((turnCount % 2 != aiColor && this.ailevel < 3) || this.ailevel == 0))  {
 	   if (!this.getGameEnded()) {
 	   JOptionPane.showMessageDialog(null, "You ran out of time!  " + ((turnCount % 2 == 1) ? "White" : "Black")  + " wins!", "Time up!", JOptionPane.ERROR_MESSAGE, Constants.images[turnCount % 2][Constants.rand.nextInt(Constants.images[turnCount % 2].length)]);
-	     for (Tile[] tils : this.board.tiles) {
+	     for (Tile[] tils : this.board.getTiles()) {
 	       for (Tile t : tils) {
 	         t.setBackground(t.getColor());
 	       }
 	     }
-	     if (!Constants.takeMeChess)
-	     this.board.kingsButton[this.turnCount % 2].setBackground(Constants.TURNHIGHLIGHT);
+	     if (!this.getTakeMeEnabled())
+	     this.board.getKingButton()[this.turnCount % 2].setBackground(Constants.TURNHIGHLIGHT);
 	   for (int i = 0; i < 2; i++) {
-	     for (Piece p : this.board.pieces[i]) {
+	     for (Piece p : this.board.getPieces()[i]) {
 	       p.getPath().clear();
-	       p.getPath().add(this.board.tiles[p.getPosition().getY()][p.getPosition().getX()]);
+	       p.getPath().add(this.board.getTiles()[p.getPosition().getY()][p.getPosition().getX()]);
 	     }
 	   }
 	   this.setGameEnded(true);
@@ -447,6 +416,12 @@ public class Game extends JPanel implements java.io.Serializable{
   public int getTurnCount() {
    return this.turnCount;
  }
+  public Tile getTakeCyan() {
+	  return this.takeCyan;
+  }
+  public void setTakeCyan(Tile t) {
+	  this.takeCyan = t;
+  }
   public Color getTurnColor() {
     return this.turnColor;
   }
@@ -458,6 +433,24 @@ public class Game extends JPanel implements java.io.Serializable{
   }
   public Piece getEnPass() {
     return this.enPassant;
+  }
+  public ArrayList<LinkedList<Piece>> getCapturedPieces() {
+	  return this.capturedpieces;
+  }
+  public void setCapturedPieces(ArrayList<LinkedList<Piece>> val) {
+	  this.capturedpieces = val;
+  }
+  public ArrayList<Tile> getTakeRed() {
+	  return this.takeRed;
+  }
+  public void setTakeRed(ArrayList<Tile> val) {
+	  this.takeRed = val;
+  }
+  public ArrayList<String> getMoveList() {
+	  return this.moveList;
+  }
+  public void setMoveList(ArrayList<String> val) {
+	  this.moveList = val;
   }
   public int getMaxSeconds() {
     return this.maxSeconds;
@@ -499,10 +492,10 @@ public class Game extends JPanel implements java.io.Serializable{
     this.takeMeEnabled = val;
   }
   public int getSetting() {
-	  return this.pieceLook;
+	  return this.pieceAppearance;
   }
   public void setSetting(int val) {
-	  this.pieceLook = val;
+	  this.pieceAppearance = val;
   }
   public int getAilevel() {
 	  return this.ailevel;
@@ -516,7 +509,13 @@ public class Game extends JPanel implements java.io.Serializable{
   public void setAiColor(int val) {
 	  this.aiColor = val;
   }
- public static void main(String[] args) throws InterruptedException {
- 
- }
+  public JTextField getLabel() {
+	  return this.label;
+  }
+  public JTextField getTurnLabel() {
+	  return this.turnLabel;
+  }
+  public JTextField getTurnCountLabel() {
+	  return this.turnCountLabel;
+  }
 }

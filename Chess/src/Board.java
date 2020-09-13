@@ -6,18 +6,18 @@ public class Board implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 
-ArrayList<Piece>[] pieces = new ArrayList[2];
-ArrayList<Piece> causedCheck = new ArrayList<Piece>();
-HashMap<Piece, ArrayList<Tile>> checkPaths = new HashMap<Piece, ArrayList<Tile>>();
-HashMap<Piece, ArrayList<Tile>> take = new HashMap<Piece, ArrayList<Tile>>();
-ArrayList<Piece>[] removedPieces = new ArrayList[2];
-Tile[] kingsButton = new Tile[2];
-Tile[][] tiles = new Tile[8][8];
+private ArrayList<Piece>[] pieces = new ArrayList[2];
+private ArrayList<Piece> causedCheck = new ArrayList<Piece>();
+private HashMap<Piece, ArrayList<Tile>> checkPaths = new HashMap<Piece, ArrayList<Tile>>();
+private HashMap<Piece, ArrayList<Tile>> take = new HashMap<Piece, ArrayList<Tile>>();
+private ArrayList<Piece>[] removedPieces = new ArrayList[2];
+private Tile[] kingsButton = new Tile[2];
+private Tile[][] tiles = new Tile[8][8];
 public Board() {
   for (int i = 0; i < 2; i++)
     pieces[i] = new ArrayList<Piece>();
 }
-class Duple {
+private class Duple {
 	  Tile button;
 	  boolean isRemoved;
 	  public Duple(Tile button, boolean isRemoved) {
@@ -25,13 +25,13 @@ class Duple {
 	    this.isRemoved = isRemoved;
 	  }
 }
-public Tile[][] fillTiles(int startX, int startY) {
+Tile[][] fillTiles(int startX, int startY, int setting) {
 Tile[][] tis = this.tiles;
 int x = startX;
 int y = startY;
 int n = Constants.TILEWIDTH;
 int m = Constants.TILEHEIGHT;
-Constants.colors[1] = (Constants.SETTING == 1) ? Constants.GRAY : Color.BLACK;
+Constants.colors[1] = (setting == 1) ? Constants.GRAY : Color.black;
 for (int i = 0; i < 8; i++) {
  for (int j = 0; j < 8; j++) {
   int colIndex = (i + j) % 2;
@@ -45,50 +45,50 @@ for (int i = 0; i < 8; i++) {
      switch(j) {
      case (0) : {
       t.setPiece(new Rook(identification, Constants.colors[1], new Position(j, i), 
-           t.getImage(), t.getImage().getDescription(), false));
+           t.getImage(), false));
       pieces[1].add(t.getPiece());
       break;
      }
      case (1) : {
       t.setPiece(new Knight(identification, Constants.colors[1], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription()));
+        t.getImage()));
       pieces[1].add(t.getPiece());
       break;
      }
      case (2) : {
       t.setPiece(new Bishop(identification, Constants.colors[1], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription()));
+        t.getImage()));
       pieces[1].add(t.getPiece());
       break;
      }
      case (3) : {
       t.setPiece(new Queen(identification, Constants.colors[1], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription()));
+        t.getImage()));
       pieces[1].add(t.getPiece());
       break;
      }
      case (4) : {
       t.setPiece(new King(identification, Constants.colors[1], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription(), false));
+        t.getImage(), false));
       pieces[1].add(t.getPiece());
       kingsButton[1] = t;
       break;
      }
      case (5) : {
       t.setPiece(new Bishop(identification, Constants.colors[1], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription()));
+        t.getImage()));
       pieces[1].add(t.getPiece());
       break;
      }
      case (6) : {
       t.setPiece(new Knight(identification, Constants.colors[1], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription()));
+        t.getImage()));
       pieces[1].add(t.getPiece());
       break;
      }
      case (7) : {
       t.setPiece(new Rook(identification, Constants.colors[1], new Position(j, i), 
-           t.getImage(), t.getImage().getDescription(), false));     
+           t.getImage(), false));     
       pieces[1].add(t.getPiece());
       break;
      }
@@ -97,13 +97,13 @@ for (int i = 0; i < 8; i++) {
     if (i == 1) {
      t.setImage(Constants.images[1][Constants.images[1].length - 1]);
      t.setPiece(new Pawn(j + 1, Constants.colors[1], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription(), false));    
+        t.getImage(), false));    
      pieces[1].add(t.getPiece());
     }
     if (i == 6) {
      t.setImage(Constants.images[0][Constants.images[0].length - 1]);
      t.setPiece(new Pawn(j + 1, Constants.colors[0], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription(), false));     
+        t.getImage(), false));     
      pieces[0].add(t.getPiece());
     }
     if (i == 7) {
@@ -114,50 +114,50 @@ for (int i = 0; i < 8; i++) {
      switch(j) {
      case (0) : {
       t.setPiece(new Rook(identification, Constants.colors[0], new Position(j, i), 
-           t.getImage(), t.getImage().getDescription(), false));      
+           t.getImage(), false));      
       pieces[0].add(t.getPiece());
       break;
      }
      case (1) : {
       t.setPiece(new Knight(identification, Constants.colors[0], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription()));     
+        t.getImage()));     
       pieces[0].add(t.getPiece());
       break;
      }
      case (2) : {
       t.setPiece(new Bishop(identification, Constants.colors[0], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription()));      
+        t.getImage()));      
       pieces[0].add(t.getPiece());
       break;
      }
      case (3) : {
       t.setPiece(new Queen(identification, Constants.colors[0], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription()));      
+        t.getImage()));      
       pieces[0].add(t.getPiece());
       break;
      }
      case (4) : {
       t.setPiece(new King(identification, Constants.colors[0], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription(), false));       
+        t.getImage(), false));       
       pieces[0].add(t.getPiece());
       kingsButton[0] = t;
       break;
      }
      case (5) : {
       t.setPiece(new Bishop(identification, Constants.colors[0], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription()));      
+        t.getImage()));      
       pieces[0].add(t.getPiece());
       break;
      }
      case (6) : {
       t.setPiece(new Knight(identification, Constants.colors[0], new Position(j, i), 
-        t.getImage(), t.getImage().getDescription()));       
+        t.getImage()));       
       pieces[0].add(t.getPiece());
       break;
      }
      case (7) : {
       t.setPiece(new Rook(identification, Constants.colors[0], new Position(j, i), 
-           t.getImage(), t.getImage().getDescription(), false));
+           t.getImage(), false));
       pieces[0].add(t.getPiece());
       break;
      }
@@ -173,13 +173,13 @@ for (int i = 0; i < 8; i++) {
  }
 return tis;
 }
-public Tile[][] fillTiles2(int startX, int startY, ArrayList<Piece>[] lis) {
+Tile[][] fillTiles2(int startX, int startY, int setting, ArrayList<Piece>[] lis) {
 	 Tile[][] tis = this.tiles;
 	 int x = startX;
 	 int y = startY;
 	 int n = Constants.TILEWIDTH;
 	 int m = Constants.TILEHEIGHT;
-	 Constants.colors[1] = (Constants.SETTING == 1) ? Constants.GRAY : Color.BLACK;
+	 Constants.colors[1] = (setting == 1) ? Constants.GRAY : Color.black;
 	 for (int i = 0; i < 8; i++) {
 	  for (int j = 0; j < 8; j++) {
 	   int colIndex = (i + j) % 2;
@@ -208,19 +208,19 @@ public Tile[][] fillTiles2(int startX, int startY, ArrayList<Piece>[] lis) {
 	}
 	  return tis;
 	}
-public void setPieces(Game g) {
+void setPieces(Game g) {
 	  for (int i = 0; i < this.pieces.length; i++) {
 	  for (Piece p : this.pieces[i]) {
-	    p.checkPath.clear();
+	    p.getCheckPath().clear();
 	    p.getPath().clear();
 	    Position pos = p.getPosition();
 	    int x = pos.getX();
 	    int y = pos.getY();
-	    p.setPath(g, g.board.tiles[y][x]);
+	    p.setPath(g, g.getBoard().tiles[y][x]);
 	  }
 	  }
 	  }
-public void move(Tile prev, Tile next, Game g) {
+void move(Tile prev, Tile next, Game g) {
 	  int currTurn = g.getTurnCount();
 	  Piece p = prev.getPiece();
 	  Piece q = next.getPiece();
@@ -228,7 +228,7 @@ public void move(Tile prev, Tile next, Game g) {
 	  Position pos = next.getPosition();
 	  boolean enpassSuccess = false;
 	  if (q != null) {
-		g.moveList.add((g.moveList.size() + 1) + ". " + p.getName() + p.getId() + ": " + posPrev + " X " + pos);
+		g.getMoveList().add((g.getMoveList().size() + 1) + ". " + p.getName() + p.getId() + ": " + posPrev + " X " + pos);
 	    g.setEnPass(null);
 	    p.setHasMoved();
 	    next.setIcon(prev.getImage());
@@ -241,7 +241,7 @@ public void move(Tile prev, Tile next, Game g) {
 	    prev.setHasPiece();
 	    prev.setImage(null);
 	    this.pieces[(currTurn + 1) % 2].remove(q);
-	    g.capturedpieces.get(q.findIndex(Constants.colors[(currTurn + 1) % 2])).add(q);
+	    g.getCapturedPieces().get(q.findIndex(Constants.colors[(currTurn + 1) % 2])).add(q);
 	  }
 	  else {
 	    if (p instanceof Pawn) {
@@ -263,7 +263,7 @@ public void move(Tile prev, Tile next, Game g) {
 	          but.setImage(null);
 	          }
 	          this.pieces[(currTurn + 1) % 2].remove(g.getEnPass());
-	          g.capturedpieces.get(g.getEnPass().findIndex(Constants.colors[(currTurn + 1) % 2])).add(g.getEnPass());
+	          g.getCapturedPieces().get(g.getEnPass().findIndex(Constants.colors[(currTurn + 1) % 2])).add(g.getEnPass());
 	          enpassSuccess = true;
 	        }
 	        g.setEnPass(null);
@@ -276,7 +276,7 @@ public void move(Tile prev, Tile next, Game g) {
 	      }
 	      g.setEnPass(null);
 	    }
-		g.moveList.add((g.moveList.size() + 1) + ". " + p.getName() + p.getId() + ": " + posPrev + (enpassSuccess ? " X " : " -> ") + pos + (enpassSuccess ? " enpassant capture!" : ""));
+		g.getMoveList().add((g.getMoveList().size() + 1) + ". " + p.getName() + p.getId() + ": " + posPrev + (enpassSuccess ? " X " : " -> ") + pos + (enpassSuccess ? " enpassant capture!" : ""));
 	    p.setHasMoved();
 	    next.setIcon(prev.getImage());
 	    next.setPiece(p);
@@ -289,12 +289,12 @@ public void move(Tile prev, Tile next, Game g) {
 	    prev.setImage(null);
 	  }
 	}
-public void clearPaint(Game g) {
+void clearPaint(Game g) {
     for (Tile[] tis : g.getBoard().tiles)
       for (Tile but : tis)
       but.setBackground(but.getColor());
 }
-public ArrayList<Tile> intersection(ArrayList<Tile> a, ArrayList<Tile> b) {
+ArrayList<Tile> intersection(ArrayList<Tile> a, ArrayList<Tile> b) {
     ArrayList<Tile> lis = new ArrayList<Tile>();
     for (int i = 0; i < a.size(); i++) {
       for (int j = 0; j < b.size(); j++) {
@@ -306,7 +306,7 @@ public ArrayList<Tile> intersection(ArrayList<Tile> a, ArrayList<Tile> b) {
     }
     return lis;
   }
-public boolean isTileInDanger(Tile b, Game g) {
+boolean isTileInDanger(Tile b, Game g) {
 	  int oppositeColor = (g.getTurnCount() + 1) % 2;
 	  for (Piece p : this.pieces[oppositeColor]) {
 	    if (!(p instanceof Pawn)) {
@@ -350,7 +350,7 @@ public boolean isTileInDanger(Tile b, Game g) {
 	  }
 	  return false;
 	}
-public boolean isKingInCheck(Color color, Game g) {
+boolean isKingInCheck(Color color, Game g) {
 	  g.setcurrKingCheck(false);
 	  this.causedCheck.clear();
 	  for (Piece p : this.pieces[(g.getTurnCount() + 1) % 2]) {
@@ -363,7 +363,7 @@ public boolean isKingInCheck(Color color, Game g) {
 	  }
 	  return !this.causedCheck.isEmpty();
 	}
-public ArrayList<Tile> checkPaths(Color color, boolean check, Duple[] buttons, Game g) {
+ArrayList<Tile> checkPaths(Color color, boolean check, Duple[] buttons, Game g) {
 	  ArrayList<Tile> lis = new ArrayList<Tile>();
 	  int colIndex = g.getTurnCount() % 2;
 	  Color c = g.getTurnColor();
@@ -576,47 +576,47 @@ public ArrayList<Tile> checkPaths(Color color, boolean check, Duple[] buttons, G
 	  }
 	  return lis;
 	    }
-public void reducePath(Color color, Game g) {
+void reducePath(Color color, Game g) {
 	  int colIndex = g.getTurnCount() % 2;
 	  int oppositeColor = (colIndex + 1) % 2;
 	  Color c = g.getTurnColor();
 	  boolean isCheck = this.isKingInCheck(c, g);
-	  int x = g.board.kingsButton[colIndex].getPosition().getX();
-	  int y = g.board.kingsButton[colIndex].getPosition().getY();
+	  int x = g.getBoard().kingsButton[colIndex].getPosition().getX();
+	  int y = g.getBoard().kingsButton[colIndex].getPosition().getY();
 	  if (isCheck) {
 	    Duple[] buts = new Duple[8];
 	    for (int i = 0; i < 8; i++)
 	      buts[i] = new Duple(null, false);
 	    if (y - 1 >= 0) {
-	      buts[0].button = g.board.tiles[y - 1][x];
+	      buts[0].button = g.getBoard().tiles[y - 1][x];
 	      if (x + 1 < 8)
-	        buts[1].button = g.board.tiles[y - 1][x + 1];
+	        buts[1].button = g.getBoard().tiles[y - 1][x + 1];
 	      if (x - 1 >= 0)
-	        buts[7].button = g.board.tiles[y - 1][x - 1];
+	        buts[7].button = g.getBoard().tiles[y - 1][x - 1];
 	    }
 	    if (x + 1 < 8)
-	      buts[2].button = g.board.tiles[y][x + 1];
+	      buts[2].button = g.getBoard().tiles[y][x + 1];
 	    if (y + 1 < 8) {
 	      if (x + 1 < 8)
-	        buts[3].button = g.board.tiles[y + 1][x + 1];
-	      buts[4].button = g.board.tiles[y + 1][x];
+	        buts[3].button = g.getBoard().tiles[y + 1][x + 1];
+	      buts[4].button = g.getBoard().tiles[y + 1][x];
 	      if (x - 1 >= 0)
-	        buts[5].button = g.board.tiles[y + 1][x - 1];
+	        buts[5].button = g.getBoard().tiles[y + 1][x - 1];
 	    }
 	    if (x - 1 >= 0)
-	      buts[6].button = g.board.tiles[y][x - 1];
+	      buts[6].button = g.getBoard().tiles[y][x - 1];
 	    for (int i = 0; i < 8; i++) {
 	        if (buts[i].button != null) {
-	          for (Piece p : g.board.causedCheck) {
-	            if (p.getPath().contains(buts[i].button) && g.board.kingsButton[colIndex].getPiece().getPath().contains(buts[(i + 4) % 8].button)) {
-	              g.board.kingsButton[colIndex].getPiece().getPath().remove(buts[(i + 4) % 8].button);
+	          for (Piece p : g.getBoard().causedCheck) {
+	            if (p.getPath().contains(buts[i].button) && g.getBoard().kingsButton[colIndex].getPiece().getPath().contains(buts[(i + 4) % 8].button)) {
+	              g.getBoard().kingsButton[colIndex].getPiece().getPath().remove(buts[(i + 4) % 8].button);
 	              buts[(i + 4) % 8].isRemoved = true;
 	            }
 	          }
 	        }
 	    }
-	    for (Piece p : g.board.causedCheck) {
-	      for (Piece q : g.board.pieces[colIndex]) {
+	    for (Piece p : g.getBoard().causedCheck) {
+	      for (Piece q : g.getBoard().pieces[colIndex]) {
 	        if (!(q instanceof King)) {
 	        	// If knight caused check, King MUST move unless allied piece can capture it
 	        if (p instanceof Knight) {
@@ -624,15 +624,15 @@ public void reducePath(Color color, Game g) {
 	        	if (q.getPath().contains(g.getBoard().tiles[p.getPosition().getY()][p.getPosition().getX()]))
 	        		potentialCapture = g.getBoard().tiles[p.getPosition().getY()][p.getPosition().getX()];
 	            q.getPath().clear();
-	            q.getPath().add(g.board.tiles[q.getPosition().getY()][q.getPosition().getX()]);
+	            q.getPath().add(g.getBoard().tiles[q.getPosition().getY()][q.getPosition().getX()]);
 	            if (potentialCapture != null)
 	            	q.getPath().add(potentialCapture);
 	        }
 	        else {
 	        ArrayList<Tile> lis = this.intersection(p.getPath(), q.getPath());
 	        if (!lis.isEmpty()) {
-	          ArrayList<Tile> toAdd = g.board.checkPaths(c, isCheck, buts, g);
-	          toAdd.add(g.board.tiles[p.getPosition().getY()][p.getPosition().getX()]);
+	          ArrayList<Tile> toAdd = g.getBoard().checkPaths(c, isCheck, buts, g);
+	          toAdd.add(g.getBoard().tiles[p.getPosition().getY()][p.getPosition().getX()]);
 	          Iterator<Tile> iter = q.getPath().iterator();
 	          while (iter.hasNext()) {
 	            Tile but = iter.next();
@@ -640,66 +640,66 @@ public void reducePath(Color color, Game g) {
 	              iter.remove();
 	            }
 	          }
-	          if (!q.getPath().contains(g.board.tiles[q.getPosition().getY()][q.getPosition().getX()]))
-	          q.getPath().add(g.board.tiles[q.getPosition().getY()][q.getPosition().getX()]);
+	          if (!q.getPath().contains(g.getBoard().tiles[q.getPosition().getY()][q.getPosition().getX()]))
+	          q.getPath().add(g.getBoard().tiles[q.getPosition().getY()][q.getPosition().getX()]);
 	        }
 	        else {
 	          q.getPath().clear();
-	          q.getPath().add(g.board.tiles[q.getPosition().getY()][q.getPosition().getX()]);
+	          q.getPath().add(g.getBoard().tiles[q.getPosition().getY()][q.getPosition().getX()]);
 	        }
 	      }
 	        }
 	        else {
-	          g.board.checkPaths(c, isCheck, buts, g);
+	          g.getBoard().checkPaths(c, isCheck, buts, g);
 	        }
 	      }
 	    }
 	  }
-	  Iterator<Tile> iter = g.board.kingsButton[colIndex].getPiece().getPath().iterator();
+	  Iterator<Tile> iter = g.getBoard().kingsButton[colIndex].getPiece().getPath().iterator();
 	  while (iter.hasNext()) {
 	    Tile but = iter.next();
 	    if (but.getPiece() != null) {
 	      Piece p = but.getPiece();
 	      if (!(p instanceof King) && p.getColor().equals(Constants.colors[oppositeColor])) {
 	      but.setPiece(null);
-	      g.board.pieces[oppositeColor].remove(p);
-	      for (Piece q : g.board.pieces[oppositeColor]) {
-	        q.setPath(g, g.board.tiles[q.getPosition().getY()][q.getPosition().getX()]);
+	      g.getBoard().pieces[oppositeColor].remove(p);
+	      for (Piece q : g.getBoard().pieces[oppositeColor]) {
+	        q.setPath(g, g.getBoard().tiles[q.getPosition().getY()][q.getPosition().getX()]);
 	      }
-	      if (g.board.isTileInDanger(but, g) && g.board.kingsButton[colIndex].getPiece().getPath().contains(but)) {
+	      if (g.getBoard().isTileInDanger(but, g) && g.getBoard().kingsButton[colIndex].getPiece().getPath().contains(but)) {
 	        iter.remove();
 	      }
 	      but.setPiece(p);
-	      g.board.pieces[oppositeColor].add(p);
-	      for (Piece q : g.board.pieces[oppositeColor]) {
-	        q.setPath(g, g.board.tiles[q.getPosition().getY()][q.getPosition().getX()]);
+	      g.getBoard().pieces[oppositeColor].add(p);
+	      for (Piece q : g.getBoard().pieces[oppositeColor]) {
+	        q.setPath(g, g.getBoard().tiles[q.getPosition().getY()][q.getPosition().getX()]);
 	      }
 	    }
 	    }
 	    else {
-	      if (g.board.isTileInDanger(but, g) && g.board.kingsButton[colIndex].getPiece().getPath().contains(but)) {
+	      if (g.getBoard().isTileInDanger(but, g) && g.getBoard().kingsButton[colIndex].getPiece().getPath().contains(but)) {
 	        iter.remove();
 	      }
 	    }
 	  }
 	  if (y >= 0 && y < 8) {
 	    if (x + 2 < 8) {
-	      if (g.board.kingsButton[colIndex].getPiece().getPath().contains(g.board.tiles[y][x + 2])) {
-	        if (!g.board.kingsButton[colIndex].getPiece().getPath().contains(g.board.tiles[y][x + 1]) || isCheck) {
-	          g.board.kingsButton[colIndex].getPiece().getPath().remove(g.board.tiles[y][x + 2]);
+	      if (g.getBoard().kingsButton[colIndex].getPiece().getPath().contains(g.getBoard().tiles[y][x + 2])) {
+	        if (!g.getBoard().kingsButton[colIndex].getPiece().getPath().contains(g.getBoard().tiles[y][x + 1]) || isCheck) {
+	          g.getBoard().kingsButton[colIndex].getPiece().getPath().remove(g.getBoard().tiles[y][x + 2]);
 	        }
 	      }
 	  }
 	    if (x - 2 >= 0) {
-	      if (g.board.kingsButton[colIndex].getPiece().getPath().contains(g.board.tiles[y][x - 2])) {
-	        if (!g.board.kingsButton[colIndex].getPiece().getPath().contains(g.board.tiles[y][x - 1]) || isCheck) {
-	          g.board.kingsButton[colIndex].getPiece().getPath().remove(g.board.tiles[y][x - 2]);
+	      if (g.getBoard().kingsButton[colIndex].getPiece().getPath().contains(g.getBoard().tiles[y][x - 2])) {
+	        if (!g.getBoard().kingsButton[colIndex].getPiece().getPath().contains(g.getBoard().tiles[y][x - 1]) || isCheck) {
+	          g.getBoard().kingsButton[colIndex].getPiece().getPath().remove(g.getBoard().tiles[y][x - 2]);
 	        }
 	      }
 	    }
 	  }
 	}
-public void takeMePath(Color turnColor, Game g) {
+void takeMePath(Color turnColor, Game g) {
 	  int colIndex = g.getTurnCount() % 2;
 	  int oppositeCol = (colIndex + 1) % 2;
 	  g.getBoard().take.clear();
@@ -708,7 +708,7 @@ public void takeMePath(Color turnColor, Game g) {
 	  for (Piece p : this.pieces[colIndex]) {
 	    for (Piece q : this.pieces[oppositeCol]) {
 	      if (p.getPath().contains(this.tiles[q.getPosition().getY()][q.getPosition().getX()])) {
-	        g.takeRed.add(this.tiles[q.getPosition().getY()][q.getPosition().getX()]);
+	        g.getTakeRed().add(this.tiles[q.getPosition().getY()][q.getPosition().getX()]);
 	        this.tiles[q.getPosition().getY()][q.getPosition().getX()].setBackground(Color.RED);
 	        g.getBoard().take.put(p, p.getPath());
 	        takeMe.add(q);
@@ -727,9 +727,9 @@ public void takeMePath(Color turnColor, Game g) {
 	              enPass = p;
 	              g.getBoard().take.put(enPass, enPass.getPath());
 	              takeMe.add(enPass);
-	              g.takeCyan = but;
+	              g.setTakeCyan(but);
 	              but.setBackground(Color.CYAN);
-	              g.takeRed.add(this.tiles[y][x - 1]);
+	              g.getTakeRed().add(this.tiles[y][x - 1]);
 	              this.tiles[y][x - 1].setBackground(Color.RED);
 	            }
 	          }
@@ -739,9 +739,9 @@ public void takeMePath(Color turnColor, Game g) {
 	              enPass = p;
 	              g.getBoard().take.put(enPass, enPass.getPath());
 	              takeMe.add(enPass);
-	              g.takeCyan = but;
+	              g.setTakeCyan(but);
 	              but.setBackground(Color.CYAN);
-	              g.takeRed.add(this.tiles[y][x + 1]);
+	              g.getTakeRed().add(this.tiles[y][x + 1]);
 	              this.tiles[y][x + 1].setBackground(Color.RED);
 	            }
 	          }
@@ -755,9 +755,9 @@ public void takeMePath(Color turnColor, Game g) {
 	              enPass = p;
 	              g.getBoard().take.put(enPass, enPass.getPath());
 	              takeMe.add(enPass);
-	              g.takeCyan = but;
+	              g.setTakeCyan(but);
 	              but.setBackground(Color.CYAN);
-	              g.takeRed.add(this.tiles[y][x - 1]);
+	              g.getTakeRed().add(this.tiles[y][x - 1]);
 	              this.tiles[y][x - 1].setBackground(Color.RED);
 	            }
 	          }
@@ -767,9 +767,9 @@ public void takeMePath(Color turnColor, Game g) {
 	              enPass = p;
 	              g.getBoard().take.put(enPass, enPass.getPath());
 	              takeMe.add(enPass);
-	              g.takeCyan = but;
+	              g.setTakeCyan(but);
 	              but.setBackground(Color.CYAN);
-	              g.takeRed.add(this.tiles[y][x + 1]);
+	              g.getTakeRed().add(this.tiles[y][x + 1]);
 	              this.tiles[y][x + 1].setBackground(Color.RED);
 	            }
 	          }
@@ -781,7 +781,7 @@ public void takeMePath(Color turnColor, Game g) {
 	  for (Piece p : this.pieces[colIndex]) {
 	    if (p != enPass) {
 	    if (g.getBoard().take.get(p) != null) {
-	      g.takeCyan = this.tiles[p.getPosition().getY()][p.getPosition().getX()];
+	      g.setTakeCyan(this.tiles[p.getPosition().getY()][p.getPosition().getX()]);
 	      this.tiles[p.getPosition().getY()][p.getPosition().getX()].setBackground(Color.CYAN);
 	      Iterator<Tile> iter = g.getBoard().take.get(p).iterator();
 	      while (iter.hasNext()) {
@@ -800,7 +800,7 @@ public void takeMePath(Color turnColor, Game g) {
 	  if (g.getBoard().take.get(enPass) != null) {
 	    int x = enPass.getPosition().getX();
 	    int y = enPass.getPosition().getY();
-	    g.takeCyan = this.tiles[y][x];
+	    g.setTakeCyan(this.tiles[y][x]);
 	    this.tiles[y][x].setBackground(Color.CYAN);
 	    if (enPass.getColor().equals(Constants.colors[0])) {
 	      g.getBoard().take.get(enPass).remove(this.tiles[y - 1][x]);
@@ -810,7 +810,7 @@ public void takeMePath(Color turnColor, Game g) {
 	    }
 	  }
 	}
-public void checkMate(Color color, Game g) {
+void checkMate(Color color, Game g) {
 	  if (!Constants.takeMeChess) {
 	  int colIndex = (color.equals(Constants.colors[0])) ? 0 : 1;
 	  int oppositeColor = (colIndex + 1) % 2;
@@ -822,12 +822,12 @@ public void checkMate(Color color, Game g) {
 	  }
 	  if (largestPath == 1) {
 	    if (!g.getcurrKingCheck()) {
-	      g.moveList.add("Stalemate!");
+	      g.getMoveList().add("Stalemate!");
 	      JOptionPane.showMessageDialog(null, "The game has ended in stalemate!", "STALEMATE!", JOptionPane.ERROR_MESSAGE, Constants.images[oppositeColor][Constants.rand.nextInt(Constants.images[oppositeColor].length)]);
 	      g.setGameEnded(true);
 	    }
 	    else {
-	      g.moveList.add("Checkmate!");
+	      g.getMoveList().add("Checkmate!");
 	      JOptionPane.showMessageDialog(null, "Checkmate!  " + ((oppositeColor == 0) ? "White" : "Black")  + " wins!", "Long live the King!", JOptionPane.ERROR_MESSAGE, Constants.images[oppositeColor][Constants.rand.nextInt(Constants.images[oppositeColor].length)]);
 	      g.setGameEnded(true);
 	    }
@@ -839,13 +839,13 @@ public void checkMate(Color color, Game g) {
 	  }
 	  else {
 	      if (this.pieces[g.getTurnCount() % 2].isEmpty()) {
-	    	g.moveList.add("Game ended!");
+	    	g.getMoveList().add("Game ended!");
 	        JOptionPane.showMessageDialog(null, "No pieces left!  " + ((g.getTurnCount() % 2 == 0) ? "White ": "Black ") + "wins!", "Ran out of pieces!", JOptionPane.ERROR_MESSAGE, Constants.images[g.getTurnCount() % 2][Constants.rand.nextInt(Constants.images[g.getTurnCount() % 2].length)]);
 	        g.setGameEnded(true);
 	      }
 	  }
 	}
-public boolean isCheckPossible(Game g) {
+boolean isCheckPossible(Game g) {
   int colIndex = g.getTurnCount() % 2;
   int oppositeCol = (g.getTurnCount() + 1) % 2;
   int turnSize = this.pieces[colIndex].size();
@@ -876,7 +876,7 @@ public boolean isCheckPossible(Game g) {
   }
   return true;
 }
-public void pinnedPieces(Color color) {
+void pinnedPieces(Color color) {
 	  int colIndex = color.equals(Constants.colors[0]) ? 0 : 1;
 	  Tile kingSpace = this.kingsButton[colIndex]; 
 	  int kingX = kingSpace.getPosition().getX();
@@ -1248,10 +1248,19 @@ public void pinnedPieces(Color color) {
 	    }
 	  }
 	}
-public Piece getRandomPiece(Game g, Color c) {
+ Piece getRandomPiece(Game g, Color c) {
 	int index = c.equals(Constants.colors[0]) ? 0 : 1;
 	int randPiece = Constants.rand.nextInt(g.getBoard().pieces[index].size());
 	return g.getBoard().pieces[index].get(randPiece);
+}
+public Tile[][] getTiles() {
+	return this.tiles;
+}
+public ArrayList<Piece>[] getPieces() {
+	return this.pieces;
+}
+public Tile[] getKingButton() {
+	return this.kingsButton;
 }
 public HashMap<Piece, ArrayList<Tile>> getCheckPaths() {
 	  return this.checkPaths;
