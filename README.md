@@ -7,6 +7,14 @@ As of the December 2018 update to this game, most of the menu features are fully
 Core gameplay with regular and take-me chess work properly.  The settings let you choose which mode of chess you wish to play.  </br>
 This app won't allow you to make any illegal moves.  Pieces won't be allowed to move where they cannot move.  For instance, assuming you are playing regular chess, you won't be allowed to make a move that will put or keep your King in check.</br>  In take-me chess, capturing an opponent's piece, when possible, is required.  Like all other pieces, the King can be captured in take-me chess.
 
+# Update Februrary 28 2021
+
+Corrected a bug that takes place during Computer vs. Computer mode where a promoted piece didn't register properly.
+This bug caused the opponent's king to not be put in check when it needed to be put in check in certain situations.
+There also still exists a bug during Computer vs. Computer mode where a minimized popup will occur during promotion.
+It doesn't seem to affect gameplay at all according to my test cases but it's still an unnecessary task that should be removed.
+I should hopefully have this corrected in the next update.
+
 # Update February 2021
 
 Modified the project so a .jar file can be output.  The jar file reflects the latest version of this app and should function as intended upon running it.  I also corrected a bug that gave team Black an extra queen at the start of the game.
