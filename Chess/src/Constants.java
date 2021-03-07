@@ -80,7 +80,7 @@ public class Constants implements java.io.Serializable{
 	    	    new ImageIcon(names[PieceAppearance][0], "BlackRook"),
 	    	    new ImageIcon(names[PieceAppearance][5], "BlackPawn")}};
  
- public static final int aiLevel = 3;
+ public static final int aiLevel = 0;
  
  public static final int aiColor = 1;
  
