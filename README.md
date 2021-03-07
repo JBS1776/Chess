@@ -7,6 +7,10 @@ As of the December 2018 update to this game, most of the menu features are fully
 Core gameplay with regular and take-me chess work properly.  The settings let you choose which mode of chess you wish to play.  </br>
 This app won't allow you to make any illegal moves.  Pieces won't be allowed to move where they cannot move.  For instance, assuming you are playing regular chess, you won't be allowed to make a move that will put or keep your King in check.</br>  In take-me chess, capturing an opponent's piece, when possible, is required.  Like all other pieces, the King can be captured in take-me chess.
 
+# Update March 7 2021
+
+Fixed the minimized popup issue described in the previous update
+
 # Update Februrary 28 2021
 
 Corrected a bug that takes place during Computer vs. Computer mode where a promoted piece didn't register properly.
