@@ -9,7 +9,7 @@ This app won't allow you to make any illegal moves.  Pieces won't be allowed to 
 
 # Update March 15 2021
 
-Included a hard level AI that will capture a piece when it can and otherwise performs a random move.  
+Included a hard level AI that will capture a piece when it can (and isn't enpassant capture) and otherwise performs a random move.  
 More difficult AIs will be worked on in future updates.
 
 # Update March 7 2021
