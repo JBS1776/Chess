@@ -110,6 +110,31 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
  piecechange.add(mario);
  group.add(mario);
  this.setSelectedButton(g);
+ JRadioButtonMenuItem custom = new JRadioButtonMenuItem("Custom");
+ custom.addActionListener(new ActionListener() {
+	 @Override
+	 public void actionPerformed(ActionEvent e) {
+		// Using this process to invoke the constructor,
+		// JFileChooser points to user's default directory
+		JFileChooser j = new JFileChooser();
+		 
+		j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		// Open the open dialog
+		j.setDialogTitle("Choose custom piece theme.  (Doesn't work yet)");
+		int chooseDir = j.showOpenDialog(null);
+		if (chooseDir == JFileChooser.APPROVE_OPTION) {
+			if (j.getSelectedFile().isDirectory()) {
+				System.out.println("Selected: " + j.getSelectedFile().getAbsolutePath());
+			}
+			else {
+				System.out.println("You selected a file!  What the deuce?");
+			}
+		}
+	 }
+ });
+ custom.setMnemonic(KeyEvent.VK_D);
+ piecechange.add(custom);
+ group.add(custom);
  menu1.add(open);
  menu1.add(save);
  menu1.add(reset);
