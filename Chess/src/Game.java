@@ -23,7 +23,7 @@ public class Game extends JPanel implements java.io.Serializable{
  
  private Board board;
  private Tile previouslySelected;
- private String[] pieceDirs;
+ private String[] pieceDirs = new String[12];
  private Piece enPassant;
  private ArrayList<Tile> takeRed = new ArrayList<Tile>();
  private ArrayList<Tile> takeCyan = new ArrayList<Tile>();

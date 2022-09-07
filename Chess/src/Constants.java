@@ -62,8 +62,6 @@ public class Constants implements java.io.Serializable{
 	Gamewindow.class.getResource("sprites3/WhiteBishop.png"), Gamewindow.class.getResource("sprites3/WhiteQueen.png"), Gamewindow.class.getResource("sprites3/WhiteKing.png"), 
 	Gamewindow.class.getResource("sprites3/WhitePawn.png")}};
  
- public static String[] customFiles = {"", "", "", "", "", "", "", "", "", "", "", ""};
- 
  public static final ImageIcon[][] images = {{new ImageIcon(names[PieceAppearance][6], "WhiteRook"),
 	        new ImageIcon(names[PieceAppearance][7], "WhiteKnight"), 
 	        new ImageIcon(names[PieceAppearance][8], "WhiteBishop"),

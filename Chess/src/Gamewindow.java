@@ -147,19 +147,18 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
 				 }
 				 if (requiredFilenames.isEmpty()) {
 					 g.setSetting(3);
-					 Constants.customFiles[0] = file.getAbsolutePath() + "/BlackRook.png";
-					 Constants.customFiles[1] = file.getAbsolutePath() + "/BlackKnight.png";
-					 Constants.customFiles[2] = file.getAbsolutePath() + "/BlackBishop.png";
-					 Constants.customFiles[3] = file.getAbsolutePath() + "/BlackQueen.png";
-					 Constants.customFiles[4] = file.getAbsolutePath() + "/BlackKing.png";
-					 Constants.customFiles[5] = file.getAbsolutePath() + "/BlackPawn.png";
-					 Constants.customFiles[6] = file.getAbsolutePath() + "/WhiteRook.png";
-					 Constants.customFiles[7] = file.getAbsolutePath() + "/WhiteKnight.png";
-					 Constants.customFiles[8] = file.getAbsolutePath() + "/WhiteBishop.png";
-					 Constants.customFiles[9] = file.getAbsolutePath() + "/WhiteQueen.png";
-					 Constants.customFiles[10] = file.getAbsolutePath() + "/WhiteKing.png";
-					 Constants.customFiles[11] = file.getAbsolutePath() + "/WhitePawn.png";
-					 g.setPieceDirs(Constants.customFiles);
+					 g.getPieceDirs()[0] = file.getAbsolutePath() + "/BlackRook.png";
+					 g.getPieceDirs()[1] = file.getAbsolutePath() + "/BlackKnight.png";
+					 g.getPieceDirs()[2] = file.getAbsolutePath() + "/BlackBishop.png";
+					 g.getPieceDirs()[3] = file.getAbsolutePath() + "/BlackQueen.png";
+					 g.getPieceDirs()[4] = file.getAbsolutePath() + "/BlackKing.png";
+					 g.getPieceDirs()[5] = file.getAbsolutePath() + "/BlackPawn.png";
+					 g.getPieceDirs()[6] = file.getAbsolutePath() + "/WhiteRook.png";
+					 g.getPieceDirs()[7] = file.getAbsolutePath() + "/WhiteKnight.png";
+					 g.getPieceDirs()[8] = file.getAbsolutePath() + "/WhiteBishop.png";
+					 g.getPieceDirs()[9] = file.getAbsolutePath() + "/WhiteQueen.png";
+					 g.getPieceDirs()[10] = file.getAbsolutePath() + "/WhiteKing.png";
+					 g.getPieceDirs()[11] = file.getAbsolutePath() + "/WhitePawn.png";
 					 setImages(g);
 				 }
 				 else {
@@ -337,7 +336,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
       System.err.println("Cannot set LookAndFeel");
   }
   setImages(g);
-  SwingUtilities.invokeLater(new Gamewindow(Constants.STARTCONFIG, Constants.customFiles, Constants.STARTTURNCOUNT, 
+  SwingUtilities.invokeLater(new Gamewindow(Constants.STARTCONFIG, new String[12], Constants.STARTTURNCOUNT, 
 		  Constants.isKingInCheck, Constants.startCastle, 
 		  Constants.isEndGame, g.getTimeEnabled(), 
 		  g.getTakeMeEnabled(), Constants.TIME, 
@@ -449,7 +448,7 @@ private void setSelectedButton(Game g) {
   } catch (Exception ex) {
       System.err.println("Cannot set LookAndFeel");
   }
-  SwingUtilities.invokeLater(new Gamewindow(Constants.STARTCONFIG, Constants.customFiles, Constants.STARTTURNCOUNT, Constants.isKingInCheck, 
+  SwingUtilities.invokeLater(new Gamewindow(Constants.STARTCONFIG, new String[12], Constants.STARTTURNCOUNT, Constants.isKingInCheck, 
 		  Constants.startCastle, Constants.isEndGame, 
 		  Constants.isTimeEnabled, Constants.takeMeChess, 
 		  Constants.TIME, Constants.PieceAppearance, 
