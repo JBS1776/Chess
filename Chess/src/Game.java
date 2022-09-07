@@ -23,6 +23,7 @@ public class Game extends JPanel implements java.io.Serializable{
  
  private Board board;
  private Tile previouslySelected;
+ private String[] pieceDirs;
  private Piece enPassant;
  private ArrayList<Tile> takeRed = new ArrayList<Tile>();
  private ArrayList<Tile> takeCyan = new ArrayList<Tile>();
@@ -46,7 +47,7 @@ public class Game extends JPanel implements java.io.Serializable{
  private int ailevel;
  private int aiColor;
  private Computerplayer cp;
- public Game(ArrayList<Piece>[] ps, int turnInc, boolean kingCheck, boolean castle, boolean endGame, boolean timeEnable, boolean takeMe, int newTime, Piece enpass, int pieceAppearance, int ailevel, int aiColor, ArrayList<LinkedList<Piece>> caps, ArrayList<String> movs, Gamewindow gw) throws InterruptedException {
+ public Game(ArrayList<Piece>[] ps, String[] pieceDirs, int turnInc, boolean kingCheck, boolean castle, boolean endGame, boolean timeEnable, boolean takeMe, int newTime, Piece enpass, int pieceAppearance, int ailevel, int aiColor, ArrayList<LinkedList<Piece>> caps, ArrayList<String> movs, Gamewindow gw) throws InterruptedException {
 	 // this.capturedpieces and this.moveList always starts as empty list
 	 if (caps == null) {
 		 caps = this.capturedpieces;
@@ -62,6 +63,7 @@ public class Game extends JPanel implements java.io.Serializable{
 	 else
 		 this.moveList.addAll(movs);
  cp = new Computerplayer();
+ pieceDirs = this.pieceDirs;
  this.turnCount = turnInc;
  this.currKingCheck = kingCheck;
  this.castleProcessing = castle;
@@ -417,6 +419,12 @@ public class Game extends JPanel implements java.io.Serializable{
   }
   public Board getBoard() {
     return this.board;
+  }
+  public String[] getPieceDirs() {
+	  return this.pieceDirs;
+  }
+  public void setPieceDirs(String[] dirs) {
+	  this.pieceDirs = dirs;
   }
   public void setEnPass(Piece p) {
     this.enPassant = p;

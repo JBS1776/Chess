@@ -43,7 +43,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
   private Game game;
   private static Timer timer;
   private ButtonGroup group = new ButtonGroup();
-  public Gamewindow(ArrayList<Piece>[] start, int turns, boolean kingCheck, boolean castle, boolean endGame, boolean timeEnd, boolean takeMe, int time, int pieceLook, int ailevel, int aiColor, ArrayList<LinkedList<Piece>> caps, ArrayList<String> moves, Piece enPass) {
+  public Gamewindow(ArrayList<Piece>[] start, String[] pieceDirs, int turns, boolean kingCheck, boolean castle, boolean endGame, boolean timeEnd, boolean takeMe, int time, int pieceLook, int ailevel, int aiColor, ArrayList<LinkedList<Piece>> caps, ArrayList<String> moves, Piece enPass) {
     try {
         timer = new Timer(1000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -55,7 +55,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
               }
         }
           });
-    game = new Game(start, turns, kingCheck, castle, endGame, timeEnd, takeMe, time, enPass, pieceLook, ailevel, aiColor, caps, moves, this);
+    game = new Game(start, pieceDirs, turns, kingCheck, castle, endGame, timeEnd, takeMe, time, enPass, pieceLook, ailevel, aiColor, caps, moves, this);
     this.initializeMenu(game);
     this.add(game);
     this.setVisible(true);
@@ -159,6 +159,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
 					 Constants.customFiles[9] = file.getAbsolutePath() + "/WhiteQueen.png";
 					 Constants.customFiles[10] = file.getAbsolutePath() + "/WhiteKing.png";
 					 Constants.customFiles[11] = file.getAbsolutePath() + "/WhitePawn.png";
+					 g.setPieceDirs(Constants.customFiles);
 					 setImages(g);
 				 }
 				 else {
@@ -311,8 +312,17 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
   } catch (Exception ex) {
       System.err.println("Cannot set LookAndFeel");
   }
+  // Check one more time for existing directory
+  for (String s : g.getPieceDirs()) {
+	  File f = new File(s);
+	  if (!f.exists()) {
+		  g.setSetting(0);
+		  JOptionPane.showMessageDialog(null, "Couldn't find " + s + "  Opening default theme instead.", "Error loading images!", JOptionPane.ERROR_MESSAGE, Constants.images[g.getTurnCount() % 2][Constants.rand.nextInt(Constants.images[g.getTurnCount() % 2].length)]);
+		  break;
+	  }
+  }
   setImages(g);
-  SwingUtilities.invokeLater(new Gamewindow(g.getBoard().getPieces(), g.getTurnCount(), g.getcurrKingCheck(), g.getCastling(), g.getGameEnded(), g.getTimeEnabled(), g.getTakeMeEnabled(), g.getTime(), g.getSetting(), g.getAilevel(), g.getAiColor(), g.getCapturedPieces(), g.getMoveList(), g.getEnPass()));
+  SwingUtilities.invokeLater(new Gamewindow(g.getBoard().getPieces(), g.getPieceDirs(), g.getTurnCount(), g.getcurrKingCheck(), g.getCastling(), g.getGameEnded(), g.getTimeEnabled(), g.getTakeMeEnabled(), g.getTime(), g.getSetting(), g.getAilevel(), g.getAiColor(), g.getCapturedPieces(), g.getMoveList(), g.getEnPass()));
  }
  void newGame(Game g) {
    g.setTime(Constants.TIME);
@@ -327,7 +337,7 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
       System.err.println("Cannot set LookAndFeel");
   }
   setImages(g);
-  SwingUtilities.invokeLater(new Gamewindow(Constants.STARTCONFIG, Constants.STARTTURNCOUNT, 
+  SwingUtilities.invokeLater(new Gamewindow(Constants.STARTCONFIG, Constants.customFiles, Constants.STARTTURNCOUNT, 
 		  Constants.isKingInCheck, Constants.startCastle, 
 		  Constants.isEndGame, g.getTimeEnabled(), 
 		  g.getTakeMeEnabled(), Constants.TIME, 
@@ -363,7 +373,21 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
 				 set = new ImageIcon(Constants.names[g.getSetting()][c.equals(Color.black) ? val : val + 6], p.getName());
 			 }
 			 else {
-				 set = new ImageIcon(Constants.customFiles[c.equals(Color.black) ? val : val + 6], p.getName());
+				 //String[] names = g.getPieceDirs();
+				 boolean found = false;
+				 for (String s : g.getPieceDirs()) {
+					 if (s.contains(p.getName())) {
+						 set = new ImageIcon(s, p.getName());
+						 found = true;
+						 break;
+					 }
+				 }
+				 // Load first default config. if images are not found
+				 if (!found) {
+					 g.setSetting(0);
+					 set = new ImageIcon(Constants.names[g.getSetting()][c.equals(Color.black) ? val : val + 6], p.getName());
+				 }
+				 //set = new ImageIcon(Constants.customFiles[c.equals(Color.black) ? val : val + 6], p.getName());
 			 }
 			 p.setImage(set);
 		 }
@@ -425,7 +449,7 @@ private void setSelectedButton(Game g) {
   } catch (Exception ex) {
       System.err.println("Cannot set LookAndFeel");
   }
-  SwingUtilities.invokeLater(new Gamewindow(Constants.STARTCONFIG, Constants.STARTTURNCOUNT, Constants.isKingInCheck, 
+  SwingUtilities.invokeLater(new Gamewindow(Constants.STARTCONFIG, Constants.customFiles, Constants.STARTTURNCOUNT, Constants.isKingInCheck, 
 		  Constants.startCastle, Constants.isEndGame, 
 		  Constants.isTimeEnabled, Constants.takeMeChess, 
 		  Constants.TIME, Constants.PieceAppearance, 
