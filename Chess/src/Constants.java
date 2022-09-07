@@ -1,6 +1,6 @@
 
 import java.awt.Color;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -61,6 +61,8 @@ public class Constants implements java.io.Serializable{
 	Gamewindow.class.getResource("sprites3/BlackPawn.png"), Gamewindow.class.getResource("sprites3/WhiteRook.png"), Gamewindow.class.getResource("sprites3/WhiteKnight.png"), 
 	Gamewindow.class.getResource("sprites3/WhiteBishop.png"), Gamewindow.class.getResource("sprites3/WhiteQueen.png"), Gamewindow.class.getResource("sprites3/WhiteKing.png"), 
 	Gamewindow.class.getResource("sprites3/WhitePawn.png")}};
+ 
+ public static String[] customFiles = {"", "", "", "", "", "", "", "", "", "", "", ""};
  
  public static final ImageIcon[][] images = {{new ImageIcon(names[PieceAppearance][6], "WhiteRook"),
 	        new ImageIcon(names[PieceAppearance][7], "WhiteKnight"), 

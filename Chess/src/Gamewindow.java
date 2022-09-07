@@ -13,9 +13,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -114,22 +118,58 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
  custom.addActionListener(new ActionListener() {
 	 @Override
 	 public void actionPerformed(ActionEvent e) {
-		// Using this process to invoke the constructor,
-		// JFileChooser points to user's default directory
-		JFileChooser j = new JFileChooser();
+		 JFileChooser j = new JFileChooser();
 		 
-		j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		// Open the open dialog
-		j.setDialogTitle("Choose custom piece theme.  (Doesn't work yet)");
-		int chooseDir = j.showOpenDialog(null);
-		if (chooseDir == JFileChooser.APPROVE_OPTION) {
-			if (j.getSelectedFile().isDirectory()) {
-				System.out.println("Selected: " + j.getSelectedFile().getAbsolutePath());
+		 j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		 
+		 j.setDialogTitle("Choose a custom piece theme");
+		 int chooseDir = j.showOpenDialog(null);
+		 
+		 if (chooseDir == JFileChooser.APPROVE_OPTION) {
+			 if (j.getSelectedFile().isDirectory()) {
+				 File file = new File(j.getSelectedFile().getAbsolutePath());
+				 String[] filelist = file.list();
+				 List<String> requiredFilenames = new LinkedList<>();
+				 for (int i = 0; i < 2; i++) {
+				 for (Piece p : g.getBoard().getPieces()[i]) {
+					 requiredFilenames.add(p.getName() + ".png");
+				 	}
+				 }
+				 ListIterator<String> listIterator = requiredFilenames.listIterator();
+				 while (listIterator.hasNext()) {
+					 String currName = listIterator.next();
+					 for (String s : filelist) {
+						 if (s.equals(currName)) {
+							 listIterator.remove();
+							 break;
+						 }
+				 	}
+				 }
+				 if (requiredFilenames.isEmpty()) {
+					 g.setSetting(3);
+					 Constants.customFiles[0] = file.getAbsolutePath() + "/BlackRook.png";
+					 Constants.customFiles[1] = file.getAbsolutePath() + "/BlackKnight.png";
+					 Constants.customFiles[2] = file.getAbsolutePath() + "/BlackBishop.png";
+					 Constants.customFiles[3] = file.getAbsolutePath() + "/BlackQueen.png";
+					 Constants.customFiles[4] = file.getAbsolutePath() + "/BlackKing.png";
+					 Constants.customFiles[5] = file.getAbsolutePath() + "/BlackPawn.png";
+					 Constants.customFiles[6] = file.getAbsolutePath() + "/WhiteRook.png";
+					 Constants.customFiles[7] = file.getAbsolutePath() + "/WhiteKnight.png";
+					 Constants.customFiles[8] = file.getAbsolutePath() + "/WhiteBishop.png";
+					 Constants.customFiles[9] = file.getAbsolutePath() + "/WhiteQueen.png";
+					 Constants.customFiles[10] = file.getAbsolutePath() + "/WhiteKing.png";
+					 Constants.customFiles[11] = file.getAbsolutePath() + "/WhitePawn.png";
+					 setImages(g);
+				 }
+				 else {
+					 JOptionPane.showMessageDialog(null, "Must contain all of the following files:\nBlackRook.png\nBlackKnight.png\nBlackPawn.png\nBlackKing.png\nBlackQueen.png\nBlackBishop.png\nWhiteKing.png\nWhiteQueen.png\nWhiteBishop.png\nWhiteKnight.png\nWhiteRook.png\nWhitePawn.png", "Choose another directory!", JOptionPane.ERROR_MESSAGE, Constants.images[g.getTurnCount() % 2][Constants.rand.nextInt(Constants.images[g.getTurnCount() % 2].length)]);
+				 }
+				 
+			 }
+			 else {
+				 System.out.println("You selected a file?  What the deuce?");
 			}
-			else {
-				System.out.println("You selected a file!  What the deuce?");
-			}
-		}
+		 }
 	 }
  });
  custom.setMnemonic(KeyEvent.VK_D);
@@ -318,7 +358,13 @@ public class Gamewindow extends JFrame implements Runnable, java.io.Serializable
 			 if (p instanceof King) {
 				 val = 4;
 			 }
-			 ImageIcon set = new ImageIcon(Constants.names[g.getSetting()][c.equals(Color.black) ? val : val + 6], p.getName());
+			 ImageIcon set = null;
+			 if (g.getSetting() < 3) {
+				 set = new ImageIcon(Constants.names[g.getSetting()][c.equals(Color.black) ? val : val + 6], p.getName());
+			 }
+			 else {
+				 set = new ImageIcon(Constants.customFiles[c.equals(Color.black) ? val : val + 6], p.getName());
+			 }
 			 p.setImage(set);
 		 }
 	 }
