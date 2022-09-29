@@ -1,4 +1,4 @@
-# Chess project Sommers
+# Chess project
 
 A fun summer project I have been working on in my spare time.  Every piece currently moves as intended in a real game of Chess with the exception of checking whether or not moving the piece towards a given position will result in their King being placed in check. Running it is only a matter of compiling the Game.java file. The interface will subsequently appear with each of the 32 black and white chess pieces appearing on it.  </br>
 </br>
